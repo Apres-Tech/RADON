@@ -296,3 +296,4 @@ def generate_building(config: EnvConfig, seed: Optional[int] = None) -> Building
         f"Failed to generate valid connected building map after {max_attempts} attempts. "
         "Check config constraints."
     )
+

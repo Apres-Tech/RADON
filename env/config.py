@@ -50,3 +50,4 @@ class EnvConfig:
     def view_size(self) -> int:
         """Egocentric square observation window dimension: 2 * view_radius + 1."""
         return 2 * self.view_radius + 1
+

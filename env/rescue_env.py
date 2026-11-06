@@ -428,3 +428,4 @@ class RadonRescueEnv(ParallelEnv):
     def close(self) -> None:
         """Cleans up resources."""
         pass
+

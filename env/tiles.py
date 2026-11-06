@@ -69,3 +69,4 @@ class Hostage:
     col: int
     rescued: bool = False
     carried_by: Optional[str] = None
+
