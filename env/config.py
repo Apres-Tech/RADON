@@ -25,12 +25,12 @@ class EnvConfig:
 
         Reward tunables:
         step_reward: Per-step time penalty (-0.01).
-        pickup_reward: Reward on successfully picking up a hostage (+1.0).
-        delivery_reward: Reward on successfully evacuating a hostage at exit (+5.0).
-        death_reward: Penalty if rescuer dies in fire (-5.0).
-        team_completion_reward: Shared team bonus when all hostages are evacuated (+10.0).
-        enable_shaping: Potential-based distance reward shaping for faster convergence (default: True).
-        shaping_coef: Magnitude of potential-based distance reward (default: 0.05).
+        pickup_reward: Reward on successfully picking up a hostage.
+        delivery_reward: Reward on successfully evacuating a hostage at exit.
+        death_reward: Penalty if rescuer dies in fire.
+        team_completion_reward: Shared team bonus when all hostages are evacuated.
+        enable_shaping: Potential-based distance reward shaping for faster convergence.
+        shaping_coef: Magnitude of potential-based distance reward.
     """
 
     floors: int = 2
@@ -49,12 +49,12 @@ class EnvConfig:
 
     # Reward values
     step_reward: float = -0.01
-    pickup_reward: float = 1.0
-    delivery_reward: float = 5.0
-    death_reward: float = -5.0
-    team_completion_reward: float = 10.0
+    pickup_reward: float = 2.0
+    delivery_reward: float = 10.0
+    death_reward: float = -3.0
+    team_completion_reward: float = 20.0
     enable_shaping: bool = True
-    shaping_coef: float = 0.05
+    shaping_coef: float = 0.1
 
     @property
     def view_size(self) -> int:
@@ -63,7 +63,7 @@ class EnvConfig:
 
     @classmethod
     def training_day2(cls, seed: Optional[int] = None) -> "EnvConfig":
-        """Training preset for Day 2: 1 floor, 12x12 grid, 4 rescuers, 3 hostages, max_steps=120."""
+        """Tuned training preset for Day 2: 1 floor, 12x12 grid, 4 rescuers, 3 hostages, max_steps=120."""
         return cls(
             floors=1,
             grid_h=12,
@@ -73,16 +73,16 @@ class EnvConfig:
             max_steps=120,
             view_radius=3,
             fire_spread_prob=0.005,
-            fire_spread_start_step=10,
-            fire_max_tiles=40,
+            fire_spread_start_step=15,
+            fire_max_tiles=30,
             fire_enabled=True,
             carry_capacity=1,
             seed=seed,
             step_reward=-0.01,
-            pickup_reward=1.0,
-            delivery_reward=5.0,
-            death_reward=-5.0,
-            team_completion_reward=10.0,
+            pickup_reward=5.0,
+            delivery_reward=20.0,
+            death_reward=-2.0,
+            team_completion_reward=30.0,
             enable_shaping=True,
-            shaping_coef=0.05,
+            shaping_coef=0.25,
         )

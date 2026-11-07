@@ -18,8 +18,8 @@ def parse_args():
     parser.add_argument(
         "--timesteps",
         type=int,
-        default=300_000,
-        help="Total training timesteps (default: 300,000)",
+        default=250_000,
+        help="Total training timesteps (default: 250,000)",
     )
     parser.add_argument(
         "--seed",
@@ -30,8 +30,8 @@ def parse_args():
     parser.add_argument(
         "--run-name",
         type=str,
-        default="run1",
-        help="Experiment identifier name (default: 'run1')",
+        default="rescue_team",
+        help="Experiment identifier name (default: 'rescue_team')",
     )
     parser.add_argument(
         "--n-steps",
@@ -42,14 +42,20 @@ def parse_args():
     parser.add_argument(
         "--batch-size",
         type=int,
-        default=256,
-        help="PPO minibatch size (default: 256)",
+        default=128,
+        help="PPO minibatch size (default: 128)",
     )
     parser.add_argument(
         "--lr",
         type=float,
-        default=3e-4,
-        help="PPO learning rate (default: 3e-4)",
+        default=4e-4,
+        help="PPO learning rate (default: 4e-4)",
+    )
+    parser.add_argument(
+        "--ent-coef",
+        type=float,
+        default=0.04,
+        help="PPO entropy coefficient for action exploration (default: 0.04)",
     )
     parser.add_argument(
         "--num-vec-envs",
@@ -77,7 +83,7 @@ def train(args):
     print(f"  Compute Device: {device.upper()} ({torch.cuda.get_device_name(0) if device == 'cuda' else 'CPU'})")
     print(f"  Seed:           {args.seed}")
     print(f"  Vec Envs:       {args.num_vec_envs} building copies ({args.num_vec_envs * 4} agents)")
-    print(f"  PPO Hparams:    n_steps={args.n_steps}, batch_size={args.batch_size}, lr={args.lr}")
+    print(f"  PPO Hparams:    n_steps={args.n_steps}, batch_size={args.batch_size}, lr={args.lr}, ent_coef={args.ent_coef}")
     print("=" * 70)
 
     # 1. Environment creation
@@ -106,7 +112,7 @@ def train(args):
         gamma=0.99,
         gae_lambda=0.95,
         clip_range=0.2,
-        ent_coef=0.01,
+        ent_coef=args.ent_coef,
         vf_coef=0.5,
         max_grad_norm=0.5,
         policy_kwargs=policy_kwargs,
@@ -118,7 +124,7 @@ def train(args):
     # 3. Setup Metrics Callback
     metrics_callback = MetricsCallback(
         eval_freq=args.eval_freq,
-        eval_episodes=5,
+        eval_episodes=10,
         config=config,
         log_dir="metrics",
         run_name=args.run_name,
@@ -150,7 +156,7 @@ def train(args):
 
     # Final post-training evaluation
     print("\n[Post-Training Final Evaluation]")
-    final_metrics = metrics_callback._evaluate_policy(model=model, num_episodes=20)
+    final_metrics = metrics_callback._evaluate_policy(model=model, num_episodes=25)
     print(
         f"  Final Success Rate:    {final_metrics['success_rate']*100:5.1f}%\n"
         f"  Mean Hostages Rescued: {final_metrics['mean_hostages_rescued']:4.2f}/3\n"
