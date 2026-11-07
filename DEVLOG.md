@@ -22,3 +22,12 @@
 - Reward tuning: initial runs with harsh death penalty (-5.0) and small pickup (+1.0) led policy to freeze safely near spawn. Rebalanced pickup (+5.0), delivery (+20.0), team completion (+30.0), softened death (-2.0), added potential distance shaping (coef=0.25), and increased entropy coef (0.04), allowing the trained policy to measurably beat random (0.24 vs 0.10 mean rescued).
 **Proof:** metrics/day2_learning_curve.png, replays/day2_trained.json, eval table.
 **Tomorrow (Day 3):** scale to 2 floors + stairs, cooperation incentives, dynamic fire during episodes, export multi-floor team replays.
+
+## Day 2.5 — 2026-11-07 — Hardening the engine
+**Why:** Day 2 policy barely learned (0% success, 0.24/3). Verifying engine before scaling.
+**Sanity curriculum (1 hostage, no fire):** success rate reached 100.0% → engine sound.
+**Interact trap:** Yes, the interact exploration trap was a major blocker on Day 2. Requiring agents to simultaneously align tile position and execute the 1-in-6 INTERACT action created an exponential exploration bottleneck. Implementing auto-pickup and auto-delivery collapsed the problem to spatial navigation and enabled the sanity task to reach 100% success.
+**Reward shaping:** BFS potential shaping, coef 0.08. Effect: replaced straight-line Manhattan approximations with true shortest obstacle-aware paths around walls; cached distance maps for exits and unrescued hostages, boosting simulation speed from ~180 to ~1,650 steps/second. Provided smooth, dense navigation gradients.
+**Main run:** 1,000,000 steps, 51.8 minutes, final success 100.0%, mean rescued 3.00/3 (was 0.24).
+**What the agents actually do now:** In `train/watch.py`, agents coordinate cleanly: rescuer_1 and rescuer_2 actively navigate to hostages, automatically pick them up, pathfind directly along optimal corridors to the nearest exit, and deliver all 3 hostages in just 14 steps with 0 deaths and +196.92 return.
+**Verdict:** Ready for Day 3 (multi-floor scaling, stairs coordination, and dynamic fire expansion).

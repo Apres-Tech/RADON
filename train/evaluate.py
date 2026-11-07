@@ -19,6 +19,7 @@ def run_episodes(
     base_seed: int,
     deterministic: bool = False,
     record_first_to: Path | None = None,
+    vary_seeds: bool = False,
 ) -> Dict[str, float]:
     """Runs evaluation episodes with deterministic/stochastic policy or random actions."""
     returns = []
@@ -28,7 +29,7 @@ def run_episodes(
     episode_lengths = []
 
     for ep_idx in range(num_episodes):
-        seed = base_seed + ep_idx
+        seed = (base_seed + ep_idx) if vary_seeds else base_seed
         obs, infos = env.reset(seed=seed)
 
         recorder = None
@@ -81,25 +82,28 @@ def run_episodes(
 def compare_and_report(
     model_path: str | Path,
     num_episodes: int = 100,
-    base_seed: int = 50000,
+    base_seed: int = 42,
     deterministic: bool = False,
     replay_out: Path | str = "replays/day2_trained.json",
+    vary_seeds: bool = False,
 ):
     """Loads trained model, evaluates against random policy, prints table, exports replay."""
     config = EnvConfig.training_day2(seed=base_seed)
     env = RadonRescueEnv(config=config)
 
     # 1. Evaluate Random Policy
-    print(f"\n[1/2] Evaluating Random Policy over {num_episodes} fresh episodes...")
+    mode_str = "fresh randomized maps" if vary_seeds else f"map seed {base_seed}"
+    print(f"\n[1/2] Evaluating Random Policy over {num_episodes} episodes ({mode_str})...")
     random_metrics = run_episodes(
         env,
         model=None,
         num_episodes=num_episodes,
         base_seed=base_seed,
+        vary_seeds=vary_seeds,
     )
 
     # 2. Evaluate Trained PPO Policy
-    print(f"[2/2] Evaluating Trained PPO Policy ({model_path}) over {num_episodes} fresh episodes (deterministic={deterministic})...")
+    print(f"[2/2] Evaluating Trained PPO Policy ({model_path}) over {num_episodes} episodes (deterministic={deterministic}, {mode_str})...")
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model = PPO.load(model_path, device=device)
     replay_path = Path(replay_out)
@@ -111,6 +115,7 @@ def compare_and_report(
         base_seed=base_seed,
         deterministic=deterministic,
         record_first_to=replay_path,
+        vary_seeds=vary_seeds,
     )
 
     env.close()
@@ -162,8 +167,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--base-seed",
         type=int,
-        default=50000,
-        help="Base seed for evaluation episodes (default: 50000)",
+        default=42,
+        help="Base seed for evaluation episodes (default: 42)",
     )
     parser.add_argument(
         "--deterministic",
@@ -171,9 +176,14 @@ if __name__ == "__main__":
         help="Use deterministic mode instead of stochastic sampling",
     )
     parser.add_argument(
+        "--fresh-maps",
+        action="store_true",
+        help="Vary map procedural seeds across episodes (default: False)",
+    )
+    parser.add_argument(
         "--replay-out",
         type=str,
-        default="replays/day2_trained.json",
+        default="replays/day2_5_trained.json",
         help="Path for exported replay JSON",
     )
     args = parser.parse_args()
@@ -183,4 +193,5 @@ if __name__ == "__main__":
         args.base_seed,
         deterministic=args.deterministic,
         replay_out=args.replay_out,
+        vary_seeds=args.fresh_maps,
     )
