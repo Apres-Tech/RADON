@@ -7,7 +7,11 @@ import numpy as np
 import pandas as pd
 
 
-def plot_learning_curves(csv_path: str | Path, output_path: str | Path = "metrics/day2_learning_curve.png"):
+def plot_learning_curves(
+    csv_path: str | Path,
+    output_path: str | Path = "metrics/day2_learning_curve.png",
+    title: str | None = None,
+):
     """Reads metrics CSV and generates publication-grade 2-panel learning curve plot."""
     csv_file = Path(csv_path)
     if not csv_file.exists():
@@ -18,6 +22,9 @@ def plot_learning_curves(csv_path: str | Path, output_path: str | Path = "metric
     rescued = df["mean_hostages_rescued"].values
     success_rate = df["success_rate"].values * 100.0  # Percentage
     mean_reward = df["mean_reward"].values
+
+    is_sanity = "sanity" in str(csv_path).lower()
+    max_hostages = 1 if is_sanity else 3
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5.5), dpi=150)
     plt.subplots_adjust(wspace=0.25)
@@ -30,12 +37,12 @@ def plot_learning_curves(csv_path: str | Path, output_path: str | Path = "metric
     color_hostages = "#1976D2"  # Deep Blue
     color_success = "#2E7D32"   # Forest Green
 
-    ax1.plot(timesteps, rescued, color=color_hostages, linewidth=2.2, marker="o", markersize=4, label="Mean Hostages Rescued (/3)")
+    ax1.plot(timesteps, rescued, color=color_hostages, linewidth=2.2, marker="o", markersize=4, label=f"Mean Hostages Rescued (/{max_hostages})")
     ax1.set_xlabel("Environment Timesteps", fontsize=11, fontweight="bold")
-    ax1.set_ylabel("Hostages Rescued (out of 3)", color=color_hostages, fontsize=11, fontweight="bold")
+    ax1.set_ylabel(f"Hostages Rescued (out of {max_hostages})", color=color_hostages, fontsize=11, fontweight="bold")
     ax1.tick_params(axis="y", labelcolor=color_hostages)
-    ax1.set_ylim(-0.1, 3.2)
-    ax1.axhline(3.0, color="#B0BEC5", linestyle=":", label="Max Capacity (3 Hostages)")
+    ax1.set_ylim(-0.05, max_hostages * 1.1)
+    ax1.axhline(float(max_hostages), color="#B0BEC5", linestyle=":", label=f"Max Capacity ({max_hostages} Hostage{'s' if max_hostages > 1 else ''})")
     ax1.grid(True, **grid_kwargs)
 
     ax1_twin = ax1.twinx()
@@ -62,13 +69,18 @@ def plot_learning_curves(csv_path: str | Path, output_path: str | Path = "metric
     ax2.legend(loc="lower right", framealpha=0.9)
 
     # Global Title
-    fig.suptitle(
-        "RADON — Day 2 PPO Multi-Agent Rescue Policy Learning Curve\n"
-        "(Single Floor 12x12, 4 Shared Rescuers, 3 Hostages)",
-        fontsize=13,
-        fontweight="bold",
-        y=1.02,
-    )
+    if title is None:
+        if is_sanity:
+            title = (
+                "RADON — Day 2.5 Sanity Curriculum Verification\n"
+                "(Single Floor 8x8, 2 Rescuers, 1 Hostage, No Fire)"
+            )
+        else:
+            title = (
+                "RADON — Day 2.5 PPO Hardened Rescue Policy Learning Curve\n"
+                "(Single Floor 12x12, 4 Shared Rescuers, 3 Hostages, BFS Shaping)"
+            )
+    fig.suptitle(title, fontsize=13, fontweight="bold", y=1.02)
 
     out_file = Path(output_path)
     out_file.parent.mkdir(parents=True, exist_ok=True)

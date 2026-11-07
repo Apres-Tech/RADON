@@ -51,6 +51,8 @@ class RadonRescueEnv(ParallelEnv):
         self.rescuers: Dict[str, Rescuer] = {}
         self.hostages: List[Hostage] = []
         self.fire_positions: List[Tuple[int, int, int]] = []
+        self._exit_dist_maps: Dict[int, np.ndarray] = {}
+        self._hostage_dist_maps: Dict[int, np.ndarray] = {}
         self.current_step: int = 0
         self.np_random: np.random.Generator = np.random.default_rng(self.config.seed)
 
@@ -118,6 +120,9 @@ class RadonRescueEnv(ParallelEnv):
                 carrying=False,
                 alive=True,
             )
+
+        # Precompute BFS distance maps for potential shaping
+        self._recompute_shaping_maps(update_exits=True)
 
         observations = {agent: self._get_observation(agent) for agent in self.agents}
         infos = {agent: self._get_info(agent) for agent in self.agents}
@@ -287,6 +292,25 @@ class RadonRescueEnv(ParallelEnv):
                             if len(self.fire_positions) >= self.config.fire_max_tiles:
                                 break
 
+    def _recompute_shaping_maps(self, update_exits: bool = True) -> None:
+        """Precomputes or updates BFS shortest-path distance maps for potential shaping."""
+        if not self.config.enable_shaping or not self.building_map:
+            return
+        if update_exits or not hasattr(self, "_exit_dist_maps") or not self._exit_dist_maps:
+            self._exit_dist_maps = {}
+            for f in range(self.config.floors):
+                exit_targets = [(er, ec) for ef, er, ec in self.building_map.exits if ef == f]
+                self._exit_dist_maps[f] = self._compute_bfs_dist_map(f, exit_targets)
+
+        self._hostage_dist_maps = {}
+        for f in range(self.config.floors):
+            hostage_targets = [
+                (h.row, h.col)
+                for h in self.hostages
+                if not h.rescued and h.carried_by is None and h.floor == f
+            ]
+            self._hostage_dist_maps[f] = self._compute_bfs_dist_map(f, hostage_targets)
+
     def _compute_bfs_dist_map(self, floor: int, targets: List[Tuple[int, int]]) -> np.ndarray:
         """Computes shortest path BFS grid distance map from given targets respecting walls."""
         h, w = self.config.grid_h, self.config.grid_w
@@ -333,20 +357,7 @@ class RadonRescueEnv(ParallelEnv):
         infos: Dict[str, Dict[str, Any]] = {}
 
         new_hostage_delivered = False
-
-        # Precompute BFS shortest-path distance maps for potential shaping
-        exit_dist_maps: Dict[int, np.ndarray] = {}
-        hostage_dist_maps: Dict[int, np.ndarray] = {}
-        if self.config.enable_shaping and self.building_map:
-            for f in range(self.config.floors):
-                exit_targets = [(er, ec) for ef, er, ec in self.building_map.exits if ef == f]
-                exit_dist_maps[f] = self._compute_bfs_dist_map(f, exit_targets)
-                hostage_targets = [
-                    (h.row, h.col)
-                    for h in self.hostages
-                    if not h.rescued and h.carried_by is None and h.floor == f
-                ]
-                hostage_dist_maps[f] = self._compute_bfs_dist_map(f, hostage_targets)
+        hostage_state_changed = False
 
         # --- 1. Process Rescuer Actions ---
         for agent in active_stepping_agents:
@@ -373,9 +384,11 @@ class RadonRescueEnv(ParallelEnv):
                 if self.config.enable_shaping and self.building_map:
                     f = rescuer.floor
                     if rescuer.carrying:
-                        prev_dist = int(exit_dist_maps[f][rescuer.row, rescuer.col])
+                        if f in self._exit_dist_maps:
+                            prev_dist = int(self._exit_dist_maps[f][rescuer.row, rescuer.col])
                     else:
-                        prev_dist = int(hostage_dist_maps[f][rescuer.row, rescuer.col])
+                        if f in self._hostage_dist_maps:
+                            prev_dist = int(self._hostage_dist_maps[f][rescuer.row, rescuer.col])
 
                 # Check boundaries and walls
                 if (
@@ -401,9 +414,9 @@ class RadonRescueEnv(ParallelEnv):
                     if prev_dist is not None and prev_dist < 999:
                         f = rescuer.floor
                         if rescuer.carrying:
-                            curr_dist = int(exit_dist_maps[f][rescuer.row, rescuer.col])
+                            curr_dist = int(self._exit_dist_maps[f][rescuer.row, rescuer.col]) if f in self._exit_dist_maps else 999
                         else:
-                            curr_dist = int(hostage_dist_maps[f][rescuer.row, rescuer.col])
+                            curr_dist = int(self._hostage_dist_maps[f][rescuer.row, rescuer.col]) if f in self._hostage_dist_maps else 999
                         if curr_dist < 999:
                             rewards[agent] += (prev_dist - curr_dist) * self.config.shaping_coef
 
@@ -413,6 +426,7 @@ class RadonRescueEnv(ParallelEnv):
                         rewards[agent] += self.config.death_reward
                         terminations[agent] = True
                         self._drop_carried_hostage_on_death(rescuer)
+                        hostage_state_changed = True
                     else:
                         # Auto Pick up: stepping onto HOSTAGE tile while not carrying
                         if not rescuer.carrying and self.grids[rescuer.floor, nr, nc] == Tile.HOSTAGE:
@@ -428,6 +442,7 @@ class RadonRescueEnv(ParallelEnv):
                                     h.carried_by = agent
                                     rewards[agent] += self.config.pickup_reward
                                     self.grids[rescuer.floor, nr, nc] = Tile.EMPTY
+                                    hostage_state_changed = True
                                     break
 
                         # Auto Deliver: stepping onto EXIT tile while carrying
@@ -439,6 +454,7 @@ class RadonRescueEnv(ParallelEnv):
                                     h.rescued = True
                                     rewards[agent] += self.config.delivery_reward
                                     new_hostage_delivered = True
+                                    hostage_state_changed = True
                                     break
 
             elif action == Action.INTERACT:
@@ -470,6 +486,7 @@ class RadonRescueEnv(ParallelEnv):
                             h.carried_by = agent
                             rewards[agent] += self.config.pickup_reward
                             self.grids[curr_f, curr_r, curr_c] = Tile.EMPTY
+                            hostage_state_changed = True
                             break
 
                 # C. Manual Drop at EXIT fallback
@@ -481,7 +498,11 @@ class RadonRescueEnv(ParallelEnv):
                             h.rescued = True
                             rewards[agent] += self.config.delivery_reward
                             new_hostage_delivered = True
+                            hostage_state_changed = True
                             break
+
+        if hostage_state_changed:
+            self._recompute_shaping_maps(update_exits=False)
 
         # --- 2. Shared Team Completion Bonus ---
         all_hostages_rescued = all(h.rescued for h in self.hostages)

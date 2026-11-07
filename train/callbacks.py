@@ -29,6 +29,7 @@ class MetricsCallback(BaseCallback):
         config: Optional[EnvConfig] = None,
         log_dir: str = "metrics",
         run_name: str = "default",
+        eval_deterministic: bool = False,
         verbose: int = 1,
     ):
         super().__init__(verbose)
@@ -38,6 +39,7 @@ class MetricsCallback(BaseCallback):
         self.log_dir = Path(log_dir)
         self.log_dir.mkdir(parents=True, exist_ok=True)
         self.csv_path = self.log_dir / f"day2_{run_name}.csv"
+        self.eval_deterministic = eval_deterministic
         self.last_eval_step = 0
 
         # Initialize CSV header if file doesn't exist
@@ -68,7 +70,7 @@ class MetricsCallback(BaseCallback):
         eval_env = RadonRescueEnv(config=self.config)
 
         for ep_idx in range(n_eps):
-            seed = 10000 + ep_idx
+            seed = self.config.seed if self.config.seed is not None else (10000 + ep_idx)
             obs, infos = eval_env.reset(seed=seed)
             ep_return = 0.0
 
@@ -79,7 +81,7 @@ class MetricsCallback(BaseCallback):
                     agent_obs = {
                         k: np.expand_dims(v, axis=0) for k, v in obs[agent_id].items()
                     }
-                    action, _ = active_model.predict(agent_obs, deterministic=True)
+                    action, _ = active_model.predict(agent_obs, deterministic=self.eval_deterministic)
                     actions[agent_id] = int(action[0])
 
                 obs, rewards, terminations, truncations, infos = eval_env.step(actions)

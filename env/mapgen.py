@@ -261,22 +261,23 @@ def generate_building(config: EnvConfig, seed: Optional[int] = None) -> Building
 
         # 7. Initial Fire: Place a few fire tiles (not on exits, stairs, hostages, rescuer spawns)
         fires_list = []
-        for f in range(floors):
-            floor_candidates = []
-            for r in range(1, h - 1):
-                for c in range(1, w - 1):
-                    loc = (f, r, c)
-                    if grids[loc] == Tile.EMPTY and loc not in occupied_locs:
-                        floor_candidates.append(loc)
+        if getattr(config, "fire_enabled", True):
+            for f in range(floors):
+                floor_candidates = []
+                for r in range(1, h - 1):
+                    for c in range(1, w - 1):
+                        loc = (f, r, c)
+                        if grids[loc] == Tile.EMPTY and loc not in occupied_locs:
+                            floor_candidates.append(loc)
 
-            if floor_candidates:
-                n_fires = min(len(floor_candidates), rng.integers(1, 3))
-                chosen_fires = rng.choice(len(floor_candidates), size=n_fires, replace=False)
-                for c_idx in chosen_fires:
-                    f_pos = floor_candidates[c_idx]
-                    fires_list.append(f_pos)
-                    occupied_locs.add(f_pos)
-                    grids[f_pos] = Tile.FIRE
+                if floor_candidates:
+                    n_fires = min(len(floor_candidates), rng.integers(1, 3))
+                    chosen_fires = rng.choice(len(floor_candidates), size=n_fires, replace=False)
+                    for c_idx in chosen_fires:
+                        f_pos = floor_candidates[c_idx]
+                        fires_list.append(f_pos)
+                        occupied_locs.add(f_pos)
+                        grids[f_pos] = Tile.FIRE
 
         # 8. Check Reachability via BFS
         if verify_reachability(grids, stairs_list, exits_list, hostage_list, rescuer_spawns):
