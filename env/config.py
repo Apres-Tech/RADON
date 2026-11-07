@@ -29,7 +29,7 @@ class EnvConfig:
         delivery_reward: Reward on successfully evacuating a hostage at exit.
         death_reward: Penalty if rescuer dies in fire.
         team_completion_reward: Shared team bonus when all hostages are evacuated.
-        enable_shaping: Potential-based distance reward shaping for faster convergence.
+        enable_shaping: Potential-based BFS distance reward shaping for faster convergence.
         shaping_coef: Magnitude of potential-based distance reward.
     """
 
@@ -54,7 +54,7 @@ class EnvConfig:
     death_reward: float = -3.0
     team_completion_reward: float = 20.0
     enable_shaping: bool = True
-    shaping_coef: float = 0.1
+    shaping_coef: float = 0.08
 
     @property
     def view_size(self) -> int:
@@ -63,7 +63,7 @@ class EnvConfig:
 
     @classmethod
     def training_day2(cls, seed: Optional[int] = None) -> "EnvConfig":
-        """Tuned training preset for Day 2: 1 floor, 12x12 grid, 4 rescuers, 3 hostages, max_steps=120."""
+        """Tuned training preset for Day 2 / Day 2.5: 1 floor, 12x12 grid, 4 rescuers, 3 hostages, max_steps=120."""
         return cls(
             floors=1,
             grid_h=12,
@@ -84,7 +84,7 @@ class EnvConfig:
             death_reward=-2.0,
             team_completion_reward=30.0,
             enable_shaping=True,
-            shaping_coef=0.25,
+            shaping_coef=0.08,
         )
 
     @classmethod
@@ -110,5 +110,5 @@ class EnvConfig:
             death_reward=-2.0,
             team_completion_reward=30.0,
             enable_shaping=True,
-            shaping_coef=0.25,
+            shaping_coef=0.08,
         )
