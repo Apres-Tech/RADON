@@ -131,7 +131,7 @@ class RadonRescueEnv(ParallelEnv):
 
         grid_obs = np.zeros((NUM_OBS_CHANNELS, view_dim, view_dim), dtype=np.float32)
 
-        # If rescuer is dead, return all-wall obs or zeroes with wall perimeter
+        # If rescuer is dead, return all-wall obs
         if not rescuer.alive:
             grid_obs[CHANNEL_WALL, :, :] = 1.0
             self_feat = np.zeros(6, dtype=np.float32)
@@ -212,6 +212,80 @@ class RadonRescueEnv(ParallelEnv):
             "step": self.current_step,
         }
 
+    def _drop_carried_hostage_on_death(self, rescuer: Rescuer) -> None:
+        """Drops carried hostage onto the floor when a rescuer dies so episodes stay winnable."""
+        if not rescuer.carrying:
+            return
+
+        rescuer.carrying = False
+        carried_hostage = None
+        for h in self.hostages:
+            if h.carried_by == rescuer.id:
+                carried_hostage = h
+                break
+
+        if carried_hostage is None:
+            return
+
+        f, r, c = rescuer.floor, rescuer.row, rescuer.col
+        drop_pos = None
+
+        # Prefer rescuer's tile unless it is FIRE, EXIT, or WALL
+        if self.grids[f, r, c] not in (Tile.FIRE, Tile.EXIT, Tile.WALL):
+            drop_pos = (f, r, c)
+        else:
+            # Search nearest valid EMPTY neighbor
+            neighbors = []
+            for dr, dc in (
+                (-1, 0), (1, 0), (0, -1), (0, 1),
+                (-1, -1), (-1, 1), (1, -1), (1, 1),
+            ):
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < self.config.grid_h and 0 <= nc < self.config.grid_w:
+                    if self.grids[f, nr, nc] == Tile.EMPTY:
+                        neighbors.append((abs(dr) + abs(dc), nr, nc))
+            if neighbors:
+                neighbors.sort(key=lambda x: x[0])
+                drop_pos = (f, neighbors[0][1], neighbors[0][2])
+
+        if drop_pos is not None:
+            df, dr, dc = drop_pos
+            self.grids[df, dr, dc] = Tile.HOSTAGE
+            carried_hostage.floor = df
+            carried_hostage.row = dr
+            carried_hostage.col = dc
+            carried_hostage.carried_by = None
+            carried_hostage.rescued = False
+        else:
+            # No valid empty neighbor found: mark hostage lost
+            carried_hostage.carried_by = None
+            carried_hostage.rescued = False
+
+    def _spread_fire(self) -> None:
+        """Spreads fire to adjacent empty tiles with fire_spread_prob chance."""
+        if not self.config.fire_enabled:
+            return
+        if self.current_step < self.config.fire_spread_start_step:
+            return
+        if len(self.fire_positions) >= self.config.fire_max_tiles:
+            return
+
+        existing_fires = list(self.fire_positions)
+        for ff, fr, fc in existing_fires:
+            if len(self.fire_positions) >= self.config.fire_max_tiles:
+                break
+            for dr, dc in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+                nfr, nfc = fr + dr, fc + dc
+                if 0 <= nfr < self.config.grid_h and 0 <= nfc < self.config.grid_w:
+                    target_tile = self.grids[ff, nfr, nfc]
+                    # Fire ONLY spreads onto EMPTY tiles (never WALL, FIRE, EXIT, HOSTAGE, STAIRS)
+                    if target_tile == Tile.EMPTY:
+                        if self.np_random.random() < self.config.fire_spread_prob:
+                            self.grids[ff, nfr, nfc] = Tile.FIRE
+                            self.fire_positions.append((ff, nfr, nfc))
+                            if len(self.fire_positions) >= self.config.fire_max_tiles:
+                                break
+
     def step(
         self, actions: Dict[str, int]
     ) -> Tuple[
@@ -242,7 +316,7 @@ class RadonRescueEnv(ParallelEnv):
                 terminations[agent] = True
                 continue
 
-            # Base step time penalty (First pass reward)
+            # Base step time penalty
             rewards[agent] += self.config.step_reward
 
             action_val = actions.get(agent, Action.STAY)
@@ -280,11 +354,7 @@ class RadonRescueEnv(ParallelEnv):
                         rescuer.alive = False
                         rewards[agent] += self.config.death_reward
                         terminations[agent] = True
-                        if rescuer.carrying:
-                            rescuer.carrying = False
-                            for h in self.hostages:
-                                if h.carried_by == agent:
-                                    h.carried_by = None
+                        self._drop_carried_hostage_on_death(rescuer)
 
             elif action == Action.INTERACT:
                 curr_f = rescuer.floor
@@ -292,8 +362,8 @@ class RadonRescueEnv(ParallelEnv):
                 curr_c = rescuer.col
                 tile_val = self.grids[curr_f, curr_r, curr_c]
 
-                # A. Use STAIRS -> transition to the other floor
-                if tile_val == Tile.STAIRS:
+                # A. Use STAIRS -> transition to the other floor (if multi-floor)
+                if tile_val == Tile.STAIRS and self.config.floors > 1:
                     target_floor = 1 - curr_f if self.config.floors == 2 else (curr_f + 1) % self.config.floors
                     rescuer.floor = target_floor
                     if rescuer.carrying:
@@ -331,22 +401,11 @@ class RadonRescueEnv(ParallelEnv):
         # --- 2. Shared Team Completion Bonus ---
         all_hostages_rescued = all(h.rescued for h in self.hostages)
         if new_hostage_delivered and all_hostages_rescued:
-            # Grant shared team bonus to all active stepping agents
             for agent in active_stepping_agents:
                 rewards[agent] += self.config.team_completion_reward
 
-        # --- 3. Fire Dynamics ---
-        # Each existing fire tile has fire_spread_prob chance to ignite adjacent non-wall, non-exit tiles
-        existing_fires = list(self.fire_positions)
-        for ff, fr, fc in existing_fires:
-            for dr, dc in ((-1, 0), (1, 0), (0, -1), (0, 1)):
-                nfr, nfc = fr + dr, fc + dc
-                if 0 <= nfr < self.config.grid_h and 0 <= nfc < self.config.grid_w:
-                    target_tile = self.grids[ff, nfr, nfc]
-                    if target_tile not in (Tile.WALL, Tile.FIRE, Tile.EXIT):
-                        if self.np_random.random() < self.config.fire_spread_prob:
-                            self.grids[ff, nfr, nfc] = Tile.FIRE
-                            self.fire_positions.append((ff, nfr, nfc))
+        # --- 3. Fire Dynamics (via _spread_fire) ---
+        self._spread_fire()
 
         # Check if spreading fire engulfed any living rescuers
         for agent in active_stepping_agents:
@@ -355,11 +414,7 @@ class RadonRescueEnv(ParallelEnv):
                 rescuer.alive = False
                 rewards[agent] += self.config.death_reward
                 terminations[agent] = True
-                if rescuer.carrying:
-                    rescuer.carrying = False
-                    for h in self.hostages:
-                        if h.carried_by == agent:
-                            h.carried_by = None
+                self._drop_carried_hostage_on_death(rescuer)
 
         # --- 4. Episode Termination & Truncation Checks ---
         all_rescuers_dead = not any(r.alive for r in self.rescuers.values())
@@ -404,7 +459,6 @@ class RadonRescueEnv(ParallelEnv):
             for r in range(self.config.grid_h):
                 row_chars = []
                 for c in range(self.config.grid_w):
-                    # Check living rescuer
                     rescuer_on_cell = None
                     for ag_id, rescuer in self.rescuers.items():
                         if rescuer.alive and rescuer.floor == f and rescuer.row == r and rescuer.col == c:
@@ -428,4 +482,3 @@ class RadonRescueEnv(ParallelEnv):
     def close(self) -> None:
         """Cleans up resources."""
         pass
-

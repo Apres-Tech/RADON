@@ -16,11 +16,14 @@ class EnvConfig:
         n_hostages: Number of hostages to evacuate (default: 4).
         view_radius: Radius for egocentric local vision window (default: 3 -> 7x7).
         max_steps: Maximum step horizon per episode (default: 200).
-        fire_spread_prob: Probability of fire spreading to adjacent non-wall tile per step (default: 0.02).
+        fire_spread_prob: Probability of fire spreading to adjacent empty tile per step (default: 0.005).
+        fire_spread_start_step: Step threshold before fire begins spreading (default: 10).
+        fire_max_tiles: Maximum fire tiles allowed across all floors before spreading caps (default: 40).
+        fire_enabled: Master switch for fire spreading dynamics (default: True).
         carry_capacity: Maximum hostages a rescuer can carry simultaneously (default: 1).
         seed: Random seed for procedural generation and dynamics (default: None).
 
-        Reward tunables (First pass - marked for Day 2 tuning):
+        Reward tunables:
         step_reward: Per-step time penalty (-0.01).
         pickup_reward: Reward on successfully picking up a hostage (+1.0).
         delivery_reward: Reward on successfully evacuating a hostage at exit (+5.0).
@@ -35,11 +38,14 @@ class EnvConfig:
     n_hostages: int = 4
     view_radius: int = 3
     max_steps: int = 200
-    fire_spread_prob: float = 0.02
+    fire_spread_prob: float = 0.005
+    fire_spread_start_step: int = 10
+    fire_max_tiles: int = 40
+    fire_enabled: bool = True
     carry_capacity: int = 1
     seed: Optional[int] = None
 
-    # First-pass reward values (will be tuned Day 2)
+    # Reward values
     step_reward: float = -0.01
     pickup_reward: float = 1.0
     delivery_reward: float = 5.0
@@ -51,3 +57,26 @@ class EnvConfig:
         """Egocentric square observation window dimension: 2 * view_radius + 1."""
         return 2 * self.view_radius + 1
 
+    @classmethod
+    def training_day2(cls, seed: Optional[int] = None) -> "EnvConfig":
+        """Training preset for Day 2: 1 floor, 12x12 grid, 4 rescuers, 3 hostages, max_steps=120."""
+        return cls(
+            floors=1,
+            grid_h=12,
+            grid_w=12,
+            n_rescuers=4,
+            n_hostages=3,
+            max_steps=120,
+            view_radius=3,
+            fire_spread_prob=0.005,
+            fire_spread_start_step=10,
+            fire_max_tiles=40,
+            fire_enabled=True,
+            carry_capacity=1,
+            seed=seed,
+            step_reward=-0.01,
+            pickup_reward=1.0,
+            delivery_reward=5.0,
+            death_reward=-5.0,
+            team_completion_reward=10.0,
+        )

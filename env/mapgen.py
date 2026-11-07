@@ -56,7 +56,7 @@ def verify_reachability(
     while queue:
         f, r, c = queue.popleft()
 
-        # Check stair transition across adjacent floors
+        # Check stair transition across adjacent floors (if stairs exist)
         if (r, c) in stairs_set and grids[f, r, c] == Tile.STAIRS:
             for nf in (f - 1, f + 1):
                 if 0 <= nf < floors:
@@ -92,7 +92,7 @@ def verify_reachability(
         if r_loc not in visited:
             return False
 
-    # Check all stairs on all floors are reachable from exits
+    # Check all stairs on all floors are reachable from exits (if stairs exist)
     for s_rc in stairs:
         for f in range(floors):
             if (f, s_rc[0], s_rc[1]) not in visited:
@@ -133,54 +133,56 @@ def generate_building(config: EnvConfig, seed: Optional[int] = None) -> Building
 
         # 2. Interior walls with doorways
         for f in range(floors):
-            # Divide floor into room partitions
             # Choose vertical dividing lines
-            n_v_walls = rng.integers(1, 4)
+            max_v = max(1, min(3, w - 6))
+            n_v_walls = rng.integers(1, max_v + 1)
             v_cols = rng.choice(np.arange(3, w - 3), size=n_v_walls, replace=False)
             for vc in v_cols:
                 grids[f, 1 : h - 1, vc] = Tile.WALL
                 # Punch 2-3 doorways in each vertical wall
-                doors = rng.choice(np.arange(1, h - 1), size=rng.integers(2, 4), replace=False)
+                doors = rng.choice(np.arange(1, h - 1), size=min(h - 2, rng.integers(2, 4)), replace=False)
                 grids[f, doors, vc] = Tile.EMPTY
 
             # Choose horizontal dividing lines
-            n_h_walls = rng.integers(1, 4)
+            max_h = max(1, min(3, h - 6))
+            n_h_walls = rng.integers(1, max_h + 1)
             h_rows = rng.choice(np.arange(3, h - 3), size=n_h_walls, replace=False)
             for hr in h_rows:
                 grids[f, hr, 1 : w - 1] = Tile.WALL
                 # Punch 2-3 doorways in each horizontal wall
-                doors = rng.choice(np.arange(1, w - 1), size=rng.integers(2, 4), replace=False)
+                doors = rng.choice(np.arange(1, w - 1), size=min(w - 2, rng.integers(2, 4)), replace=False)
                 grids[f, hr, doors] = Tile.EMPTY
 
             # Add a few random pillar blocks
-            n_pillars = rng.integers(2, 6)
+            n_pillars = rng.integers(1, 4) if (h <= 12 or w <= 12) else rng.integers(2, 6)
             for _ in range(n_pillars):
                 pr = rng.integers(2, h - 2)
                 pc = rng.integers(2, w - 2)
                 grids[f, pr, pc] = Tile.WALL
 
-        # 3. Stairs: Same (row, col) across ALL floors
-        # Pick interior empty spot that is empty on all floors
-        potential_stairs = []
-        for r in range(2, h - 2):
-            for c in range(2, w - 2):
-                if all(grids[f, r, c] == Tile.EMPTY for f in range(floors)):
-                    potential_stairs.append((r, c))
+        # 3. Stairs: Same (row, col) across ALL floors (only if floors > 1)
+        stairs_list: List[Tuple[int, int]] = []
+        if floors > 1:
+            potential_stairs = []
+            for r in range(2, h - 2):
+                for c in range(2, w - 2):
+                    if all(grids[f, r, c] == Tile.EMPTY for f in range(floors)):
+                        potential_stairs.append((r, c))
 
-        if not potential_stairs:
-            continue
+            if not potential_stairs:
+                continue
 
-        stair_idx = rng.integers(0, len(potential_stairs))
-        stair_rc = potential_stairs[stair_idx]
-        stairs_list = [stair_rc]
-        for f in range(floors):
-            grids[f, stair_rc[0], stair_rc[1]] = Tile.STAIRS
+            stair_idx = rng.integers(0, len(potential_stairs))
+            stair_rc = potential_stairs[stair_idx]
+            stairs_list = [stair_rc]
+            for f in range(floors):
+                grids[f, stair_rc[0], stair_rc[1]] = Tile.STAIRS
 
         # 4. Exits: ONLY on floor 0 (at least 1 exit, e.g. 1 or 2)
         potential_exits = []
         for r in range(1, h - 1):
             for c in range(1, w - 1):
-                if grids[0, r, c] == Tile.EMPTY and (r, c) != stair_rc:
+                if grids[0, r, c] == Tile.EMPTY and (r, c) not in stairs_list:
                     # Prefer positions near border
                     if r == 1 or r == h - 2 or c == 1 or c == w - 2:
                         potential_exits.append((0, r, c))
@@ -189,7 +191,7 @@ def generate_building(config: EnvConfig, seed: Optional[int] = None) -> Building
             # Fallback to any empty tile on floor 0
             for r in range(1, h - 1):
                 for c in range(1, w - 1):
-                    if grids[0, r, c] == Tile.EMPTY and (r, c) != stair_rc:
+                    if grids[0, r, c] == Tile.EMPTY and (r, c) not in stairs_list:
                         potential_exits.append((0, r, c))
 
         if not potential_exits:
@@ -227,7 +229,6 @@ def generate_building(config: EnvConfig, seed: Optional[int] = None) -> Building
         ]
 
         # 6. Hostages: Distribute across floors on EMPTY tiles
-        # Ensure distribution across upper floors as well
         hostage_list = []
         hostages_per_floor = [n_hostages // floors] * floors
         for i in range(n_hostages % floors):
@@ -259,7 +260,6 @@ def generate_building(config: EnvConfig, seed: Optional[int] = None) -> Building
             continue
 
         # 7. Initial Fire: Place a few fire tiles (not on exits, stairs, hostages, rescuer spawns)
-        # 1-2 fire spots per floor
         fires_list = []
         for f in range(floors):
             floor_candidates = []
@@ -296,4 +296,3 @@ def generate_building(config: EnvConfig, seed: Optional[int] = None) -> Building
         f"Failed to generate valid connected building map after {max_attempts} attempts. "
         "Check config constraints."
     )
-
