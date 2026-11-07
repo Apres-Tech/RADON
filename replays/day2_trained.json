@@ -1,0 +1,8673 @@
+{
+  "config": {
+    "floors": 1,
+    "grid_h": 12,
+    "grid_w": 12,
+    "n_rescuers": 4,
+    "n_hostages": 3,
+    "view_radius": 3,
+    "max_steps": 120,
+    "fire_spread_prob": 0.005,
+    "carry_capacity": 1,
+    "seed": 50000
+  },
+  "map": {
+    "floors": [
+      [
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          0,
+          0,
+          1,
+          0,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          5,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          3,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          1,
+          1
+        ],
+        [
+          1,
+          4,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          4,
+          0,
+          1
+        ],
+        [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          0,
+          0,
+          1,
+          0,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      ]
+    ],
+    "exits": [
+      [
+        0,
+        5,
+        1
+      ],
+      [
+        0,
+        10,
+        5
+      ]
+    ],
+    "stairs": []
+  },
+  "frames": [
+    {
+      "t": 0,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 9,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 3,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 4,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.0,
+        "rescuer_1": 0.0,
+        "rescuer_2": 0.0,
+        "rescuer_3": 0.0
+      }
+    },
+    {
+      "t": 1,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 8,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 2,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.115,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.135,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 2,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 9,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 2,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.135,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 3,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 8,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 3,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.115,
+        "rescuer_1": -0.01,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 4,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 8,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 3,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.115,
+        "rescuer_1": 0.115,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 5,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 7,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 3,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.115,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 6,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 7,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 4,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.135,
+        "rescuer_1": -0.01,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 7,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 7,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 4,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.115,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 8,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 7,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 4,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 9,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 7,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 4,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.115,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 10,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 7,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 4,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 11,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 6,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 4,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.115,
+        "rescuer_1": 0.115,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 12,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 6,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 4,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.115,
+        "rescuer_1": -0.135,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 13,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 5,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 1,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 4,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.135,
+        "rescuer_1": 0.115,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 14,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 4,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 4,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.135,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 15,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 3,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 4,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.135,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 16,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 3,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 4,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.135,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 17,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 2,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 4,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.135,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 18,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 4,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.135,
+        "rescuer_1": 0.115,
+        "rescuer_2": -0.01,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 19,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 20,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 21,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.115,
+        "rescuer_1": -0.135,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 22,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 4,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.135,
+        "rescuer_1": 0.115,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 23,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 4,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.115,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 24,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 4,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.115,
+        "rescuer_2": -0.01,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 25,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 4,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.135,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 26,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.135,
+        "rescuer_2": -0.01,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 27,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 28,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 2,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.135,
+        "rescuer_2": -0.01,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 29,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 2,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.115,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 30,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 31,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.115,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 32,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.135,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 33,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 34,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.115,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 35,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 36,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 37,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 4,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.115,
+        "rescuer_2": -0.01,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 38,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 4,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.115,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 39,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 5,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 4,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 4.99,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 40,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 5,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 4,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 41,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          4,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 4,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 4,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.24,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 42,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          4,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 4,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 4,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 43,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          4,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 4,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 3,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 44,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          4,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 4,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 2,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.115,
+        "rescuer_1": -0.01,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 45,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          4,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 4,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 2,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.135,
+        "rescuer_1": -0.01,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 46,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          4,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 4,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 47,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          4,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 4,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 48,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          4,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 4,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 49,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          4,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 4,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 50,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          4,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 4,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 51,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 5,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.26,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 52,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          6,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 6,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.26,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 53,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          6,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 6,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.24,
+        "rescuer_2": -0.01,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 54,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 5,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.24,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 55,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          4,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 4,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.24,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 56,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 5,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.26,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 57,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          6,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 6,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.26,
+        "rescuer_2": -0.01,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 58,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          6,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 6,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.115,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 59,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 5,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.135,
+        "rescuer_1": 0.24,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 60,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          6,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 6,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.26,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 61,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 5,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.115,
+        "rescuer_1": 0.24,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 62,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          4,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 2,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 4,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.115,
+        "rescuer_1": 0.24,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 63,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 5,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.135,
+        "rescuer_1": -0.26,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 64,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          6,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 6,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.135,
+        "rescuer_1": -0.26,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 65,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.26,
+        "rescuer_2": -0.01,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 66,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          8,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 8,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 2,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.115,
+        "rescuer_1": -0.26,
+        "rescuer_2": -0.01,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 67,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          8,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.26,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 68,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          1,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 1,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.135,
+        "rescuer_1": 0.24,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 69,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.24,
+        "rescuer_2": -0.135,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 70,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          6,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 6,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.24,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 71,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 5,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.24,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 72,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 5,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 73,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          4,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 4,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 2,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.115,
+        "rescuer_1": 0.24,
+        "rescuer_2": -0.01,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 74,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          3,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 3,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.135,
+        "rescuer_1": 0.24,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 75,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          3,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 3,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 76,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          2,
+          3,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 2,
+          "col": 3,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 77,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          3,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 3,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.24,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 78,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          3,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 3,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.115,
+        "rescuer_1": -0.01,
+        "rescuer_2": 0.115,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 79,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          3,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 3,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 5,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 80,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          3,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 3,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 81,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          3,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 3,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 5,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 82,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          4,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 4,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.135,
+        "rescuer_1": -0.26,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 83,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          4,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 4,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 84,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          4,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 4,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.115,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 85,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          4,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 4,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.135,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 86,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 5,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.26,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 87,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          4,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 4,
+          "col": 5,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.24,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 88,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          4,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 4,
+          "col": 5,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 89,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          4,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 4,
+          "col": 5,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 4,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 90,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 5,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 4,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.26,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 91,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          6,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 4,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.26,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 92,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          4,
+          6,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 4,
+          "col": 6,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.24,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 93,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          4,
+          6,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 4,
+          "col": 6,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 4,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": 0.115,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 94,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          6,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.26,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 95,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.26,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 96,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 97,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 98,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 99,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 100,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 5,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 101,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 2,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.135,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 102,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 2,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 103,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 104,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 105,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 106,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 107,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 108,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          6,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.24,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 109,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.115,
+        "rescuer_1": -0.26,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 110,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": 0.115,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 111,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          6,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 5,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.24,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 112,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.26,
+        "rescuer_2": -0.135,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 113,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          6,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.24,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 114,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          6,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.135,
+        "rescuer_1": -0.01,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 115,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 5,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.135,
+        "rescuer_1": -0.26,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 116,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 8,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.115,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.135,
+        "rescuer_3": 0.115
+      }
+    },
+    {
+      "t": 117,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          7,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 5,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.135,
+        "rescuer_1": -0.01,
+        "rescuer_2": 0.115,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 118,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          6,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 4,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.24,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.135
+      }
+    },
+    {
+      "t": 119,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          3,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 5,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 10,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.24,
+        "rescuer_2": -0.135,
+        "rescuer_3": -0.01
+      }
+    },
+    {
+      "t": 120,
+      "fire": [
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          4,
+          5,
+          false
+        ],
+        [
+          0,
+          6,
+          9,
+          false
+        ],
+        [
+          0,
+          6,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 1,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 4,
+          "col": 5,
+          "carrying": true,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_3",
+          "floor": 0,
+          "row": 1,
+          "col": 9,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.24,
+        "rescuer_2": -0.135,
+        "rescuer_3": 0.115
+      }
+    }
+  ]
+}
