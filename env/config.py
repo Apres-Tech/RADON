@@ -86,3 +86,29 @@ class EnvConfig:
             enable_shaping=True,
             shaping_coef=0.25,
         )
+
+    @classmethod
+    def sanity(cls, seed: Optional[int] = None) -> "EnvConfig":
+        """Sanity curriculum preset for Day 2.5: 1 floor, 8x8 grid, 2 rescuers, 1 hostage, max_steps=60, no fire."""
+        return cls(
+            floors=1,
+            grid_h=8,
+            grid_w=8,
+            n_rescuers=2,
+            n_hostages=1,
+            max_steps=60,
+            view_radius=3,
+            fire_spread_prob=0.0,
+            fire_spread_start_step=999,
+            fire_max_tiles=0,
+            fire_enabled=False,
+            carry_capacity=1,
+            seed=seed,
+            step_reward=-0.01,
+            pickup_reward=5.0,
+            delivery_reward=20.0,
+            death_reward=-2.0,
+            team_completion_reward=30.0,
+            enable_shaping=True,
+            shaping_coef=0.25,
+        )

@@ -22,6 +22,13 @@ def parse_args():
         help="Total training timesteps (default: 250,000)",
     )
     parser.add_argument(
+        "--preset",
+        type=str,
+        choices=["training_day2", "sanity"],
+        default="training_day2",
+        help="Configuration preset: 'training_day2' or 'sanity' (default: 'training_day2')",
+    )
+    parser.add_argument(
         "--seed",
         type=int,
         default=42,
@@ -61,7 +68,7 @@ def parse_args():
         "--num-vec-envs",
         type=int,
         default=2,
-        help="Number of parallel building env copies (default: 2 -> 8 agent envs, <= 6)",
+        help="Number of parallel building env copies (default: 2)",
     )
     parser.add_argument(
         "--eval-freq",
@@ -76,24 +83,29 @@ def train(args):
     """Initializes and runs PPO training."""
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print("=" * 70)
-    print("  RADON Day 2: PPO Multi-Agent Rescue Training")
+    print("  RADON Multi-Agent Rescue Training")
     print("=" * 70)
+    print(f"  Preset:         {args.preset.upper()}")
     print(f"  Run Name:       {args.run_name}")
     print(f"  Target Steps:   {args.timesteps:,}")
     print(f"  Compute Device: {device.upper()} ({torch.cuda.get_device_name(0) if device == 'cuda' else 'CPU'})")
     print(f"  Seed:           {args.seed}")
-    print(f"  Vec Envs:       {args.num_vec_envs} building copies ({args.num_vec_envs * 4} agents)")
     print(f"  PPO Hparams:    n_steps={args.n_steps}, batch_size={args.batch_size}, lr={args.lr}, ent_coef={args.ent_coef}")
     print("=" * 70)
 
-    # 1. Environment creation
-    config = EnvConfig.training_day2(seed=args.seed)
+    # 1. Environment creation based on preset
+    if args.preset == "sanity":
+        config = EnvConfig.sanity(seed=args.seed)
+    else:
+        config = EnvConfig.training_day2(seed=args.seed)
+
     vec_env = make_rescue_vec_env(
         config=config,
         num_vec_envs=args.num_vec_envs,
         num_cpus=1,
         seed=args.seed,
     )
+    print(f"  Vec Envs:       {args.num_vec_envs} building copies ({vec_env.num_envs} agents)")
 
     # 2. Policy configuration
     policy_kwargs = dict(
@@ -124,7 +136,7 @@ def train(args):
     # 3. Setup Metrics Callback
     metrics_callback = MetricsCallback(
         eval_freq=args.eval_freq,
-        eval_episodes=10,
+        eval_episodes=15,
         config=config,
         log_dir="metrics",
         run_name=args.run_name,
@@ -150,7 +162,7 @@ def train(args):
     print(f"\nTraining completed in {elapsed_time/60:.2f} minutes ({elapsed_time:.1f}s).")
 
     # 4. Save final model checkpoint
-    save_path = agents_dir / f"ppo_day2_{args.run_name}.zip"
+    save_path = agents_dir / f"ppo_{args.run_name}.zip"
     model.save(save_path)
     print(f"Model saved to: {save_path}")
 
@@ -159,9 +171,9 @@ def train(args):
     final_metrics = metrics_callback._evaluate_policy(model=model, num_episodes=25)
     print(
         f"  Final Success Rate:    {final_metrics['success_rate']*100:5.1f}%\n"
-        f"  Mean Hostages Rescued: {final_metrics['mean_hostages_rescued']:4.2f}/3\n"
+        f"  Mean Hostages Rescued: {final_metrics['mean_hostages_rescued']:4.2f}/{config.n_hostages}\n"
         f"  Mean Episode Return:   {final_metrics['mean_reward']:+7.2f}\n"
-        f"  Mean Surviving Agents: {final_metrics['mean_rescuers_surviving']:3.1f}/4"
+        f"  Mean Surviving Agents: {final_metrics['mean_rescuers_surviving']:3.1f}/{config.n_rescuers}"
     )
 
     vec_env.close()
