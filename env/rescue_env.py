@@ -329,6 +329,18 @@ class RadonRescueEnv(ParallelEnv):
                 dr, dc = ACTION_DELTAS[action]
                 nr, nc = rescuer.row + dr, rescuer.col + dc
 
+                # Optional potential-based distance shaping
+                prev_dist = None
+                if self.config.enable_shaping and self.building_map:
+                    if rescuer.carrying and self.building_map.exits:
+                        valid_exits = [ex for ex in self.building_map.exits if ex[0] == rescuer.floor]
+                        if valid_exits:
+                            prev_dist = min(abs(rescuer.row - er) + abs(rescuer.col - ec) for ef, er, ec in valid_exits)
+                    elif not rescuer.carrying:
+                        unrescued = [h for h in self.hostages if not h.rescued and h.carried_by is None and h.floor == rescuer.floor]
+                        if unrescued:
+                            prev_dist = min(abs(rescuer.row - h.row) + abs(rescuer.col - h.col) for h in unrescued)
+
                 # Check boundaries and walls
                 if (
                     nr < 0
@@ -348,6 +360,19 @@ class RadonRescueEnv(ParallelEnv):
                             if h.carried_by == agent:
                                 h.row = nr
                                 h.col = nc
+
+                    # Reward shaping delta
+                    if prev_dist is not None and self.building_map:
+                        if rescuer.carrying and self.building_map.exits:
+                            valid_exits = [ex for ex in self.building_map.exits if ex[0] == rescuer.floor]
+                            if valid_exits:
+                                curr_dist = min(abs(rescuer.row - er) + abs(rescuer.col - ec) for ef, er, ec in valid_exits)
+                                rewards[agent] += (prev_dist - curr_dist) * self.config.shaping_coef
+                        elif not rescuer.carrying:
+                            unrescued = [h for h in self.hostages if not h.rescued and h.carried_by is None and h.floor == rescuer.floor]
+                            if unrescued:
+                                curr_dist = min(abs(rescuer.row - h.row) + abs(rescuer.col - h.col) for h in unrescued)
+                                rewards[agent] += (prev_dist - curr_dist) * (self.config.shaping_coef * 0.5)
 
                     # Step onto FIRE kills agent
                     if self.grids[rescuer.floor, nr, nc] == Tile.FIRE:

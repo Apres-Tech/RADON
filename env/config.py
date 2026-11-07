@@ -29,6 +29,8 @@ class EnvConfig:
         delivery_reward: Reward on successfully evacuating a hostage at exit (+5.0).
         death_reward: Penalty if rescuer dies in fire (-5.0).
         team_completion_reward: Shared team bonus when all hostages are evacuated (+10.0).
+        enable_shaping: Potential-based distance reward shaping for faster convergence (default: True).
+        shaping_coef: Magnitude of potential-based distance reward (default: 0.05).
     """
 
     floors: int = 2
@@ -51,6 +53,8 @@ class EnvConfig:
     delivery_reward: float = 5.0
     death_reward: float = -5.0
     team_completion_reward: float = 10.0
+    enable_shaping: bool = True
+    shaping_coef: float = 0.05
 
     @property
     def view_size(self) -> int:
@@ -79,4 +83,6 @@ class EnvConfig:
             delivery_reward=5.0,
             death_reward=-5.0,
             team_completion_reward=10.0,
+            enable_shaping=True,
+            shaping_coef=0.05,
         )
