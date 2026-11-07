@@ -380,6 +380,33 @@ class RadonRescueEnv(ParallelEnv):
                         rewards[agent] += self.config.death_reward
                         terminations[agent] = True
                         self._drop_carried_hostage_on_death(rescuer)
+                    else:
+                        # Auto Pick up: stepping onto HOSTAGE tile while not carrying
+                        if not rescuer.carrying and self.grids[rescuer.floor, nr, nc] == Tile.HOSTAGE:
+                            for h in self.hostages:
+                                if (
+                                    not h.rescued
+                                    and h.carried_by is None
+                                    and h.floor == rescuer.floor
+                                    and h.row == nr
+                                    and h.col == nc
+                                ):
+                                    rescuer.carrying = True
+                                    h.carried_by = agent
+                                    rewards[agent] += self.config.pickup_reward
+                                    self.grids[rescuer.floor, nr, nc] = Tile.EMPTY
+                                    break
+
+                        # Auto Deliver: stepping onto EXIT tile while carrying
+                        elif rescuer.carrying and self.grids[rescuer.floor, nr, nc] == Tile.EXIT:
+                            rescuer.carrying = False
+                            for h in self.hostages:
+                                if h.carried_by == agent:
+                                    h.carried_by = None
+                                    h.rescued = True
+                                    rewards[agent] += self.config.delivery_reward
+                                    new_hostage_delivered = True
+                                    break
 
             elif action == Action.INTERACT:
                 curr_f = rescuer.floor
