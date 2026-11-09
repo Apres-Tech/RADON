@@ -62,3 +62,17 @@
 **Demo-safe:** base_frozen verified vs curriculum fire on held-out - 10.0% success, 0.57/2 rescued, 2.57/3 surviving, +23.96 return across 30 fresh unseen maps. Day 5 demo guaranteed.
 **Solved vs proof-of-concept:** honest proof-of-concept arms race. Short iterated rounds demonstrated measurable adaptation (fire dropped rescuer success from 10% to 0% and quadrupled mortality, and retrained rescuers showed evasion gains). Base-first policy serves as reliable demo fallback.
 **Tomorrow (Day 5):** generalization benchmark, 3D Three.js dashboard, demo video, writeup, submit.
+
+## Day 5 — 2026-11-10 — Finale: Part A (Long Training Run & 100-Episode Benchmark)
+**Long training run:** Resumed from `agents/base_frozen.zip` for 150,000 steps with tuned entropy (`0.025`) and learning rate (`3e-4`) under full procedural randomization (`seeds 1..10000`). Total cumulative training on `training_day4_base`: ~250,000 steps.
+**Models saved:** `agents/final_rescuer.zip` and `agents/final_fire.zip`.
+**100-Episode Held-Out Benchmark (seeds 50000..50099):**
+- Full Rescue Success Rate: **11.0%** (Trained) vs **0.0%** (Random Baseline) - **solidly above 10% on fresh unseen maps**
+- Mean Hostages Rescued: **0.62 / 2** (Trained) vs **0.26 / 2** (Random) - **2.4x improvement (+138%)**
+- Team Rescuer Survival: **2.54 / 3 (84.7%)** vs **1.75 / 3 (58.3%)**
+- Mean Fire Deaths: **0.46** (Trained) vs **1.25** (Random) - **mortality reduced by 63%**
+- Mean Episode Return: **+29.98 +/- 42.8** vs **+3.30 +/- 11.3**
+**Artifacts produced:**
+- Learning curve: `metrics/day5_learning_curve.png` (3-panel: success rate, hostages evacuated, survival & fire avoidance)
+- Replay: `replays/day5_trained.json` (100-episode benchmark export)
+- Final models: `agents/final_rescuer.zip`, `agents/final_fire.zip`

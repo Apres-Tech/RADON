@@ -99,6 +99,12 @@ def parse_args():
         default=None,
         help="Path to trained fire adversary model to train rescuers against (default: None)",
     )
+    parser.add_argument(
+        "--save-path",
+        type=str,
+        default=None,
+        help="Exact destination path to save the trained model zip file (default: None)",
+    )
     return parser.parse_args()
 
 
@@ -209,7 +215,8 @@ def train(args):
     print(f"\nTraining completed in {elapsed_time/60:.2f} minutes ({elapsed_time:.1f}s).")
 
     # 4. Save final model checkpoint
-    save_path = agents_dir / f"ppo_{args.run_name}.zip"
+    save_path = Path(args.save_path) if args.save_path else (agents_dir / f"ppo_{args.run_name}.zip")
+    save_path.parent.mkdir(parents=True, exist_ok=True)
     model.save(save_path)
     print(f"Model saved to: {save_path}")
 
