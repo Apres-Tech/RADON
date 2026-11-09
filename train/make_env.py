@@ -78,6 +78,7 @@ def make_rescue_vec_env(
     num_vec_envs: int = 1,
     num_cpus: int = 1,
     seed: Optional[int] = None,
+    fire_controller_factory=None,
 ):
     """Creates a vectorized environment for SB3 with parameter sharing across all agents.
 
@@ -89,10 +90,11 @@ def make_rescue_vec_env(
     cfg = config if config is not None else EnvConfig.training_day2(seed=seed)
 
     def _env_fn():
-        env = RadonRescueEnv(config=cfg)
+        fc = fire_controller_factory() if fire_controller_factory is not None else None
+        env = RadonRescueEnv(config=cfg, fire_controller=fc)
         # 1. black_death_v3: keeps dead agents active with zero observations until episode end
         env = supersuit.black_death_v3(env)
-        # 2. pettingzoo_env_to_vec_env_v1: converts 4 PettingZoo agents into a vectorized environment
+        # 2. pettingzoo_env_to_vec_env_v1: converts PettingZoo agents into a vectorized environment
         vec_env = supersuit.pettingzoo_env_to_vec_env_v1(env)
         return vec_env
 

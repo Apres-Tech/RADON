@@ -93,6 +93,12 @@ def parse_args():
         default=10,
         help="Number of evaluation episodes per distribution (train/test) per eval checkpoint (default: 10)",
     )
+    parser.add_argument(
+        "--fire-model",
+        type=str,
+        default=None,
+        help="Path to trained fire adversary model to train rescuers against (default: None)",
+    )
     return parser.parse_args()
 
 
@@ -121,11 +127,18 @@ def train(args):
     else:
         config = EnvConfig.training_day2(seed=cfg_seed)
 
+    fc_factory = None
+    if args.fire_model and Path(args.fire_model).exists():
+        from env.fire_controller import PolicyFireController
+        print(f"  Adversary Fire: {args.fire_model}")
+        fc_factory = lambda: PolicyFireController(model_path=args.fire_model)
+
     vec_env = make_rescue_vec_env(
         config=config,
         num_vec_envs=args.num_vec_envs,
         num_cpus=1,
         seed=args.seed,
+        fire_controller_factory=fc_factory,
     )
     print(f"  Vec Envs:       {args.num_vec_envs} building copies ({vec_env.num_envs} agents)")
 
@@ -173,6 +186,7 @@ def train(args):
         config=config,
         log_dir="metrics",
         run_name=args.run_name,
+        fire_controller_factory=fc_factory,
         verbose=1,
     )
 

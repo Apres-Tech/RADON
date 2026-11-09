@@ -36,12 +36,14 @@ class MetricsCallback(BaseCallback):
         log_dir: str = "metrics",
         run_name: str = "default",
         eval_deterministic: bool = False,
+        fire_controller_factory=None,
         verbose: int = 1,
     ):
         super().__init__(verbose)
         self.eval_freq = eval_freq
         self.eval_episodes = eval_episodes
         self.config = config if config is not None else EnvConfig.training_day2()
+        self.fire_controller_factory = fire_controller_factory
         self.log_dir = Path(log_dir)
         self.log_dir.mkdir(parents=True, exist_ok=True)
         filename = f"{run_name}.csv"
@@ -84,7 +86,8 @@ class MetricsCallback(BaseCallback):
         ep_surviving = []
         ep_fire_deaths = []
 
-        eval_env = RadonRescueEnv(config=self.config)
+        fc = self.fire_controller_factory() if self.fire_controller_factory is not None else None
+        eval_env = RadonRescueEnv(config=self.config, fire_controller=fc)
 
         for seed in seeds:
             obs, infos = eval_env.reset(seed=seed)
