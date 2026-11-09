@@ -95,6 +95,8 @@ def compare_and_report(
     """Loads trained model, evaluates against random baseline, prints table, exports replay."""
     if preset == "sanity":
         config = EnvConfig.sanity(seed=base_seed)
+    elif preset == "training_day4_base":
+        config = EnvConfig.training_day4_base(seed=base_seed)
     elif preset == "training_day3":
         config = EnvConfig.training_day3(seed=base_seed)
     else:
@@ -174,9 +176,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "--preset",
         type=str,
-        default="training_day3",
-        choices=["training_day3", "training_day2", "sanity"],
-        help="Environment preset (default: training_day3)",
+        default="training_day4_base",
+        choices=["training_day4_base", "training_day3", "training_day2", "sanity"],
+        help="Environment preset (default: training_day4_base)",
     )
     parser.add_argument(
         "--episodes",

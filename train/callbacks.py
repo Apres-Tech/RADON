@@ -44,7 +44,7 @@ class MetricsCallback(BaseCallback):
         self.config = config if config is not None else EnvConfig.training_day2()
         self.log_dir = Path(log_dir)
         self.log_dir.mkdir(parents=True, exist_ok=True)
-        filename = f"{run_name}.csv" if run_name.startswith("day") else f"day3_{run_name}.csv"
+        filename = f"{run_name}.csv"
         self.csv_path = self.log_dir / filename
         self.eval_deterministic = eval_deterministic
         self.last_eval_step = 0

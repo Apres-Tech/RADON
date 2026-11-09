@@ -23,6 +23,8 @@ def watch_episode(
     """Runs a single episode and displays ASCII rendering and agent diagnostics at each step."""
     if preset == "sanity":
         config = EnvConfig.sanity(seed=seed)
+    elif preset == "training_day4_base":
+        config = EnvConfig.training_day4_base(seed=seed)
     elif preset == "training_day3":
         config = EnvConfig.training_day3(seed=seed)
     else:
@@ -124,7 +126,7 @@ def watch_episode(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Watch RADON episode in ASCII")
     parser.add_argument("--model-path", type=str, default=None, help="Model checkpoint path")
-    parser.add_argument("--preset", type=str, default="training_day3", choices=["training_day3", "training_day2", "sanity"])
+    parser.add_argument("--preset", type=str, default="training_day4_base", choices=["training_day4_base", "training_day3", "training_day2", "sanity"])
     parser.add_argument("--seed", type=int, default=42, help="Map seed")
     parser.add_argument("--deterministic", action="store_true", help="Deterministic policy")
     parser.add_argument("--delay", type=float, default=0.05, help="Delay between steps in seconds")

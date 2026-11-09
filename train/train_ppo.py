@@ -24,9 +24,9 @@ def parse_args():
     parser.add_argument(
         "--preset",
         type=str,
-        choices=["training_day3", "training_day2", "sanity"],
-        default="training_day3",
-        help="Configuration preset: 'training_day3', 'training_day2', or 'sanity' (default: 'training_day3')",
+        choices=["training_day4_base", "training_day3", "training_day2", "sanity"],
+        default="training_day4_base",
+        help="Configuration preset: 'training_day4_base', 'training_day3', 'training_day2', or 'sanity' (default: 'training_day4_base')",
     )
     parser.add_argument(
         "--seed",
@@ -114,6 +114,8 @@ def train(args):
     cfg_seed = args.seed if args.fixed_map else None
     if args.preset == "sanity":
         config = EnvConfig.sanity(seed=cfg_seed)
+    elif args.preset == "training_day4_base":
+        config = EnvConfig.training_day4_base(seed=cfg_seed)
     elif args.preset == "training_day3":
         config = EnvConfig.training_day3(seed=cfg_seed)
     else:

@@ -62,6 +62,32 @@ class EnvConfig:
         return 2 * self.view_radius + 1
 
     @classmethod
+    def training_day4_base(cls, seed: Optional[int] = None) -> "EnvConfig":
+        """Base solvable preset for Day 4: 2 floors, 10x10 grid, 3 rescuers, 2 hostages (1/floor), max_steps=160."""
+        return cls(
+            floors=2,
+            grid_h=10,
+            grid_w=10,
+            n_rescuers=3,
+            n_hostages=2,
+            max_steps=160,
+            view_radius=3,
+            fire_spread_prob=0.008,
+            fire_spread_start_step=15,
+            fire_max_tiles=25,
+            fire_enabled=True,
+            carry_capacity=1,
+            seed=seed,
+            step_reward=-0.01,
+            pickup_reward=5.0,
+            delivery_reward=20.0,
+            death_reward=-2.0,
+            team_completion_reward=30.0,
+            enable_shaping=True,
+            shaping_coef=0.08,
+        )
+
+    @classmethod
     def training_day3(cls, seed: Optional[int] = None) -> "EnvConfig":
         """Training preset for Day 3: 2 floors, 12x12 grid, 4 rescuers, 4 hostages, max_steps=200."""
         return cls(
