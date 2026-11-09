@@ -95,7 +95,19 @@ class RadonRescueEnv(ParallelEnv):
         self.agents = list(self.possible_agents)
 
         # Procedural map generation
-        self.building_map = generate_building(self.config, seed=seed)
+        map_seed = seed
+        if map_seed is None:
+            if self.config.seed is not None:
+                map_seed = self.config.seed
+            else:
+                # Randomize within training seed range [1, 10000) avoiding held-out test seeds [50000, 50100)
+                map_seed = int(self.np_random.integers(1, 10000))
+
+        if not hasattr(self, "_distinct_map_seeds"):
+            self._distinct_map_seeds = set()
+        self._distinct_map_seeds.add(map_seed)
+
+        self.building_map = generate_building(self.config, seed=map_seed)
         self.grids = np.copy(self.building_map.grids)
 
         # Initialize hostage entities

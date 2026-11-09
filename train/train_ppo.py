@@ -76,6 +76,11 @@ def parse_args():
         default=10000,
         help="Frequency in timesteps for running evaluation and logging (default: 10000)",
     )
+    parser.add_argument(
+        "--fixed-map",
+        action="store_true",
+        help="Freeze map generation to a single static seed (default: False, fresh maps every episode)",
+    )
     return parser.parse_args()
 
 
@@ -89,15 +94,16 @@ def train(args):
     print(f"  Run Name:       {args.run_name}")
     print(f"  Target Steps:   {args.timesteps:,}")
     print(f"  Compute Device: {device.upper()} ({torch.cuda.get_device_name(0) if device == 'cuda' else 'CPU'})")
-    print(f"  Seed:           {args.seed}")
+    print(f"  Seed:           {args.seed} ({'FIXED single map' if args.fixed_map else 'PROCEDURAL fresh maps every episode'})")
     print(f"  PPO Hparams:    n_steps={args.n_steps}, batch_size={args.batch_size}, lr={args.lr}, ent_coef={args.ent_coef}")
     print("=" * 70)
 
-    # 1. Environment creation based on preset
+    # 1. Environment creation based on preset (fresh maps by default for generalization)
+    cfg_seed = args.seed if args.fixed_map else None
     if args.preset == "sanity":
-        config = EnvConfig.sanity(seed=args.seed)
+        config = EnvConfig.sanity(seed=cfg_seed)
     else:
-        config = EnvConfig.training_day2(seed=args.seed)
+        config = EnvConfig.training_day2(seed=cfg_seed)
 
     vec_env = make_rescue_vec_env(
         config=config,
@@ -166,13 +172,15 @@ def train(args):
     model.save(save_path)
     print(f"Model saved to: {save_path}")
 
-    # Final post-training evaluation
+    # Final post-training evaluation across train and held-out test seeds
     print("\n[Post-Training Final Evaluation]")
-    final_metrics = metrics_callback._evaluate_policy(model=model, num_episodes=25)
+    final_metrics = metrics_callback._evaluate_policy(model=model, num_episodes=20)
     print(
-        f"  Final Success Rate:    {final_metrics['success_rate']*100:5.1f}%\n"
-        f"  Mean Hostages Rescued: {final_metrics['mean_hostages_rescued']:4.2f}/{config.n_hostages}\n"
-        f"  Mean Episode Return:   {final_metrics['mean_reward']:+7.2f}\n"
+        f"  Train Success:         {final_metrics['train_success']*100:5.1f}%\n"
+        f"  Held-Out Test Success: {final_metrics['test_success']*100:5.1f}%\n"
+        f"  Train Rescued:         {final_metrics['train_rescued']:4.2f}/{config.n_hostages}\n"
+        f"  Held-Out Test Rescued: {final_metrics['test_rescued']:4.2f}/{config.n_hostages}\n"
+        f"  Generalization Gap:    {final_metrics['gap_success']*100:+5.1f}%\n"
         f"  Mean Surviving Agents: {final_metrics['mean_rescuers_surviving']:3.1f}/{config.n_rescuers}"
     )
 
