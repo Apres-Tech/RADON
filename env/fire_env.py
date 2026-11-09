@@ -209,3 +209,4 @@ class FireAdversaryEnv(gym.Env):
         }
 
         return fire_obs, reward, is_terminated, is_truncated, info
+
