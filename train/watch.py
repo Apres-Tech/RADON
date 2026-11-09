@@ -14,11 +14,12 @@ from env.tiles import Action, Tile
 
 def watch_episode(
     model_path: str | Path | None = None,
-    preset: str = "training_day3",
+    preset: str = "training_day4_base",
     seed: int = 42,
     deterministic: bool = False,
     delay: float = 0.1,
     max_steps: int | None = None,
+    fire_model_path: str | Path | None = None,
 ):
     """Runs a single episode and displays ASCII rendering and agent diagnostics at each step."""
     if preset == "sanity":
@@ -33,7 +34,13 @@ def watch_episode(
     if max_steps is not None:
         config.max_steps = max_steps
 
-    env = RadonRescueEnv(config=config)
+    fire_ctrl = None
+    if fire_model_path is not None and Path(fire_model_path).exists():
+        from env.fire_controller import PolicyFireController
+        fire_ctrl = PolicyFireController(model_path=str(fire_model_path))
+        print(f"Loaded Fire Adversary from: {fire_model_path}")
+
+    env = RadonRescueEnv(config=config, fire_controller=fire_ctrl)
     obs, infos = env.reset(seed=seed)
 
     model = None
@@ -131,6 +138,7 @@ if __name__ == "__main__":
     parser.add_argument("--deterministic", action="store_true", help="Deterministic policy")
     parser.add_argument("--delay", type=float, default=0.05, help="Delay between steps in seconds")
     parser.add_argument("--max-steps", type=int, default=None, help="Override max steps")
+    parser.add_argument("--fire-model", type=str, default=None, help="Path to fire adversary model")
     args = parser.parse_args()
     watch_episode(
         model_path=args.model_path,
@@ -139,5 +147,6 @@ if __name__ == "__main__":
         deterministic=args.deterministic,
         delay=args.delay,
         max_steps=args.max_steps,
+        fire_model_path=args.fire_model,
     )
 

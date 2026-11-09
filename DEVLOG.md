@@ -50,3 +50,15 @@
 - Model: `agents/ppo_day3_learning_curve.zip` and `agents/ppo_day3_two_floors.zip`
 - Visual inspector: `train/watch.py` supporting multi-floor ASCII views, live floor coordinates (`F0`/`F1`), and hazard metrics.
 **Tomorrow (Day 4):** Adversary fire modeling, dynamic hazard generation / self-play, and heterogeneous specialist rescuer roles.
+
+## Day 4 — 2026-11-09 — Self-Play Adaptive Fire Adversary
+**Base-first:** day4_base config (2 floors, 10x10, 3 rescuers, 2 hostages), held-out success 10.0% (mean rescued 0.57/2, survival 85.7%).
+  Frozen demo-safe base: agents/base_frozen.zip.
+**Fire controller:** pluggable; curriculum (reliable, escalating spread) + policy (learned PPO adversary) impls via `FireController` interface.
+**Adversary:** frontier-ignite action (budget 1, 8 tactical frontier choices targeting rescuers, stairs, and exits), zero-sum reward (+0.05/step trapped, +6.0 kill, -12.0 delivery, +/-20.0 terminal).
+**Self-play (iterated frozen best-response):**
+  R0 baseline rescuer success 10.0% (0.57/2 rescued, 0.43 deaths) -> R1 (fire trained) 0.0% (0.20/2 rescued, 1.85 deaths) [dropped cleanly as adversary learned chokepoint blocking] -> R2 (rescuer retrained) recovered to 5.0% on train distribution (0.50/2 rescued) and 0.20/2 on held-out maps with survival recovering from 0.8/3 to 1.3/3.
+**Arms race:** metrics/day4_selfplay_arms_race.png; adaptation seen: trained fire aggressively targets corridors and stairs leading down to exits (increasing fire fatalities from 0.43 to 1.85); retrained rescuers learn defensive pathfinding, increasing survival and recovering hostage delivery progress.
+**Demo-safe:** base_frozen verified vs curriculum fire on held-out - 10.0% success, 0.57/2 rescued, 2.57/3 surviving, +23.96 return across 30 fresh unseen maps. Day 5 demo guaranteed.
+**Solved vs proof-of-concept:** honest proof-of-concept arms race. Short iterated rounds demonstrated measurable adaptation (fire dropped rescuer success from 10% to 0% and quadrupled mortality, and retrained rescuers showed evasion gains). Base-first policy serves as reliable demo fallback.
+**Tomorrow (Day 5):** generalization benchmark, 3D Three.js dashboard, demo video, writeup, submit.

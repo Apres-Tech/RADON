@@ -2,7 +2,7 @@
 
 import argparse
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 import numpy as np
 import torch
 from stable_baselines3 import PPO
@@ -90,7 +90,8 @@ def compare_and_report(
     deterministic: bool = False,
     replay_out: Path | str = "replays/day3_trained.json",
     vary_seeds: bool = False,
-    preset: str = "training_day3",
+    preset: str = "training_day4_base",
+    fire_model: Optional[str] = None,
 ):
     """Loads trained model, evaluates against random baseline, prints table, exports replay."""
     if preset == "sanity":
@@ -102,7 +103,12 @@ def compare_and_report(
     else:
         config = EnvConfig.training_day2(seed=base_seed)
 
-    env = RadonRescueEnv(config=config)
+    fire_ctrl = None
+    if fire_model and Path(fire_model).exists():
+        from env.fire_controller import PolicyFireController
+        fire_ctrl = PolicyFireController(model_path=fire_model)
+
+    env = RadonRescueEnv(config=config, fire_controller=fire_ctrl)
 
     # 1. Evaluate Random Policy
     mode_str = "fresh randomized maps" if vary_seeds else f"map seed {base_seed}"
@@ -205,8 +211,14 @@ if __name__ == "__main__":
     parser.add_argument(
         "--replay-out",
         type=str,
-        default="replays/day3_trained.json",
+        default="replays/day4_adversarial.json",
         help="Path for exported replay JSON",
+    )
+    parser.add_argument(
+        "--fire-model",
+        type=str,
+        default=None,
+        help="Path to trained fire adversary model to evaluate against (default: None)",
     )
     args = parser.parse_args()
     compare_and_report(
@@ -217,4 +229,5 @@ if __name__ == "__main__":
         replay_out=args.replay_out,
         vary_seeds=args.fresh_maps,
         preset=args.preset,
+        fire_model=args.fire_model,
     )
