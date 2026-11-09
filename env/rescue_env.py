@@ -51,8 +51,8 @@ class RadonRescueEnv(ParallelEnv):
         self.rescuers: Dict[str, Rescuer] = {}
         self.hostages: List[Hostage] = []
         self.fire_positions: List[Tuple[int, int, int]] = []
-        self._exit_dist_maps: Dict[int, np.ndarray] = {}
-        self._hostage_dist_maps: Dict[int, np.ndarray] = {}
+        self._exit_dist_map: Optional[np.ndarray] = None
+        self._hostage_dist_map: Optional[np.ndarray] = None
         self.current_step: int = 0
         self.np_random: np.random.Generator = np.random.default_rng(self.config.seed)
 
@@ -305,46 +305,54 @@ class RadonRescueEnv(ParallelEnv):
                                 break
 
     def _recompute_shaping_maps(self, update_exits: bool = True) -> None:
-        """Precomputes or updates BFS shortest-path distance maps for potential shaping."""
+        """Precomputes or updates multi-floor BFS shortest-path distance maps for potential shaping."""
         if not self.config.enable_shaping or not self.building_map:
             return
-        if update_exits or not hasattr(self, "_exit_dist_maps") or not self._exit_dist_maps:
-            self._exit_dist_maps = {}
-            for f in range(self.config.floors):
-                exit_targets = [(er, ec) for ef, er, ec in self.building_map.exits if ef == f]
-                self._exit_dist_maps[f] = self._compute_bfs_dist_map(f, exit_targets)
+        if update_exits or not hasattr(self, "_exit_dist_map") or self._exit_dist_map is None:
+            self._exit_dist_map = self._compute_multi_floor_bfs_dist_map(self.building_map.exits)
 
-        self._hostage_dist_maps = {}
-        for f in range(self.config.floors):
-            hostage_targets = [
-                (h.row, h.col)
-                for h in self.hostages
-                if not h.rescued and h.carried_by is None and h.floor == f
-            ]
-            self._hostage_dist_maps[f] = self._compute_bfs_dist_map(f, hostage_targets)
+        hostage_targets = [
+            (h.floor, h.row, h.col)
+            for h in self.hostages
+            if not h.rescued and h.carried_by is None
+        ]
+        self._hostage_dist_map = self._compute_multi_floor_bfs_dist_map(hostage_targets)
 
-    def _compute_bfs_dist_map(self, floor: int, targets: List[Tuple[int, int]]) -> np.ndarray:
-        """Computes shortest path BFS grid distance map from given targets respecting walls."""
-        h, w = self.config.grid_h, self.config.grid_w
-        dist_map = np.full((h, w), fill_value=999, dtype=np.int32)
+    def _compute_multi_floor_bfs_dist_map(self, targets: List[Tuple[int, int, int]]) -> np.ndarray:
+        """Computes shortest path 3D BFS distance map across floors and stairs respecting walls."""
+        floors, h, w = self.config.floors, self.config.grid_h, self.config.grid_w
+        dist_map = np.full((floors, h, w), fill_value=999, dtype=np.int32)
         if not targets:
             return dist_map
 
-        queue: deque[Tuple[int, int]] = deque()
-        for tr, tc in targets:
-            if 0 <= tr < h and 0 <= tc < w:
-                dist_map[tr, tc] = 0
-                queue.append((tr, tc))
+        queue: deque[Tuple[int, int, int]] = deque()
+        for tf, tr, tc in targets:
+            if 0 <= tf < floors and 0 <= tr < h and 0 <= tc < w:
+                dist_map[tf, tr, tc] = 0
+                queue.append((tf, tr, tc))
+
+        stairs_set = set(self.building_map.stairs) if self.building_map else set()
 
         while queue:
-            r, c = queue.popleft()
-            d = dist_map[r, c]
+            f, r, c = queue.popleft()
+            d = dist_map[f, r, c]
+
+            # 1. Lateral moves on same floor
             for dr, dc in ((-1, 0), (1, 0), (0, -1), (0, 1)):
                 nr, nc = r + dr, c + dc
                 if 0 <= nr < h and 0 <= nc < w:
-                    if self.grids[floor, nr, nc] != Tile.WALL and dist_map[nr, nc] > d + 1:
-                        dist_map[nr, nc] = d + 1
-                        queue.append((nr, nc))
+                    if self.grids[f, nr, nc] != Tile.WALL and dist_map[f, nr, nc] > d + 1:
+                        dist_map[f, nr, nc] = d + 1
+                        queue.append((f, nr, nc))
+
+            # 2. Inter-floor transition via stairs (costs 1 step to use stairs)
+            if (r, c) in stairs_set and self.grids[f, r, c] == Tile.STAIRS:
+                for nf in (f - 1, f + 1):
+                    if 0 <= nf < floors:
+                        if self.grids[nf, r, c] != Tile.WALL and dist_map[nf, r, c] > d + 1:
+                            dist_map[nf, r, c] = d + 1
+                            queue.append((nf, r, c))
+
         return dist_map
 
     def step(
@@ -393,14 +401,12 @@ class RadonRescueEnv(ParallelEnv):
 
                 # Potential-based BFS distance shaping (before movement)
                 prev_dist = None
-                if self.config.enable_shaping and self.building_map:
-                    f = rescuer.floor
+                if self.config.enable_shaping and hasattr(self, "_exit_dist_map") and self._exit_dist_map is not None:
+                    f, r, c = rescuer.floor, rescuer.row, rescuer.col
                     if rescuer.carrying:
-                        if f in self._exit_dist_maps:
-                            prev_dist = int(self._exit_dist_maps[f][rescuer.row, rescuer.col])
-                    else:
-                        if f in self._hostage_dist_maps:
-                            prev_dist = int(self._hostage_dist_maps[f][rescuer.row, rescuer.col])
+                        prev_dist = int(self._exit_dist_map[f, r, c])
+                    elif hasattr(self, "_hostage_dist_map") and self._hostage_dist_map is not None:
+                        prev_dist = int(self._hostage_dist_map[f, r, c])
 
                 # Check boundaries and walls
                 if (
@@ -424,11 +430,11 @@ class RadonRescueEnv(ParallelEnv):
 
                     # Reward shaping delta using true shortest BFS path
                     if prev_dist is not None and prev_dist < 999:
-                        f = rescuer.floor
+                        f, r, c = rescuer.floor, rescuer.row, rescuer.col
                         if rescuer.carrying:
-                            curr_dist = int(self._exit_dist_maps[f][rescuer.row, rescuer.col]) if f in self._exit_dist_maps else 999
+                            curr_dist = int(self._exit_dist_map[f, r, c])
                         else:
-                            curr_dist = int(self._hostage_dist_maps[f][rescuer.row, rescuer.col]) if f in self._hostage_dist_maps else 999
+                            curr_dist = int(self._hostage_dist_map[f, r, c])
                         if curr_dist < 999:
                             rewards[agent] += (prev_dist - curr_dist) * self.config.shaping_coef
 
@@ -477,12 +483,28 @@ class RadonRescueEnv(ParallelEnv):
 
                 # A. Use STAIRS -> transition to the other floor (if multi-floor)
                 if tile_val == Tile.STAIRS and self.config.floors > 1:
+                    prev_dist = None
+                    if self.config.enable_shaping and hasattr(self, "_exit_dist_map") and self._exit_dist_map is not None:
+                        if rescuer.carrying:
+                            prev_dist = int(self._exit_dist_map[curr_f, curr_r, curr_c])
+                        elif hasattr(self, "_hostage_dist_map") and self._hostage_dist_map is not None:
+                            prev_dist = int(self._hostage_dist_map[curr_f, curr_r, curr_c])
+
                     target_floor = 1 - curr_f if self.config.floors == 2 else (curr_f + 1) % self.config.floors
                     rescuer.floor = target_floor
                     if rescuer.carrying:
                         for h in self.hostages:
                             if h.carried_by == agent:
                                 h.floor = target_floor
+
+                    # Shaping reward for vertical stair transition
+                    if prev_dist is not None and prev_dist < 999:
+                        if rescuer.carrying:
+                            curr_dist = int(self._exit_dist_map[target_floor, curr_r, curr_c])
+                        else:
+                            curr_dist = int(self._hostage_dist_map[target_floor, curr_r, curr_c])
+                        if curr_dist < 999:
+                            rewards[agent] += (prev_dist - curr_dist) * self.config.shaping_coef
 
                 # B. Manual Pick up fallback
                 elif not rescuer.carrying and tile_val == Tile.HOSTAGE:
