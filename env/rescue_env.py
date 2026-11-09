@@ -114,7 +114,7 @@ class RadonRescueEnv(ParallelEnv):
         self.hostages = []
         for idx, (f, r, c) in enumerate(self.building_map.hostages):
             self.hostages.append(
-                Hostage(id=idx, floor=f, row=r, col=c, rescued=False, carried_by=None)
+                Hostage(id=idx, floor=f, row=r, col=c, rescued=False, carried_by=None, evacuated_to_ground=(f == 0))
             )
 
         # Initialize fire positions list
@@ -497,7 +497,7 @@ class RadonRescueEnv(ParallelEnv):
                             if h.carried_by == agent:
                                 h.floor = target_floor
 
-                    # Shaping reward for vertical stair transition
+                    # Shaping reward and goal-directed transition bonus for vertical stairs
                     if prev_dist is not None and prev_dist < 999:
                         if rescuer.carrying:
                             curr_dist = int(self._exit_dist_map[target_floor, curr_r, curr_c])
@@ -505,6 +505,16 @@ class RadonRescueEnv(ParallelEnv):
                             curr_dist = int(self._hostage_dist_map[target_floor, curr_r, curr_c])
                         if curr_dist < 999:
                             rewards[agent] += (prev_dist - curr_dist) * self.config.shaping_coef
+                            if curr_dist < prev_dist:
+                                rewards[agent] += 0.5  # Stair transition incentive in direction of goal
+
+                    # Cross-floor evacuation transit incentive: carrying hostage down to exit floor (once per hostage)
+                    if rescuer.carrying and target_floor == 0 and curr_f > 0:
+                        for h in self.hostages:
+                            if h.carried_by == agent and not h.evacuated_to_ground:
+                                h.evacuated_to_ground = True
+                                rewards[agent] += 3.0
+                                break
 
                 # B. Manual Pick up fallback
                 elif not rescuer.carrying and tile_val == Tile.HOSTAGE:
@@ -537,6 +547,35 @@ class RadonRescueEnv(ParallelEnv):
 
         if hostage_state_changed:
             self._recompute_shaping_maps(update_exits=False)
+
+        # Mild anti-clustering incentives:
+        # 1. Discourage redundant stacking on same cell
+        occupancy: Dict[Tuple[int, int, int], int] = {}
+        for r in self.rescuers.values():
+            if r.alive:
+                pos = (r.floor, r.row, r.col)
+                occupancy[pos] = occupancy.get(pos, 0) + 1
+        for agent in active_stepping_agents:
+            r = self.rescuers[agent]
+            if r.alive and occupancy.get((r.floor, r.row, r.col), 0) > 1:
+                rewards[agent] -= 0.01
+
+        # 2. Discourage crowding one floor when hostages remain on other floors
+        if self.config.floors > 1:
+            living_rescuers_per_floor = [0] * self.config.floors
+            for r in self.rescuers.values():
+                if r.alive:
+                    living_rescuers_per_floor[r.floor] += 1
+            unrescued_hostages_per_floor = [0] * self.config.floors
+            for h in self.hostages:
+                if not h.rescued and h.carried_by is None:
+                    unrescued_hostages_per_floor[h.floor] += 1
+
+            if len(unrescued_hostages_per_floor) >= 2 and unrescued_hostages_per_floor[0] > 0 and unrescued_hostages_per_floor[1] > 0:
+                for agent in active_stepping_agents:
+                    r = self.rescuers[agent]
+                    if r.alive and living_rescuers_per_floor[r.floor] > 2:
+                        rewards[agent] -= 0.01
 
         # --- 2. Shared Team Completion Bonus ---
         all_hostages_rescued = all(h.rescued for h in self.hostages)

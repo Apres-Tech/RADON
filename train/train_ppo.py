@@ -24,9 +24,9 @@ def parse_args():
     parser.add_argument(
         "--preset",
         type=str,
-        choices=["training_day2", "sanity"],
-        default="training_day2",
-        help="Configuration preset: 'training_day2' or 'sanity' (default: 'training_day2')",
+        choices=["training_day3", "training_day2", "sanity"],
+        default="training_day3",
+        help="Configuration preset: 'training_day3', 'training_day2', or 'sanity' (default: 'training_day3')",
     )
     parser.add_argument(
         "--seed",
@@ -81,6 +81,18 @@ def parse_args():
         action="store_true",
         help="Freeze map generation to a single static seed (default: False, fresh maps every episode)",
     )
+    parser.add_argument(
+        "--resume",
+        type=str,
+        default=None,
+        help="Path to an existing model zip file to resume training from (default: None)",
+    )
+    parser.add_argument(
+        "--eval-episodes",
+        type=int,
+        default=10,
+        help="Number of evaluation episodes per distribution (train/test) per eval checkpoint (default: 10)",
+    )
     return parser.parse_args()
 
 
@@ -102,6 +114,8 @@ def train(args):
     cfg_seed = args.seed if args.fixed_map else None
     if args.preset == "sanity":
         config = EnvConfig.sanity(seed=cfg_seed)
+    elif args.preset == "training_day3":
+        config = EnvConfig.training_day3(seed=cfg_seed)
     else:
         config = EnvConfig.training_day2(seed=cfg_seed)
 
@@ -120,29 +134,40 @@ def train(args):
         net_arch=dict(pi=[128, 64], vf=[128, 64]),
     )
 
-    model = PPO(
-        policy="MultiInputPolicy",
-        env=vec_env,
-        learning_rate=args.lr,
-        n_steps=args.n_steps,
-        batch_size=args.batch_size,
-        n_epochs=10,
-        gamma=0.99,
-        gae_lambda=0.95,
-        clip_range=0.2,
-        ent_coef=args.ent_coef,
-        vf_coef=0.5,
-        max_grad_norm=0.5,
-        policy_kwargs=policy_kwargs,
-        device=device,
-        verbose=0,
-        seed=args.seed,
-    )
+    if args.resume and Path(args.resume).exists():
+        print(f"  Resuming from:  {args.resume}")
+        model = PPO.load(
+            args.resume,
+            env=vec_env,
+            learning_rate=args.lr,
+            ent_coef=args.ent_coef,
+            device=device,
+            seed=args.seed,
+        )
+    else:
+        model = PPO(
+            policy="MultiInputPolicy",
+            env=vec_env,
+            learning_rate=args.lr,
+            n_steps=args.n_steps,
+            batch_size=args.batch_size,
+            n_epochs=10,
+            gamma=0.99,
+            gae_lambda=0.95,
+            clip_range=0.2,
+            ent_coef=args.ent_coef,
+            vf_coef=0.5,
+            max_grad_norm=0.5,
+            policy_kwargs=policy_kwargs,
+            device=device,
+            verbose=0,
+            seed=args.seed,
+        )
 
     # 3. Setup Metrics Callback
     metrics_callback = MetricsCallback(
         eval_freq=args.eval_freq,
-        eval_episodes=15,
+        eval_episodes=args.eval_episodes,
         config=config,
         log_dir="metrics",
         run_name=args.run_name,
