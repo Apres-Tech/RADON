@@ -9,6 +9,7 @@ import numpy as np
 from pettingzoo.utils.env import ParallelEnv
 
 from env.config import EnvConfig
+from env.fire_controller import FireController, CurriculumFireController
 from env.mapgen import BuildingMap, generate_building
 from env.tiles import (
     ACTION_DELTAS,
@@ -34,11 +35,17 @@ class RadonRescueEnv(ParallelEnv):
         "name": "radon_rescue_v0",
     }
 
-    def __init__(self, config: Optional[EnvConfig] = None, render_mode: Optional[str] = None):
+    def __init__(
+        self,
+        config: Optional[EnvConfig] = None,
+        render_mode: Optional[str] = None,
+        fire_controller: Optional[FireController] = None,
+    ):
         """Initializes RADON rescue environment with the given configuration."""
         super().__init__()
         self.config = config if config is not None else EnvConfig()
         self.render_mode = render_mode
+        self.fire_controller = fire_controller if fire_controller is not None else CurriculumFireController()
 
         self.possible_agents: List[str] = [
             f"rescuer_{i}" for i in range(self.config.n_rescuers)
@@ -120,6 +127,8 @@ class RadonRescueEnv(ParallelEnv):
         # Initialize fire positions list and death tracking
         self.fire_positions = list(self.building_map.fires)
         self.fire_deaths: int = 0
+        if self.fire_controller is not None:
+            self.fire_controller.reset(self.config, self.grids, self.fire_positions, self.np_random)
 
         # Initialize rescuer entities at designated spawns
         self.rescuers = {}
@@ -283,31 +292,38 @@ class RadonRescueEnv(ParallelEnv):
             carried_hostage.rescued = False
 
     def _spread_fire(self) -> bool:
-        """Spreads fire to adjacent empty tiles with fire_spread_prob chance. Returns True if any new fire spawned."""
+        """Spreads fire using the active pluggable fire controller. Returns True if any new fire spawned."""
         if not self.config.fire_enabled:
             return False
-        if self.current_step < self.config.fire_spread_start_step:
+        if self.fire_controller is None:
             return False
         if len(self.fire_positions) >= self.config.fire_max_tiles:
             return False
 
+        new_ignitions = self.fire_controller.step(
+            current_step=self.current_step,
+            grids=self.grids,
+            fire_positions=self.fire_positions,
+            rescuers=self.rescuers,
+            hostages=self.hostages,
+            np_random=self.np_random,
+        )
+        if not new_ignitions:
+            return False
+
         spread_occurred = False
-        existing_fires = list(self.fire_positions)
-        for ff, fr, fc in existing_fires:
-            if len(self.fire_positions) >= self.config.fire_max_tiles:
-                break
-            for dr, dc in ((-1, 0), (1, 0), (0, -1), (0, 1)):
-                nfr, nfc = fr + dr, fc + dc
-                if 0 <= nfr < self.config.grid_h and 0 <= nfc < self.config.grid_w:
-                    target_tile = self.grids[ff, nfr, nfc]
-                    # Fire ONLY spreads onto EMPTY tiles (never WALL, FIRE, EXIT, HOSTAGE, STAIRS)
-                    if target_tile == Tile.EMPTY:
-                        if self.np_random.random() < self.config.fire_spread_prob:
-                            self.grids[ff, nfr, nfc] = Tile.FIRE
-                            self.fire_positions.append((ff, nfr, nfc))
-                            spread_occurred = True
-                            if len(self.fire_positions) >= self.config.fire_max_tiles:
-                                break
+        for f, r, c in new_ignitions:
+            if (
+                0 <= f < self.config.floors
+                and 0 <= r < self.config.grid_h
+                and 0 <= c < self.config.grid_w
+                and self.grids[f, r, c] == Tile.EMPTY
+                and len(self.fire_positions) < self.config.fire_max_tiles
+            ):
+                self.grids[f, r, c] = Tile.FIRE
+                self.fire_positions.append((f, r, c))
+                spread_occurred = True
+
         return spread_occurred
 
     def _recompute_shaping_maps(self, update_exits: bool = True) -> None:
