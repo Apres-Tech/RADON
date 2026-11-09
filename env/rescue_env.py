@@ -117,8 +117,9 @@ class RadonRescueEnv(ParallelEnv):
                 Hostage(id=idx, floor=f, row=r, col=c, rescued=False, carried_by=None, evacuated_to_ground=(f == 0))
             )
 
-        # Initialize fire positions list
+        # Initialize fire positions list and death tracking
         self.fire_positions = list(self.building_map.fires)
+        self.fire_deaths: int = 0
 
         # Initialize rescuer entities at designated spawns
         self.rescuers = {}
@@ -228,6 +229,8 @@ class RadonRescueEnv(ParallelEnv):
             "col": rescuer.col,
             "hostages_rescued": sum(1 for h in self.hostages if h.rescued),
             "step": self.current_step,
+            "fire_deaths": getattr(self, "fire_deaths", 0),
+            "rescuers_alive": sum(1 for r in self.rescuers.values() if r.alive),
         }
 
     def _drop_carried_hostage_on_death(self, rescuer: Rescuer) -> None:
@@ -279,15 +282,16 @@ class RadonRescueEnv(ParallelEnv):
             carried_hostage.carried_by = None
             carried_hostage.rescued = False
 
-    def _spread_fire(self) -> None:
-        """Spreads fire to adjacent empty tiles with fire_spread_prob chance."""
+    def _spread_fire(self) -> bool:
+        """Spreads fire to adjacent empty tiles with fire_spread_prob chance. Returns True if any new fire spawned."""
         if not self.config.fire_enabled:
-            return
+            return False
         if self.current_step < self.config.fire_spread_start_step:
-            return
+            return False
         if len(self.fire_positions) >= self.config.fire_max_tiles:
-            return
+            return False
 
+        spread_occurred = False
         existing_fires = list(self.fire_positions)
         for ff, fr, fc in existing_fires:
             if len(self.fire_positions) >= self.config.fire_max_tiles:
@@ -301,8 +305,10 @@ class RadonRescueEnv(ParallelEnv):
                         if self.np_random.random() < self.config.fire_spread_prob:
                             self.grids[ff, nfr, nfc] = Tile.FIRE
                             self.fire_positions.append((ff, nfr, nfc))
+                            spread_occurred = True
                             if len(self.fire_positions) >= self.config.fire_max_tiles:
                                 break
+        return spread_occurred
 
     def _recompute_shaping_maps(self, update_exits: bool = True) -> None:
         """Precomputes or updates multi-floor BFS shortest-path distance maps for potential shaping."""
@@ -337,19 +343,19 @@ class RadonRescueEnv(ParallelEnv):
             f, r, c = queue.popleft()
             d = dist_map[f, r, c]
 
-            # 1. Lateral moves on same floor
+            # 1. Lateral moves on same floor (impassable: WALL and FIRE)
             for dr, dc in ((-1, 0), (1, 0), (0, -1), (0, 1)):
                 nr, nc = r + dr, c + dc
                 if 0 <= nr < h and 0 <= nc < w:
-                    if self.grids[f, nr, nc] != Tile.WALL and dist_map[f, nr, nc] > d + 1:
+                    if self.grids[f, nr, nc] not in (Tile.WALL, Tile.FIRE) and dist_map[f, nr, nc] > d + 1:
                         dist_map[f, nr, nc] = d + 1
                         queue.append((f, nr, nc))
 
-            # 2. Inter-floor transition via stairs (costs 1 step to use stairs)
+            # 2. Inter-floor transition via stairs (impassable: WALL and FIRE)
             if (r, c) in stairs_set and self.grids[f, r, c] == Tile.STAIRS:
                 for nf in (f - 1, f + 1):
                     if 0 <= nf < floors:
-                        if self.grids[nf, r, c] != Tile.WALL and dist_map[nf, r, c] > d + 1:
+                        if self.grids[nf, r, c] not in (Tile.WALL, Tile.FIRE) and dist_map[nf, r, c] > d + 1:
                             dist_map[nf, r, c] = d + 1
                             queue.append((nf, r, c))
 
@@ -441,6 +447,7 @@ class RadonRescueEnv(ParallelEnv):
                     # Step onto FIRE kills agent
                     if self.grids[rescuer.floor, nr, nc] == Tile.FIRE:
                         rescuer.alive = False
+                        self.fire_deaths += 1
                         rewards[agent] += self.config.death_reward
                         terminations[agent] = True
                         self._drop_carried_hostage_on_death(rescuer)
@@ -583,14 +590,17 @@ class RadonRescueEnv(ParallelEnv):
             for agent in active_stepping_agents:
                 rewards[agent] += self.config.team_completion_reward
 
-        # --- 3. Fire Dynamics (via _spread_fire) ---
-        self._spread_fire()
+        # --- 3. Dynamic Fire Spread & Path Rerouting ---
+        fire_spread_occurred = self._spread_fire()
+        if fire_spread_occurred:
+            self._recompute_shaping_maps(update_exits=True)
 
         # Check if spreading fire engulfed any living rescuers
         for agent in active_stepping_agents:
             rescuer = self.rescuers[agent]
             if rescuer.alive and self.grids[rescuer.floor, rescuer.row, rescuer.col] == Tile.FIRE:
                 rescuer.alive = False
+                self.fire_deaths += 1
                 rewards[agent] += self.config.death_reward
                 terminations[agent] = True
                 self._drop_carried_hostage_on_death(rescuer)

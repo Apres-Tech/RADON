@@ -70,6 +70,8 @@ class MetricsCallback(BaseCallback):
                         "test_reward",
                         "mean_episode_length",
                         "mean_rescuers_surviving",
+                        "survival_rate",
+                        "fire_deaths",
                     ]
                 )
 
@@ -80,6 +82,7 @@ class MetricsCallback(BaseCallback):
         ep_successes = []
         ep_lengths = []
         ep_surviving = []
+        ep_fire_deaths = []
 
         eval_env = RadonRescueEnv(config=self.config)
 
@@ -102,12 +105,14 @@ class MetricsCallback(BaseCallback):
             rescued_count = sum(1 for h in eval_env.hostages if h.rescued)
             all_rescued = (rescued_count == self.config.n_hostages)
             surviving_count = sum(1 for r in eval_env.rescuers.values() if r.alive)
+            fire_deaths_count = eval_env.fire_deaths
 
             ep_rewards.append(ep_return)
             ep_rescued.append(rescued_count)
             ep_successes.append(1.0 if all_rescued else 0.0)
             ep_lengths.append(eval_env.current_step)
             ep_surviving.append(surviving_count)
+            ep_fire_deaths.append(fire_deaths_count)
 
         eval_env.close()
 
@@ -117,6 +122,8 @@ class MetricsCallback(BaseCallback):
             "success": float(np.mean(ep_successes)),
             "length": float(np.mean(ep_lengths)),
             "surviving": float(np.mean(ep_surviving)),
+            "survival_rate": float(np.mean(ep_surviving)) / float(max(1, self.config.n_rescuers)),
+            "fire_deaths": float(np.mean(ep_fire_deaths)),
         }
 
     def _evaluate_policy(self, model=None, num_episodes: Optional[int] = None) -> Dict[str, float]:
@@ -131,6 +138,7 @@ class MetricsCallback(BaseCallback):
 
         gap_succ = train_res["success"] - test_res["success"]
         gap_resc = train_res["rescued"] - test_res["rescued"]
+        mean_surv = (train_res["surviving"] + test_res["surviving"]) / 2.0
 
         return {
             "train_success": train_res["success"],
@@ -142,7 +150,9 @@ class MetricsCallback(BaseCallback):
             "train_reward": train_res["reward"],
             "test_reward": test_res["reward"],
             "mean_episode_length": (train_res["length"] + test_res["length"]) / 2.0,
-            "mean_rescuers_surviving": (train_res["surviving"] + test_res["surviving"]) / 2.0,
+            "mean_rescuers_surviving": mean_surv,
+            "survival_rate": mean_surv / float(max(1, self.config.n_rescuers)),
+            "fire_deaths": (train_res["fire_deaths"] + test_res["fire_deaths"]) / 2.0,
         }
 
     def _log_metrics(self, timestep: int, metrics: Dict[str, float]) -> None:
@@ -162,6 +172,8 @@ class MetricsCallback(BaseCallback):
                     round(metrics["test_reward"], 4),
                     round(metrics["mean_episode_length"], 2),
                     round(metrics["mean_rescuers_surviving"], 2),
+                    round(metrics["survival_rate"], 4),
+                    round(metrics["fire_deaths"], 2),
                 ]
             )
 
@@ -171,7 +183,8 @@ class MetricsCallback(BaseCallback):
                 f"TRAIN: Succ {metrics['train_success']*100:5.1f}% ({metrics['train_rescued']:4.2f}/{self.config.n_hostages}) | "
                 f"TEST (Held-out): Succ {metrics['test_success']*100:5.1f}% ({metrics['test_rescued']:4.2f}/{self.config.n_hostages}) | "
                 f"Gap: {metrics['gap_success']*100:+5.1f}% | "
-                f"Surv: {metrics['mean_rescuers_surviving']:3.1f}/{self.config.n_rescuers}"
+                f"Surv: {metrics['mean_rescuers_surviving']:3.1f}/{self.config.n_rescuers} ({metrics['survival_rate']*100:.0f}%) | "
+                f"FireDeaths: {metrics['fire_deaths']:.1f}"
             )
 
     def _on_training_start(self) -> None:
