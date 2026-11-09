@@ -105,6 +105,12 @@ def parse_args():
         default=None,
         help="Exact destination path to save the trained model zip file (default: None)",
     )
+    parser.add_argument(
+        "--checkpoint-freq",
+        type=int,
+        default=250_000,
+        help="Timesteps frequency to save intermediate checkpoints (default: 250,000)",
+    )
     return parser.parse_args()
 
 
@@ -193,6 +199,8 @@ def train(args):
         log_dir="metrics",
         run_name=args.run_name,
         fire_controller_factory=fc_factory,
+        checkpoint_freq=args.checkpoint_freq,
+        live_save_path=args.save_path if args.save_path else f"agents/ppo_{args.run_name}.zip",
         verbose=1,
     )
 

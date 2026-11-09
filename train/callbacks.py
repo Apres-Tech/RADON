@@ -37,6 +37,9 @@ class MetricsCallback(BaseCallback):
         run_name: str = "default",
         eval_deterministic: bool = False,
         fire_controller_factory=None,
+        checkpoint_freq: int = 250000,
+        checkpoint_dir: str = "agents",
+        live_save_path: Optional[str] = "agents/final_rescuer.zip",
         verbose: int = 1,
     ):
         super().__init__(verbose)
@@ -44,12 +47,18 @@ class MetricsCallback(BaseCallback):
         self.eval_episodes = eval_episodes
         self.config = config if config is not None else EnvConfig.training_day2()
         self.fire_controller_factory = fire_controller_factory
+        self.checkpoint_freq = checkpoint_freq
+        self.checkpoint_dir = Path(checkpoint_dir)
+        self.checkpoint_dir.mkdir(parents=True, exist_ok=True)
+        self.live_save_path = Path(live_save_path) if live_save_path else None
         self.log_dir = Path(log_dir)
         self.log_dir.mkdir(parents=True, exist_ok=True)
         filename = f"{run_name}.csv"
         self.csv_path = self.log_dir / filename
         self.eval_deterministic = eval_deterministic
         self.last_eval_step = 0
+        self.last_checkpoint_step = 0
+        self.best_test_success = -1.0
 
         # Select evaluation seeds
         self.train_seeds = TRAIN_EVAL_SEEDS[:eval_episodes]
@@ -201,5 +210,23 @@ class MetricsCallback(BaseCallback):
             self.last_eval_step = self.num_timesteps
             metrics = self._evaluate_policy()
             self._log_metrics(self.num_timesteps, metrics)
+
+            # Checkpoint every checkpoint_freq steps
+            if self.num_timesteps - self.last_checkpoint_step >= self.checkpoint_freq:
+                self.last_checkpoint_step = self.num_timesteps
+                ckpt_file = self.checkpoint_dir / f"rescuer_ckpt_{self.num_timesteps}.zip"
+                self.model.save(str(ckpt_file))
+                if self.live_save_path:
+                    self.model.save(str(self.live_save_path))
+                if self.verbose > 0:
+                    print(f"  [Checkpoint @ {self.num_timesteps:,} steps saved to {ckpt_file}]")
+
+            # Track new best held-out model
+            if metrics["test_success"] > self.best_test_success and metrics["test_success"] > 0.0:
+                self.best_test_success = metrics["test_success"]
+                best_file = self.checkpoint_dir / "rescuer_best_heldout.zip"
+                self.model.save(str(best_file))
+                if self.verbose > 0:
+                    print(f"  [NEW BEST Held-Out Success: {metrics['test_success']*100:.1f}% saved to {best_file}]")
 
         return True

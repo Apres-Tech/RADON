@@ -380,7 +380,7 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 3,
+          "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -403,7 +403,7 @@
         }
       ],
       "rewards": {
-        "rescuer_0": -0.1,
+        "rescuer_0": -0.02,
         "rescuer_1": -0.1,
         "rescuer_2": -0.02
       }
@@ -468,7 +468,7 @@
         }
       ],
       "rewards": {
-        "rescuer_0": -0.03,
+        "rescuer_0": -0.11,
         "rescuer_1": 0.05,
         "rescuer_2": -0.02
       }
@@ -519,7 +519,7 @@
           "id": "rescuer_1",
           "floor": 0,
           "row": 3,
-          "col": 6,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
@@ -533,8 +533,8 @@
         }
       ],
       "rewards": {
-        "rescuer_0": -0.03,
-        "rescuer_1": -0.03,
+        "rescuer_0": -0.02,
+        "rescuer_1": -0.1,
         "rescuer_2": -0.02
       }
     },
@@ -583,8 +583,8 @@
         {
           "id": "rescuer_1",
           "floor": 0,
-          "row": 3,
-          "col": 6,
+          "row": 4,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
@@ -598,8 +598,8 @@
         }
       ],
       "rewards": {
-        "rescuer_0": -0.03,
-        "rescuer_1": -0.03,
+        "rescuer_0": -0.02,
+        "rescuer_1": 0.06,
         "rescuer_2": -0.02
       }
     },
@@ -640,15 +640,15 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 3,
-          "col": 7,
+          "row": 4,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
           "floor": 0,
-          "row": 3,
+          "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -663,8 +663,8 @@
         }
       ],
       "rewards": {
-        "rescuer_0": -0.1,
-        "rescuer_1": -0.02,
+        "rescuer_0": 0.05,
+        "rescuer_1": 0.05,
         "rescuer_2": -0.02
       }
     },
@@ -705,15 +705,15 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 3,
-          "col": 7,
+          "row": 4,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
           "floor": 0,
-          "row": 2,
+          "row": 3,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -770,15 +770,15 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 4,
-          "col": 7,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
           "floor": 0,
-          "row": 2,
+          "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -794,7 +794,7 @@
       ],
       "rewards": {
         "rescuer_0": 0.06,
-        "rescuer_1": -0.02,
+        "rescuer_1": 0.06,
         "rescuer_2": -0.1
       }
     },
@@ -835,15 +835,15 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 4,
-          "col": 7,
+          "row": 6,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
           "floor": 0,
-          "row": 3,
+          "row": 5,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -858,7 +858,7 @@
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
+        "rescuer_0": -0.1,
         "rescuer_1": 0.06,
         "rescuer_2": -0.02
       }
@@ -900,15 +900,15 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 4,
-          "col": 8,
+          "row": 6,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 0,
-          "row": 4,
+          "floor": 1,
+          "row": 5,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -916,16 +916,16 @@
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 2,
+          "row": 3,
           "col": 3,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.1,
-        "rescuer_1": 0.06,
-        "rescuer_2": -0.02
+        "rescuer_0": -0.09,
+        "rescuer_1": 0.57,
+        "rescuer_2": -0.09
       }
     },
     {
@@ -965,8 +965,8 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 4,
-          "col": 8,
+          "row": 6,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
@@ -981,7 +981,7 @@
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 2,
+          "row": 3,
           "col": 3,
           "carrying": false,
           "alive": true
@@ -989,7 +989,7 @@
       ],
       "rewards": {
         "rescuer_0": -0.02,
-        "rescuer_1": 0.06,
+        "rescuer_1": -0.1,
         "rescuer_2": -0.02
       }
     },
@@ -1030,8 +1030,8 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 4,
-          "col": 8,
+          "row": 6,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
@@ -1046,8 +1046,8 @@
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 2,
-          "col": 2,
+          "row": 3,
+          "col": 3,
           "carrying": false,
           "alive": true
         }
@@ -1055,7 +1055,7 @@
       "rewards": {
         "rescuer_0": -0.01,
         "rescuer_1": 0.57,
-        "rescuer_2": -0.09
+        "rescuer_2": -0.01
       }
     },
     {
@@ -1095,14 +1095,14 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 4,
-          "col": 8,
+          "row": 6,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -1111,16 +1111,16 @@
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 2,
-          "col": 3,
+          "row": 3,
+          "col": 2,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": -0.01,
-        "rescuer_2": 0.07
+        "rescuer_0": -0.02,
+        "rescuer_1": -0.1,
+        "rescuer_2": -0.1
       }
     },
     {
@@ -1160,14 +1160,14 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 4,
-          "col": 8,
+          "row": 6,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 0,
+          "floor": 1,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -1176,16 +1176,16 @@
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 2,
-          "col": 4,
+          "row": 3,
+          "col": 3,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_1": -0.1,
-        "rescuer_2": 0.06
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.57,
+        "rescuer_2": 0.07
       }
     },
     {
@@ -1225,14 +1225,14 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 4,
-          "col": 8,
+          "row": 7,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -1241,16 +1241,16 @@
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 2,
-          "col": 3,
+          "row": 3,
+          "col": 2,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": 0.57,
-        "rescuer_2": -0.09
+        "rescuer_0": -0.1,
+        "rescuer_1": -0.1,
+        "rescuer_2": -0.1
       }
     },
     {
@@ -1290,15 +1290,15 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 4,
-          "col": 8,
+          "row": 7,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -1306,16 +1306,16 @@
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 2,
-          "col": 3,
+          "row": 3,
+          "col": 2,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": -0.01,
-        "rescuer_2": -0.01
+        "rescuer_0": -0.02,
+        "rescuer_1": -0.1,
+        "rescuer_2": -0.02
       }
     },
     {
@@ -1355,7 +1355,7 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 4,
+          "row": 7,
           "col": 8,
           "carrying": false,
           "alive": true
@@ -1371,16 +1371,16 @@
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 2,
+          "row": 3,
           "col": 3,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_1": -0.1,
-        "rescuer_2": -0.02
+        "rescuer_0": -0.1,
+        "rescuer_1": 0.06,
+        "rescuer_2": 0.06
       }
     },
     {
@@ -1420,16 +1420,16 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 3,
+          "row": 6,
           "col": 8,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 6,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
@@ -1443,9 +1443,9 @@
         }
       ],
       "rewards": {
-        "rescuer_0": -0.09,
-        "rescuer_1": 0.57,
-        "rescuer_2": -0.01
+        "rescuer_0": 0.06,
+        "rescuer_1": -0.1,
+        "rescuer_2": 0.06
       }
     },
     {
@@ -1485,16 +1485,16 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 3,
-          "col": 7,
+          "row": 5,
+          "col": 8,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
           "floor": 0,
-          "row": 5,
-          "col": 6,
+          "row": 4,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
@@ -1502,15 +1502,15 @@
           "id": "rescuer_2",
           "floor": 0,
           "row": 2,
-          "col": 3,
+          "col": 4,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.06,
+        "rescuer_0": -0.1,
         "rescuer_1": -0.1,
-        "rescuer_2": -0.02
+        "rescuer_2": 0.06
       }
     },
     {
@@ -1551,15 +1551,15 @@
           "id": "rescuer_0",
           "floor": 0,
           "row": 4,
-          "col": 7,
+          "col": 8,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
@@ -1567,15 +1567,15 @@
           "id": "rescuer_2",
           "floor": 0,
           "row": 2,
-          "col": 2,
+          "col": 3,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.07,
-        "rescuer_1": 0.57,
-        "rescuer_2": -0.09
+        "rescuer_0": 0.06,
+        "rescuer_1": -0.1,
+        "rescuer_2": -0.1
       }
     },
     {
@@ -1623,8 +1623,8 @@
         {
           "id": "rescuer_1",
           "floor": 0,
-          "row": 5,
-          "col": 6,
+          "row": 4,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
@@ -1632,14 +1632,14 @@
           "id": "rescuer_2",
           "floor": 0,
           "row": 2,
-          "col": 3,
+          "col": 4,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_1": -0.1,
+        "rescuer_0": 0.06,
+        "rescuer_1": 0.06,
         "rescuer_2": 0.06
       }
     },
@@ -1687,8 +1687,8 @@
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -1697,15 +1697,15 @@
           "id": "rescuer_2",
           "floor": 0,
           "row": 2,
-          "col": 3,
+          "col": 4,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.09,
-        "rescuer_1": 0.57,
-        "rescuer_2": -0.01
+        "rescuer_0": -0.1,
+        "rescuer_1": 0.06,
+        "rescuer_2": -0.02
       }
     },
     {
@@ -1752,25 +1752,25 @@
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 4,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 1,
-          "col": 3,
+          "row": 2,
+          "col": 4,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": -0.01,
-        "rescuer_2": -0.09
+        "rescuer_0": -0.02,
+        "rescuer_1": -0.1,
+        "rescuer_2": -0.02
       }
     },
     {
@@ -1811,29 +1811,29 @@
           "id": "rescuer_0",
           "floor": 0,
           "row": 4,
-          "col": 8,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
           "floor": 0,
-          "row": 5,
-          "col": 6,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 1,
-          "col": 3,
+          "row": 2,
+          "col": 4,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
+        "rescuer_0": 0.06,
         "rescuer_1": -0.1,
         "rescuer_2": -0.02
       }
@@ -1876,31 +1876,31 @@
           "id": "rescuer_0",
           "floor": 0,
           "row": 4,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 4,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 1,
-          "col": 2,
+          "row": 2,
+          "col": 4,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.07,
-        "rescuer_1": 0.57,
-        "rescuer_2": -0.09
+        "rescuer_0": 0.06,
+        "rescuer_1": 0.06,
+        "rescuer_2": -0.02
       }
     },
     {
@@ -1940,32 +1940,32 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 4,
-          "col": 7,
-          "carrying": false,
-          "alive": true
-        },
-        {
-          "id": "rescuer_1",
-          "floor": 1,
           "row": 5,
           "col": 6,
           "carrying": false,
           "alive": true
         },
         {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 4,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        },
+        {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 1,
-          "col": 2,
+          "row": 2,
+          "col": 4,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": -0.01,
-        "rescuer_2": -0.01
+        "rescuer_0": 0.06,
+        "rescuer_1": -0.02,
+        "rescuer_2": -0.02
       }
     },
     {
@@ -2012,25 +2012,25 @@
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 1,
-          "col": 2,
+          "row": 2,
+          "col": 4,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.07,
-        "rescuer_1": -0.01,
-        "rescuer_2": -0.01
+        "rescuer_0": -0.1,
+        "rescuer_1": -0.1,
+        "rescuer_2": -0.02
       }
     },
     {
@@ -2071,31 +2071,31 @@
           "id": "rescuer_0",
           "floor": 0,
           "row": 4,
-          "col": 5,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 4,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 1,
+          "row": 2,
           "col": 3,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.09,
-        "rescuer_1": 0.07,
-        "rescuer_2": 0.07
+        "rescuer_0": -0.1,
+        "rescuer_1": 0.06,
+        "rescuer_2": -0.1
       }
     },
     {
@@ -2136,31 +2136,31 @@
           "id": "rescuer_0",
           "floor": 0,
           "row": 4,
-          "col": 6,
+          "col": 8,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 4,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 1,
+          "row": 2,
           "col": 2,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.07,
-        "rescuer_1": -0.01,
-        "rescuer_2": -0.09
+        "rescuer_0": -0.1,
+        "rescuer_1": 0.06,
+        "rescuer_2": -0.1
       }
     },
     {
@@ -2200,16 +2200,81 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 5,
-          "col": 6,
+          "row": 4,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 4,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 2,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.06,
+        "rescuer_1": -0.1,
+        "rescuer_2": -0.02
+      }
+    },
+    {
+      "t": 30,
+      "fire": [
+        [
+          0,
+          2,
+          8
+        ],
+        [
+          1,
+          1,
+          8
+        ],
+        [
+          1,
+          8,
+          6
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          7,
+          1,
+          false
+        ],
+        [
+          1,
+          1,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 4,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
@@ -2223,13 +2288,143 @@
         }
       ],
       "rewards": {
-        "rescuer_0": 0.07,
-        "rescuer_1": -0.09,
-        "rescuer_2": -0.01
+        "rescuer_0": -0.1,
+        "rescuer_1": -0.02,
+        "rescuer_2": -0.1
       }
     },
     {
-      "t": 30,
+      "t": 31,
+      "fire": [
+        [
+          0,
+          2,
+          8
+        ],
+        [
+          1,
+          1,
+          8
+        ],
+        [
+          1,
+          8,
+          6
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          7,
+          1,
+          false
+        ],
+        [
+          1,
+          1,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 3,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 4,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 2,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": -0.02,
+        "rescuer_1": -0.02,
+        "rescuer_2": 0.06
+      }
+    },
+    {
+      "t": 32,
+      "fire": [
+        [
+          0,
+          2,
+          8
+        ],
+        [
+          1,
+          1,
+          8
+        ],
+        [
+          1,
+          8,
+          6
+        ]
+      ],
+      "hostages": [
+        [
+          0,
+          7,
+          1,
+          false
+        ],
+        [
+          1,
+          1,
+          1,
+          false
+        ]
+      ],
+      "rescuers": [
+        {
+          "id": "rescuer_0",
+          "floor": 0,
+          "row": 3,
+          "col": 6,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 2,
+          "col": 1,
+          "carrying": false,
+          "alive": true
+        }
+      ],
+      "rewards": {
+        "rescuer_0": 0.06,
+        "rescuer_1": -0.1,
+        "rescuer_2": -0.1
+      }
+    },
+    {
+      "t": 33,
       "fire": [
         [
           0,
@@ -2272,220 +2467,25 @@
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 1,
-          "col": 2,
+          "row": 3,
+          "col": 1,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.09,
-        "rescuer_1": -0.01,
-        "rescuer_2": -0.01
-      }
-    },
-    {
-      "t": 31,
-      "fire": [
-        [
-          0,
-          2,
-          8
-        ],
-        [
-          1,
-          1,
-          8
-        ],
-        [
-          1,
-          8,
-          6
-        ]
-      ],
-      "hostages": [
-        [
-          0,
-          7,
-          1,
-          false
-        ],
-        [
-          1,
-          1,
-          1,
-          false
-        ]
-      ],
-      "rescuers": [
-        {
-          "id": "rescuer_0",
-          "floor": 0,
-          "row": 5,
-          "col": 6,
-          "carrying": false,
-          "alive": true
-        },
-        {
-          "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
-          "carrying": false,
-          "alive": true
-        },
-        {
-          "id": "rescuer_2",
-          "floor": 0,
-          "row": 1,
-          "col": 2,
-          "carrying": false,
-          "alive": true
-        }
-      ],
-      "rewards": {
-        "rescuer_0": 0.07,
-        "rescuer_1": -0.01,
-        "rescuer_2": -0.01
-      }
-    },
-    {
-      "t": 32,
-      "fire": [
-        [
-          0,
-          2,
-          8
-        ],
-        [
-          1,
-          1,
-          8
-        ],
-        [
-          1,
-          8,
-          6
-        ]
-      ],
-      "hostages": [
-        [
-          0,
-          7,
-          1,
-          false
-        ],
-        [
-          1,
-          1,
-          1,
-          false
-        ]
-      ],
-      "rescuers": [
-        {
-          "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
-          "carrying": false,
-          "alive": true
-        },
-        {
-          "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
-          "carrying": false,
-          "alive": true
-        },
-        {
-          "id": "rescuer_2",
-          "floor": 0,
-          "row": 1,
-          "col": 3,
-          "carrying": false,
-          "alive": true
-        }
-      ],
-      "rewards": {
-        "rescuer_0": 0.56,
+        "rescuer_0": 0.06,
         "rescuer_1": -0.02,
-        "rescuer_2": 0.07
-      }
-    },
-    {
-      "t": 33,
-      "fire": [
-        [
-          0,
-          2,
-          8
-        ],
-        [
-          1,
-          1,
-          8
-        ],
-        [
-          1,
-          8,
-          6
-        ]
-      ],
-      "hostages": [
-        [
-          0,
-          7,
-          1,
-          false
-        ],
-        [
-          1,
-          1,
-          1,
-          false
-        ]
-      ],
-      "rescuers": [
-        {
-          "id": "rescuer_0",
-          "floor": 0,
-          "row": 5,
-          "col": 6,
-          "carrying": false,
-          "alive": true
-        },
-        {
-          "id": "rescuer_1",
-          "floor": 0,
-          "row": 5,
-          "col": 6,
-          "carrying": false,
-          "alive": true
-        },
-        {
-          "id": "rescuer_2",
-          "floor": 0,
-          "row": 1,
-          "col": 3,
-          "carrying": false,
-          "alive": true
-        }
-      ],
-      "rewards": {
-        "rescuer_0": -0.11,
-        "rescuer_1": -0.11,
-        "rescuer_2": -0.02
+        "rescuer_2": -0.1
       }
     },
     {
@@ -2529,8 +2529,8 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -2538,24 +2538,24 @@
         {
           "id": "rescuer_1",
           "floor": 0,
-          "row": 5,
-          "col": 6,
+          "row": 4,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 2,
-          "col": 3,
+          "row": 4,
+          "col": 1,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.57,
-        "rescuer_1": -0.01,
-        "rescuer_2": 0.07
+        "rescuer_0": -0.02,
+        "rescuer_1": 0.06,
+        "rescuer_2": -0.1
       }
     },
     {
@@ -2599,7 +2599,7 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -2607,25 +2607,25 @@
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 2,
-          "col": 3,
+          "row": 4,
+          "col": 1,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_1": 0.56,
-        "rescuer_2": -0.01
+        "rescuer_0": 0.06,
+        "rescuer_1": -0.1,
+        "rescuer_2": -0.02
       }
     },
     {
@@ -2670,32 +2670,32 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 5,
+          "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 2,
-          "col": 3,
+          "row": 4,
+          "col": 1,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.09,
-        "rescuer_1": -0.01,
-        "rescuer_2": -0.01
+        "rescuer_0": -0.1,
+        "rescuer_1": -0.02,
+        "rescuer_2": -0.02
       }
     },
     {
@@ -2739,7 +2739,7 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -2748,24 +2748,24 @@
         {
           "id": "rescuer_1",
           "floor": 0,
-          "row": 5,
-          "col": 6,
+          "row": 4,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 2,
-          "col": 4,
+          "row": 4,
+          "col": 2,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.57,
-        "rescuer_1": -0.09,
-        "rescuer_2": 0.07
+        "rescuer_0": 0.06,
+        "rescuer_1": 0.06,
+        "rescuer_2": 0.06
       }
     },
     {
@@ -2809,7 +2809,7 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 4,
           "col": 6,
           "carrying": false,
@@ -2817,25 +2817,25 @@
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 2,
-          "col": 4,
+          "row": 4,
+          "col": 2,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.07,
-        "rescuer_1": 0.57,
-        "rescuer_2": -0.01
+        "rescuer_0": -0.1,
+        "rescuer_1": -0.1,
+        "rescuer_2": -0.02
       }
     },
     {
@@ -2879,7 +2879,7 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -2887,25 +2887,25 @@
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 3,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 2,
-          "col": 5,
+          "row": 4,
+          "col": 3,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.09,
-        "rescuer_1": 0.07,
-        "rescuer_2": 0.07
+        "rescuer_0": 0.06,
+        "rescuer_1": 0.06,
+        "rescuer_2": 0.06
       }
     },
     {
@@ -2949,33 +2949,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 3,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 1,
-          "col": 5,
+          "row": 4,
+          "col": 3,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": -0.01,
-        "rescuer_2": -0.09
+        "rescuer_0": -0.1,
+        "rescuer_1": -0.02,
+        "rescuer_2": -0.02
       }
     },
     {
@@ -3019,7 +3019,7 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -3027,25 +3027,25 @@
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 1,
-          "col": 5,
+          "row": 4,
+          "col": 3,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": 0.07,
-        "rescuer_2": -0.01
+        "rescuer_0": 0.06,
+        "rescuer_1": -0.1,
+        "rescuer_2": -0.02
       }
     },
     {
@@ -3089,33 +3089,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 1,
-          "col": 5,
+          "row": 4,
+          "col": 2,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": -0.09,
-        "rescuer_2": -0.01
+        "rescuer_0": -0.1,
+        "rescuer_1": -0.02,
+        "rescuer_2": -0.1
       }
     },
     {
@@ -3167,25 +3167,25 @@
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 4,
-          "col": 7,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 1,
-          "col": 6,
+          "row": 4,
+          "col": 3,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.09,
-        "rescuer_1": 0.07,
-        "rescuer_2": 0.07
+        "rescuer_0": 0.06,
+        "rescuer_1": 0.06,
+        "rescuer_2": 0.06
       }
     },
     {
@@ -3237,17 +3237,17 @@
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 4,
-          "col": 7,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 1,
-          "col": 5,
+          "row": 4,
+          "col": 3,
           "carrying": false,
           "alive": true
         }
@@ -3255,7 +3255,7 @@
       "rewards": {
         "rescuer_0": 0.57,
         "rescuer_1": -0.01,
-        "rescuer_2": -0.09
+        "rescuer_2": -0.01
       }
     },
     {
@@ -3307,25 +3307,25 @@
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 4,
-          "col": 6,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 1,
-          "col": 5,
+          "row": 3,
+          "col": 3,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.09,
-        "rescuer_1": -0.09,
-        "rescuer_2": -0.01
+        "rescuer_0": -0.1,
+        "rescuer_1": -0.1,
+        "rescuer_2": 0.06
       }
     },
     {
@@ -3377,17 +3377,17 @@
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 4,
-          "col": 6,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 1,
-          "col": 5,
+          "row": 3,
+          "col": 3,
           "carrying": false,
           "alive": true
         }
@@ -3447,24 +3447,24 @@
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 4,
-          "col": 6,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 1,
-          "col": 5,
+          "row": 3,
+          "col": 3,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.06,
-        "rescuer_1": -0.02,
+        "rescuer_0": 0.07,
+        "rescuer_1": -0.01,
         "rescuer_2": -0.01
       }
     },
@@ -3517,25 +3517,25 @@
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 4,
-          "col": 6,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 1,
-          "col": 5,
+          "row": 2,
+          "col": 3,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_1": -0.02,
-        "rescuer_2": -0.01
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": 0.07
       }
     },
     {
@@ -3580,32 +3580,32 @@
         {
           "id": "rescuer_0",
           "floor": 1,
-          "row": 4,
+          "row": 5,
           "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 4,
-          "col": 6,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 2,
-          "col": 5,
+          "row": 3,
+          "col": 3,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_1": -0.02,
-        "rescuer_2": 0.07
+        "rescuer_0": -0.09,
+        "rescuer_1": 0.07,
+        "rescuer_2": -0.09
       }
     },
     {
@@ -3650,32 +3650,32 @@
         {
           "id": "rescuer_0",
           "floor": 1,
-          "row": 4,
+          "row": 5,
           "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 4,
-          "col": 6,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 1,
-          "col": 5,
+          "row": 2,
+          "col": 3,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_1": -0.02,
-        "rescuer_2": -0.09
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.09,
+        "rescuer_2": 0.07
       }
     },
     {
@@ -3719,33 +3719,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 4,
-          "col": 6,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 1,
-          "col": 5,
+          "row": 2,
+          "col": 3,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.07,
-        "rescuer_1": -0.01,
-        "rescuer_2": -0.01
+        "rescuer_0": -0.1,
+        "rescuer_1": -0.02,
+        "rescuer_2": -0.02
       }
     },
     {
@@ -3789,33 +3789,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 4,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 1,
-          "col": 5,
+          "row": 2,
+          "col": 3,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.09,
-        "rescuer_1": -0.09,
-        "rescuer_2": -0.01
+        "rescuer_0": -0.1,
+        "rescuer_1": 0.06,
+        "rescuer_2": -0.02
       }
     },
     {
@@ -3859,17 +3859,17 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 4,
-          "col": 6,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
@@ -3877,15 +3877,15 @@
           "id": "rescuer_2",
           "floor": 0,
           "row": 1,
-          "col": 5,
+          "col": 3,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": 0.07,
-        "rescuer_2": -0.01
+        "rescuer_0": -0.02,
+        "rescuer_1": -0.1,
+        "rescuer_2": -0.1
       }
     },
     {
@@ -3929,17 +3929,17 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 4,
-          "col": 6,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
@@ -3947,15 +3947,15 @@
           "id": "rescuer_2",
           "floor": 0,
           "row": 2,
-          "col": 5,
+          "col": 3,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": -0.01,
-        "rescuer_2": 0.07
+        "rescuer_0": -0.02,
+        "rescuer_1": -0.02,
+        "rescuer_2": 0.06
       }
     },
     {
@@ -3999,33 +3999,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 4,
-          "col": 6,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 3,
-          "col": 5,
+          "row": 2,
+          "col": 4,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": -0.01,
-        "rescuer_2": 0.07
+        "rescuer_0": 0.06,
+        "rescuer_1": -0.02,
+        "rescuer_2": 0.06
       }
     },
     {
@@ -4069,33 +4069,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
-          "carrying": false,
-          "alive": true
-        },
-        {
-          "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
         },
         {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 3,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        },
+        {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 4,
-          "col": 5,
+          "row": 2,
+          "col": 4,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": -0.01,
-        "rescuer_2": 0.07
+        "rescuer_0": -0.1,
+        "rescuer_1": -0.02,
+        "rescuer_2": -0.02
       }
     },
     {
@@ -4139,33 +4139,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 4,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 4,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 4,
-          "col": 6,
+          "row": 2,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": -0.09,
-        "rescuer_2": 0.07
+        "rescuer_0": -0.02,
+        "rescuer_1": 0.06,
+        "rescuer_2": 0.06
       }
     },
     {
@@ -4209,33 +4209,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
           "floor": 0,
-          "row": 5,
-          "col": 6,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 5,
-          "col": 6,
+          "row": 2,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.07,
+        "rescuer_0": 0.06,
         "rescuer_1": -0.1,
-        "rescuer_2": 0.06
+        "rescuer_2": -0.02
       }
     },
     {
@@ -4279,24 +4279,24 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
-          "carrying": false,
-          "alive": true
-        },
-        {
-          "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
         },
         {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 4,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        },
+        {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 2,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -4304,8 +4304,8 @@
       ],
       "rewards": {
         "rescuer_0": -0.1,
-        "rescuer_1": 0.55,
-        "rescuer_2": 0.55
+        "rescuer_1": 0.06,
+        "rescuer_2": 0.06
       }
     },
     {
@@ -4349,16 +4349,16 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 4,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
           "floor": 0,
-          "row": 5,
+          "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -4366,16 +4366,16 @@
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 5,
+          "row": 3,
           "col": 6,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.07,
-        "rescuer_1": -0.1,
-        "rescuer_2": -0.1
+        "rescuer_0": -0.03,
+        "rescuer_1": 0.05,
+        "rescuer_2": 0.06
       }
     },
     {
@@ -4419,15 +4419,15 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -4435,17 +4435,17 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.1,
-        "rescuer_1": 0.55,
-        "rescuer_2": 0.55
+        "rescuer_0": 0.05,
+        "rescuer_1": 0.05,
+        "rescuer_2": -0.1
       }
     },
     {
@@ -4489,16 +4489,16 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
           "floor": 0,
-          "row": 5,
+          "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -4506,16 +4506,16 @@
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 5,
-          "col": 6,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
+        "rescuer_0": -0.02,
         "rescuer_1": -0.1,
-        "rescuer_2": -0.1
+        "rescuer_2": -0.02
       }
     },
     {
@@ -4559,15 +4559,15 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -4576,16 +4576,16 @@
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 5,
+          "row": 3,
           "col": 6,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": 0.57,
-        "rescuer_2": -0.01
+        "rescuer_0": -0.03,
+        "rescuer_1": 0.05,
+        "rescuer_2": 0.06
       }
     },
     {
@@ -4631,13 +4631,13 @@
           "id": "rescuer_0",
           "floor": 1,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 0,
+          "floor": 1,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -4646,16 +4646,16 @@
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 5,
-          "col": 6,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": -0.1,
-        "rescuer_2": -0.02
+        "rescuer_0": 0.56,
+        "rescuer_1": 0.56,
+        "rescuer_2": -0.09
       }
     },
     {
@@ -4699,15 +4699,15 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -4715,17 +4715,17 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 4,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_1": 0.55,
-        "rescuer_2": 0.55
+        "rescuer_0": -0.11,
+        "rescuer_1": -0.11,
+        "rescuer_2": 0.06
       }
     },
     {
@@ -4770,14 +4770,14 @@
         {
           "id": "rescuer_0",
           "floor": 1,
-          "row": 4,
-          "col": 7,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 0,
+          "floor": 1,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -4785,16 +4785,16 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 4,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.07,
-        "rescuer_1": -0.09,
+        "rescuer_0": 0.56,
+        "rescuer_1": 0.56,
         "rescuer_2": -0.01
       }
     },
@@ -4839,15 +4839,15 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -4856,16 +4856,16 @@
         {
           "id": "rescuer_2",
           "floor": 0,
-          "row": 5,
-          "col": 6,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": 0.57,
-        "rescuer_2": -0.09
+        "rescuer_0": -0.11,
+        "rescuer_1": -0.11,
+        "rescuer_2": -0.1
       }
     },
     {
@@ -4909,33 +4909,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 6,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 4,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.1,
-        "rescuer_1": -0.03,
-        "rescuer_2": 0.55
+        "rescuer_0": -0.02,
+        "rescuer_1": -0.1,
+        "rescuer_2": 0.06
       }
     },
     {
@@ -4981,31 +4981,31 @@
           "id": "rescuer_0",
           "floor": 1,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 6,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 4,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_1": -0.03,
-        "rescuer_2": -0.03
+        "rescuer_0": 0.57,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01
       }
     },
     {
@@ -5049,15 +5049,15 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -5065,17 +5065,17 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 6,
-          "col": 6,
+          "floor": 0,
+          "row": 5,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_1": -0.02,
-        "rescuer_2": -0.1
+        "rescuer_0": -0.11,
+        "rescuer_1": 0.05,
+        "rescuer_2": 0.06
       }
     },
     {
@@ -5121,31 +5121,31 @@
           "id": "rescuer_0",
           "floor": 1,
           "row": 5,
-          "col": 7,
-          "carrying": false,
-          "alive": true
-        },
-        {
-          "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
           "col": 6,
           "carrying": false,
           "alive": true
         },
         {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 5,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        },
+        {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 7,
+          "floor": 0,
+          "row": 5,
           "col": 6,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_1": -0.02,
-        "rescuer_2": -0.1
+        "rescuer_0": 0.57,
+        "rescuer_1": -0.09,
+        "rescuer_2": 0.07
       }
     },
     {
@@ -5189,33 +5189,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 6,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 6,
-          "col": 6,
+          "floor": 0,
+          "row": 5,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_1": -0.02,
-        "rescuer_2": 0.06
+        "rescuer_0": -0.1,
+        "rescuer_1": -0.03,
+        "rescuer_2": -0.11
       }
     },
     {
@@ -5259,32 +5259,32 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 4,
-          "col": 6,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 6,
-          "col": 6,
+          "floor": 0,
+          "row": 5,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.06,
-        "rescuer_1": 0.06,
+        "rescuer_0": -0.02,
+        "rescuer_1": -0.1,
         "rescuer_2": -0.02
       }
     },
@@ -5330,14 +5330,14 @@
         {
           "id": "rescuer_0",
           "floor": 1,
-          "row": 4,
-          "col": 7,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 4,
           "col": 6,
           "carrying": false,
@@ -5345,7 +5345,7 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -5353,9 +5353,9 @@
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_1": -0.02,
-        "rescuer_2": 0.06
+        "rescuer_0": 0.57,
+        "rescuer_1": 0.07,
+        "rescuer_2": 0.07
       }
     },
     {
@@ -5399,15 +5399,15 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
+          "floor": 0,
+          "row": 5,
           "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -5415,7 +5415,7 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
+          "floor": 0,
           "row": 4,
           "col": 6,
           "carrying": false,
@@ -5424,8 +5424,8 @@
       ],
       "rewards": {
         "rescuer_0": -0.11,
-        "rescuer_1": -0.1,
-        "rescuer_2": 0.05
+        "rescuer_1": 0.05,
+        "rescuer_2": -0.1
       }
     },
     {
@@ -5469,14 +5469,6 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
-          "carrying": false,
-          "alive": true
-        },
-        {
-          "id": "rescuer_1",
           "floor": 0,
           "row": 5,
           "col": 6,
@@ -5484,18 +5476,26 @@
           "alive": true
         },
         {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 5,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        },
+        {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.06,
-        "rescuer_1": -0.09,
-        "rescuer_2": 0.06
+        "rescuer_0": -0.03,
+        "rescuer_1": -0.1,
+        "rescuer_2": 0.05
       }
     },
     {
@@ -5539,32 +5539,32 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 6,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
         "rescuer_0": -0.11,
-        "rescuer_1": 0.56,
+        "rescuer_1": -0.03,
         "rescuer_2": -0.11
       }
     },
@@ -5609,9 +5609,9 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
@@ -5625,17 +5625,17 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.06,
-        "rescuer_1": -0.09,
-        "rescuer_2": 0.06
+        "rescuer_0": 0.05,
+        "rescuer_1": 0.05,
+        "rescuer_2": 0.05
       }
     },
     {
@@ -5680,8 +5680,8 @@
         {
           "id": "rescuer_0",
           "floor": 1,
-          "row": 4,
-          "col": 7,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
@@ -5696,16 +5696,16 @@
         {
           "id": "rescuer_2",
           "floor": 1,
-          "row": 4,
-          "col": 7,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.03,
-        "rescuer_1": 0.56,
-        "rescuer_2": -0.03
+        "rescuer_0": 0.55,
+        "rescuer_1": 0.55,
+        "rescuer_2": 0.55
       }
     },
     {
@@ -5749,9 +5749,9 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
@@ -5766,16 +5766,16 @@
         {
           "id": "rescuer_2",
           "floor": 1,
-          "row": 5,
-          "col": 7,
+          "row": 4,
+          "col": 6,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": -0.09,
-        "rescuer_2": -0.09
+        "rescuer_0": -0.1,
+        "rescuer_1": -0.1,
+        "rescuer_2": 0.07
       }
     },
     {
@@ -5821,31 +5821,31 @@
           "id": "rescuer_0",
           "floor": 1,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 6,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
           "floor": 1,
-          "row": 4,
-          "col": 7,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.1,
-        "rescuer_1": 0.56,
-        "rescuer_2": 0.06
+        "rescuer_0": 0.56,
+        "rescuer_1": -0.09,
+        "rescuer_2": -0.1
       }
     },
     {
@@ -5889,14 +5889,6 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
-          "carrying": false,
-          "alive": true
-        },
-        {
-          "id": "rescuer_1",
           "floor": 0,
           "row": 5,
           "col": 6,
@@ -5904,18 +5896,26 @@
           "alive": true
         },
         {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 5,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        },
+        {
           "id": "rescuer_2",
           "floor": 1,
-          "row": 4,
+          "row": 5,
           "col": 6,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": -0.09,
-        "rescuer_2": -0.09
+        "rescuer_0": -0.09,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01
       }
     },
     {
@@ -5959,23 +5959,23 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
-          "carrying": false,
-          "alive": true
-        },
-        {
-          "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
           "col": 6,
           "carrying": false,
           "alive": true
         },
         {
+          "id": "rescuer_1",
+          "floor": 0,
+          "row": 5,
+          "col": 5,
+          "carrying": false,
+          "alive": true
+        },
+        {
           "id": "rescuer_2",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -5983,8 +5983,8 @@
         }
       ],
       "rewards": {
-        "rescuer_0": 0.06,
-        "rescuer_1": 0.55,
+        "rescuer_0": -0.03,
+        "rescuer_1": -0.02,
         "rescuer_2": -0.11
       }
     },
@@ -6029,15 +6029,15 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -6045,7 +6045,7 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 0,
+          "floor": 1,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -6053,9 +6053,9 @@
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": -0.01,
-        "rescuer_2": -0.09
+        "rescuer_0": -0.02,
+        "rescuer_1": 0.06,
+        "rescuer_2": 0.57
       }
     },
     {
@@ -6099,23 +6099,23 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 4,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -6123,9 +6123,9 @@
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_1": 0.06,
-        "rescuer_2": 0.56
+        "rescuer_0": -0.1,
+        "rescuer_1": -0.03,
+        "rescuer_2": -0.11
       }
     },
     {
@@ -6169,9 +6169,9 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
@@ -6179,13 +6179,13 @@
           "id": "rescuer_1",
           "floor": 1,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -6193,8 +6193,8 @@
         }
       ],
       "rewards": {
-        "rescuer_0": -0.11,
-        "rescuer_1": -0.03,
+        "rescuer_0": 0.06,
+        "rescuer_1": 0.57,
         "rescuer_2": -0.02
       }
     },
@@ -6239,23 +6239,23 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 4,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
+          "floor": 0,
           "row": 6,
           "col": 6,
           "carrying": false,
@@ -6263,8 +6263,8 @@
         }
       ],
       "rewards": {
-        "rescuer_0": 0.06,
-        "rescuer_1": -0.02,
+        "rescuer_0": -0.1,
+        "rescuer_1": -0.1,
         "rescuer_2": -0.1
       }
     },
@@ -6309,9 +6309,9 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
@@ -6325,17 +6325,17 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
+          "floor": 0,
           "row": 6,
-          "col": 6,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.1,
-        "rescuer_1": -0.1,
-        "rescuer_2": -0.02
+        "rescuer_0": 0.07,
+        "rescuer_1": 0.57,
+        "rescuer_2": -0.09
       }
     },
     {
@@ -6379,9 +6379,9 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
@@ -6395,17 +6395,17 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
+          "floor": 0,
           "row": 6,
-          "col": 6,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_1": 0.06,
-        "rescuer_2": -0.02
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.07,
+        "rescuer_2": -0.01
       }
     },
     {
@@ -6449,33 +6449,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
           "floor": 1,
-          "row": 4,
+          "row": 5,
           "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
+          "floor": 0,
           "row": 6,
-          "col": 6,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.06,
-        "rescuer_1": -0.02,
-        "rescuer_2": -0.02
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.09,
+        "rescuer_2": -0.01
       }
     },
     {
@@ -6519,9 +6519,9 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 4,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
@@ -6535,17 +6535,17 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 6,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_1": -0.11,
-        "rescuer_2": 0.05
+        "rescuer_0": -0.09,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01
       }
     },
     {
@@ -6589,9 +6589,9 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
@@ -6605,17 +6605,17 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 6,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.09,
-        "rescuer_1": -0.09,
-        "rescuer_2": -0.01
+        "rescuer_0": 0.05,
+        "rescuer_1": -0.11,
+        "rescuer_2": 0.06
       }
     },
     {
@@ -6661,15 +6661,15 @@
           "id": "rescuer_0",
           "floor": 1,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 6,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
@@ -6683,9 +6683,9 @@
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": 0.57,
-        "rescuer_2": -0.09
+        "rescuer_0": 0.57,
+        "rescuer_1": -0.09,
+        "rescuer_2": 0.07
       }
     },
     {
@@ -6729,9 +6729,9 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
@@ -6753,9 +6753,9 @@
         }
       ],
       "rewards": {
-        "rescuer_0": 0.07,
-        "rescuer_1": -0.09,
-        "rescuer_2": -0.09
+        "rescuer_0": -0.11,
+        "rescuer_1": 0.05,
+        "rescuer_2": -0.1
       }
     },
     {
@@ -6809,9 +6809,9 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 8,
+          "floor": 0,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
@@ -6833,9 +6833,9 @@
         }
       ],
       "rewards": {
-        "rescuer_0": 0.07,
+        "rescuer_0": -0.02,
         "rescuer_1": 0.57,
-        "rescuer_2": 0.07
+        "rescuer_2": 0.06
       }
     },
     {
@@ -6890,8 +6890,8 @@
         {
           "id": "rescuer_0",
           "floor": 1,
-          "row": 4,
-          "col": 8,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
@@ -6905,17 +6905,17 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_1": -0.03,
-        "rescuer_2": 0.55
+        "rescuer_0": 0.56,
+        "rescuer_1": -0.02,
+        "rescuer_2": -0.09
       }
     },
     {
@@ -6969,9 +6969,9 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 8,
+          "floor": 0,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
@@ -6985,17 +6985,17 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 4,
           "col": 7,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": -0.09,
-        "rescuer_2": 0.07
+        "rescuer_0": -0.11,
+        "rescuer_1": -0.11,
+        "rescuer_2": -0.1
       }
     },
     {
@@ -7049,32 +7049,32 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 8,
+          "floor": 0,
+          "row": 6,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 4,
           "col": 7,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_1": 0.56,
+        "rescuer_0": -0.1,
+        "rescuer_1": -0.1,
         "rescuer_2": -0.02
       }
     },
@@ -7129,33 +7129,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 8,
+          "floor": 0,
+          "row": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
           "floor": 0,
-          "row": 5,
+          "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
+          "floor": 0,
+          "row": 3,
           "col": 7,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.01,
-        "rescuer_1": -0.09,
-        "rescuer_2": 0.07
+        "rescuer_0": -0.1,
+        "rescuer_1": -0.02,
+        "rescuer_2": -0.1
       }
     },
     {
@@ -7209,15 +7209,15 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 6,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -7225,17 +7225,17 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
+          "floor": 0,
+          "row": 3,
           "col": 7,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.11,
-        "rescuer_1": 0.56,
-        "rescuer_2": -0.03
+        "rescuer_0": 0.06,
+        "rescuer_1": 0.06,
+        "rescuer_2": -0.02
       }
     },
     {
@@ -7289,15 +7289,15 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 4,
           "col": 6,
           "carrying": false,
@@ -7305,17 +7305,17 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 4,
           "col": 7,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.11,
-        "rescuer_1": 0.06,
-        "rescuer_2": -0.11
+        "rescuer_0": -0.1,
+        "rescuer_1": -0.1,
+        "rescuer_2": 0.06
       }
     },
     {
@@ -7369,32 +7369,32 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 4,
           "col": 7,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.05,
-        "rescuer_1": 0.05,
+        "rescuer_0": -0.02,
+        "rescuer_1": 0.06,
         "rescuer_2": -0.02
       }
     },
@@ -7449,33 +7449,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
           "floor": 1,
-          "row": 4,
-          "col": 7,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 4,
           "col": 7,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.11,
-        "rescuer_1": -0.02,
-        "rescuer_2": -0.03
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.57,
+        "rescuer_2": -0.01
       }
     },
     {
@@ -7529,33 +7529,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 4,
           "col": 7,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.03,
-        "rescuer_1": -0.02,
-        "rescuer_2": -0.03
+        "rescuer_0": -0.02,
+        "rescuer_1": -0.1,
+        "rescuer_2": -0.02
       }
     },
     {
@@ -7609,33 +7609,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 6,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 4,
           "col": 7,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.06,
-        "rescuer_1": -0.11,
-        "rescuer_2": -0.03
+        "rescuer_0": -0.02,
+        "rescuer_1": -0.1,
+        "rescuer_2": -0.02
       }
     },
     {
@@ -7689,32 +7689,32 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 4,
           "col": 7,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.03,
-        "rescuer_1": 0.05,
+        "rescuer_0": -0.02,
+        "rescuer_1": 0.06,
         "rescuer_2": -0.02
       }
     },
@@ -7769,33 +7769,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 5,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 4,
           "col": 7,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.11,
-        "rescuer_1": -0.11,
-        "rescuer_2": -0.03
+        "rescuer_0": -0.02,
+        "rescuer_1": -0.1,
+        "rescuer_2": -0.02
       }
     },
     {
@@ -7849,33 +7849,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 8,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
+        "rescuer_0": -0.1,
         "rescuer_1": 0.06,
-        "rescuer_2": -0.1
+        "rescuer_2": 0.06
       }
     },
     {
@@ -7939,8 +7939,8 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 8,
           "col": 7,
           "carrying": false,
           "alive": true
@@ -7949,23 +7949,23 @@
           "id": "rescuer_1",
           "floor": 1,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
+          "floor": 0,
+          "row": 3,
           "col": 6,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.03,
-        "rescuer_1": -0.11,
-        "rescuer_2": 0.06
+        "rescuer_0": -0.09,
+        "rescuer_1": 0.57,
+        "rescuer_2": -0.09
       }
     },
     {
@@ -8029,24 +8029,24 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 8,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
+          "floor": 0,
+          "row": 3,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -8054,7 +8054,7 @@
       ],
       "rewards": {
         "rescuer_0": 0.06,
-        "rescuer_1": -0.02,
+        "rescuer_1": -0.1,
         "rescuer_2": -0.02
       }
     },
@@ -8119,33 +8119,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
+          "floor": 0,
+          "row": 7,
           "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
+          "floor": 0,
           "row": 4,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.1,
-        "rescuer_1": 0.06,
-        "rescuer_2": -0.1
+        "rescuer_0": 0.06,
+        "rescuer_1": -0.11,
+        "rescuer_2": 0.05
       }
     },
     {
@@ -8209,24 +8209,24 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 8,
           "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 1,
-          "row": 4,
+          "floor": 0,
+          "row": 5,
           "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
+          "floor": 0,
+          "row": 5,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -8234,7 +8234,7 @@
       ],
       "rewards": {
         "rescuer_0": -0.1,
-        "rescuer_1": -0.11,
+        "rescuer_1": 0.05,
         "rescuer_2": 0.05
       }
     },
@@ -8300,15 +8300,15 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 5,
-          "col": 6,
+          "row": 8,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
           "floor": 1,
-          "row": 4,
+          "row": 5,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -8316,16 +8316,16 @@
         {
           "id": "rescuer_2",
           "floor": 1,
-          "row": 4,
-          "col": 7,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
         "rescuer_0": -0.09,
-        "rescuer_1": -0.01,
-        "rescuer_2": 0.07
+        "rescuer_1": 0.56,
+        "rescuer_2": 0.56
       }
     },
     {
@@ -8389,6 +8389,14 @@
       "rescuers": [
         {
           "id": "rescuer_0",
+          "floor": 0,
+          "row": 8,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
           "floor": 1,
           "row": 5,
           "col": 6,
@@ -8396,26 +8404,18 @@
           "alive": true
         },
         {
-          "id": "rescuer_1",
-          "floor": 1,
-          "row": 4,
-          "col": 6,
-          "carrying": false,
-          "alive": true
-        },
-        {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.56,
-        "rescuer_1": -0.02,
-        "rescuer_2": -0.02
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.09
       }
     },
     {
@@ -8480,32 +8480,32 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 5,
-          "col": 6,
+          "row": 8,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
           "floor": 1,
-          "row": 4,
+          "row": 5,
           "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
+          "floor": 0,
           "row": 4,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.09,
+        "rescuer_0": -0.01,
         "rescuer_1": -0.01,
-        "rescuer_2": -0.01
+        "rescuer_2": -0.09
       }
     },
     {
@@ -8569,33 +8569,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 8,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
           "floor": 1,
-          "row": 5,
+          "row": 6,
           "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.55,
-        "rescuer_1": -0.11,
-        "rescuer_2": -0.02
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.09,
+        "rescuer_2": 0.07
       }
     },
     {
@@ -8660,15 +8660,15 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 5,
-          "col": 6,
+          "row": 8,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
           "floor": 1,
-          "row": 5,
+          "row": 6,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -8676,16 +8676,16 @@
         {
           "id": "rescuer_2",
           "floor": 1,
-          "row": 4,
-          "col": 7,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.09,
+        "rescuer_0": -0.01,
         "rescuer_1": -0.01,
-        "rescuer_2": -0.01
+        "rescuer_2": 0.57
       }
     },
     {
@@ -8749,15 +8749,15 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 8,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 0,
+          "floor": 1,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -8765,16 +8765,16 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
+          "floor": 0,
+          "row": 5,
           "col": 6,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.57,
-        "rescuer_1": -0.09,
+        "rescuer_0": -0.01,
+        "rescuer_1": 0.07,
         "rescuer_2": -0.09
       }
     },
@@ -8840,22 +8840,22 @@
         {
           "id": "rescuer_0",
           "floor": 0,
+          "row": 8,
+          "col": 7,
+          "carrying": false,
+          "alive": true
+        },
+        {
+          "id": "rescuer_1",
+          "floor": 1,
           "row": 5,
           "col": 6,
           "carrying": false,
           "alive": true
         },
         {
-          "id": "rescuer_1",
-          "floor": 0,
-          "row": 5,
-          "col": 5,
-          "carrying": false,
-          "alive": true
-        },
-        {
           "id": "rescuer_2",
-          "floor": 1,
+          "floor": 0,
           "row": 4,
           "col": 6,
           "carrying": false,
@@ -8863,9 +8863,9 @@
         }
       ],
       "rewards": {
-        "rescuer_0": -0.09,
-        "rescuer_1": -0.09,
-        "rescuer_2": -0.01
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.09
       }
     },
     {
@@ -8929,33 +8929,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 7,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 0,
+          "floor": 1,
           "row": 6,
-          "col": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
+          "floor": 0,
           "row": 4,
-          "col": 6,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.57,
+        "rescuer_0": 0.07,
         "rescuer_1": -0.09,
-        "rescuer_2": -0.01
+        "rescuer_2": -0.09
       }
     },
     {
@@ -9020,14 +9020,14 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 5,
-          "col": 6,
+          "row": 7,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 0,
+          "floor": 1,
           "row": 6,
           "col": 6,
           "carrying": false,
@@ -9035,16 +9035,16 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.09,
-        "rescuer_1": 0.07,
+        "rescuer_0": -0.01,
+        "rescuer_1": -0.01,
         "rescuer_2": -0.09
       }
     },
@@ -9109,15 +9109,15 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 7,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 0,
+          "floor": 1,
           "row": 6,
           "col": 6,
           "carrying": false,
@@ -9125,17 +9125,17 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.57,
+        "rescuer_0": -0.01,
         "rescuer_1": -0.01,
-        "rescuer_2": 0.07
+        "rescuer_2": -0.01
       }
     },
     {
@@ -9199,33 +9199,33 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 7,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 0,
+          "floor": 1,
           "row": 6,
-          "col": 7,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
         "rescuer_0": -0.01,
-        "rescuer_1": -0.09,
-        "rescuer_2": 0.07
+        "rescuer_1": -0.01,
+        "rescuer_2": -0.01
       }
     },
     {
@@ -9289,14 +9289,6 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
-          "carrying": false,
-          "alive": true
-        },
-        {
-          "id": "rescuer_1",
           "floor": 0,
           "row": 7,
           "col": 7,
@@ -9304,18 +9296,26 @@
           "alive": true
         },
         {
-          "id": "rescuer_2",
+          "id": "rescuer_1",
           "floor": 1,
-          "row": 4,
+          "row": 7,
           "col": 6,
+          "carrying": false,
+          "alive": false
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
         "rescuer_0": -0.01,
-        "rescuer_1": -0.09,
-        "rescuer_2": -0.09
+        "rescuer_1": -2.01,
+        "rescuer_2": -0.01
       }
     },
     {
@@ -9379,32 +9379,31 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
-          "carrying": false,
-          "alive": true
-        },
-        {
-          "id": "rescuer_1",
           "floor": 0,
-          "row": 6,
+          "row": 7,
           "col": 7,
           "carrying": false,
           "alive": true
         },
         {
-          "id": "rescuer_2",
+          "id": "rescuer_1",
           "floor": 1,
-          "row": 4,
+          "row": 7,
           "col": 6,
+          "carrying": false,
+          "alive": false
+        },
+        {
+          "id": "rescuer_2",
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
         "rescuer_0": -0.01,
-        "rescuer_1": 0.07,
         "rescuer_2": -0.01
       }
     },
@@ -9469,33 +9468,32 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 7,
           "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 0,
-          "row": 6,
-          "col": 7,
+          "floor": 1,
+          "row": 7,
+          "col": 6,
           "carrying": false,
-          "alive": true
+          "alive": false
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.07,
-        "rescuer_1": -0.01,
-        "rescuer_2": 0.07
+        "rescuer_0": -0.01,
+        "rescuer_2": -0.01
       }
     },
     {
@@ -9559,32 +9557,31 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 7,
           "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 0,
-          "row": 6,
-          "col": 7,
+          "floor": 1,
+          "row": 7,
+          "col": 6,
           "carrying": false,
-          "alive": true
+          "alive": false
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
         "rescuer_0": -0.01,
-        "rescuer_1": -0.01,
         "rescuer_2": -0.01
       }
     },
@@ -9649,33 +9646,32 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 6,
           "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 0,
-          "row": 6,
+          "floor": 1,
+          "row": 7,
           "col": 6,
           "carrying": false,
-          "alive": true
+          "alive": false
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_1": 0.07,
-        "rescuer_2": -0.1
+        "rescuer_0": 0.07,
+        "rescuer_2": -0.01
       }
     },
     {
@@ -9739,33 +9735,32 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
+          "floor": 0,
+          "row": 6,
           "col": 7,
           "carrying": false,
           "alive": true
         },
         {
           "id": "rescuer_1",
-          "floor": 0,
-          "row": 5,
+          "floor": 1,
+          "row": 7,
           "col": 6,
           "carrying": false,
-          "alive": true
+          "alive": false
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 4,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.07,
-        "rescuer_1": 0.07,
-        "rescuer_2": -0.01
+        "rescuer_0": -0.01,
+        "rescuer_2": 0.07
       }
     },
     {
@@ -9829,8 +9824,8 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 6,
           "col": 7,
           "carrying": false,
           "alive": true
@@ -9838,24 +9833,23 @@
         {
           "id": "rescuer_1",
           "floor": 1,
-          "row": 5,
+          "row": 7,
           "col": 6,
           "carrying": false,
-          "alive": true
+          "alive": false
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
+          "floor": 0,
           "row": 4,
-          "col": 7,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.1,
-        "rescuer_1": 0.56,
-        "rescuer_2": 0.06
+        "rescuer_0": -0.01,
+        "rescuer_2": -0.01
       }
     },
     {
@@ -9919,8 +9913,8 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 6,
           "col": 7,
           "carrying": false,
           "alive": true
@@ -9928,24 +9922,23 @@
         {
           "id": "rescuer_1",
           "floor": 1,
-          "row": 6,
+          "row": 7,
           "col": 6,
           "carrying": false,
-          "alive": true
+          "alive": false
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_1": -0.1,
-        "rescuer_2": -0.02
+        "rescuer_0": -0.01,
+        "rescuer_2": -0.09
       }
     },
     {
@@ -10009,8 +10002,8 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
+          "floor": 0,
+          "row": 6,
           "col": 7,
           "carrying": false,
           "alive": true
@@ -10018,24 +10011,23 @@
         {
           "id": "rescuer_1",
           "floor": 1,
-          "row": 6,
+          "row": 7,
           "col": 6,
           "carrying": false,
-          "alive": true
+          "alive": false
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.05,
-        "rescuer_1": -0.02,
-        "rescuer_2": -0.03
+        "rescuer_0": -0.01,
+        "rescuer_2": -0.01
       }
     },
     {
@@ -10099,8 +10091,8 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 6,
           "col": 7,
           "carrying": false,
           "alive": true
@@ -10108,24 +10100,23 @@
         {
           "id": "rescuer_1",
           "floor": 1,
-          "row": 6,
+          "row": 7,
           "col": 6,
           "carrying": false,
-          "alive": true
+          "alive": false
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.1,
-        "rescuer_1": -0.02,
-        "rescuer_2": -0.02
+        "rescuer_0": -0.01,
+        "rescuer_2": -0.01
       }
     },
     {
@@ -10189,8 +10180,8 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 6,
           "col": 7,
           "carrying": false,
           "alive": true
@@ -10198,24 +10189,23 @@
         {
           "id": "rescuer_1",
           "floor": 1,
-          "row": 6,
+          "row": 7,
           "col": 6,
           "carrying": false,
-          "alive": true
+          "alive": false
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 4,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.03,
-        "rescuer_1": -0.02,
-        "rescuer_2": -0.11
+        "rescuer_0": -0.01,
+        "rescuer_2": 0.07
       }
     },
     {
@@ -10279,8 +10269,8 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
+          "floor": 0,
+          "row": 6,
           "col": 7,
           "carrying": false,
           "alive": true
@@ -10295,17 +10285,16 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 3,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.06,
-        "rescuer_1": -2.01,
-        "rescuer_2": 0.06
+        "rescuer_0": -0.01,
+        "rescuer_2": -0.09
       }
     },
     {
@@ -10369,8 +10358,8 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
+          "floor": 0,
+          "row": 6,
           "col": 7,
           "carrying": false,
           "alive": true
@@ -10385,16 +10374,16 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 2,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_2": -0.02
+        "rescuer_0": -0.01,
+        "rescuer_2": -0.09
       }
     },
     {
@@ -10458,9 +10447,9 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 6,
+          "floor": 0,
+          "row": 6,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
@@ -10474,16 +10463,16 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 2,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.09,
-        "rescuer_2": -0.09
+        "rescuer_0": -0.01,
+        "rescuer_2": -0.01
       }
     },
     {
@@ -10547,9 +10536,9 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 6,
+          "floor": 0,
+          "row": 6,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
@@ -10563,9 +10552,9 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 2,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
@@ -10636,9 +10625,9 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 4,
-          "col": 6,
+          "floor": 0,
+          "row": 6,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
@@ -10652,16 +10641,16 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 1,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
         "rescuer_0": -0.01,
-        "rescuer_2": 0.07
+        "rescuer_2": -0.09
       }
     },
     {
@@ -10725,9 +10714,9 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 6,
+          "col": 8,
           "carrying": false,
           "alive": true
         },
@@ -10741,16 +10730,16 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 6,
+          "floor": 0,
+          "row": 2,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
         "rescuer_0": -0.09,
-        "rescuer_2": -0.09
+        "rescuer_2": 0.07
       }
     },
     {
@@ -10814,9 +10803,9 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 6,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
@@ -10830,16 +10819,16 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 2,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.02,
-        "rescuer_2": -0.1
+        "rescuer_0": 0.07,
+        "rescuer_2": -0.01
       }
     },
     {
@@ -10904,8 +10893,8 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 5,
-          "col": 6,
+          "row": 6,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
@@ -10919,15 +10908,15 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 6,
+          "floor": 0,
+          "row": 2,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.09,
+        "rescuer_0": -0.01,
         "rescuer_2": -0.01
       }
     },
@@ -10993,8 +10982,8 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 5,
-          "col": 5,
+          "row": 6,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
@@ -11008,16 +10997,16 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 2,
+          "col": 4,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.09,
-        "rescuer_2": 0.07
+        "rescuer_0": -0.01,
+        "rescuer_2": -0.09
       }
     },
     {
@@ -11082,8 +11071,8 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 4,
-          "col": 5,
+          "row": 6,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
@@ -11097,16 +11086,16 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 2,
+          "col": 4,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": -0.09,
-        "rescuer_2": 0.07
+        "rescuer_0": -0.01,
+        "rescuer_2": -0.01
       }
     },
     {
@@ -11171,8 +11160,8 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 4,
-          "col": 5,
+          "row": 6,
+          "col": 7,
           "carrying": false,
           "alive": true
         },
@@ -11186,9 +11175,9 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 2,
+          "col": 4,
           "carrying": false,
           "alive": true
         }
@@ -11260,8 +11249,8 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 5,
-          "col": 5,
+          "row": 6,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
@@ -11275,16 +11264,16 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 2,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
         "rescuer_0": 0.07,
-        "rescuer_2": -0.01
+        "rescuer_2": 0.07
       }
     },
     {
@@ -11349,7 +11338,7 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 5,
+          "row": 6,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -11364,15 +11353,15 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 2,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.07,
+        "rescuer_0": -0.01,
         "rescuer_2": -0.01
       }
     },
@@ -11438,7 +11427,7 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 5,
+          "row": 6,
           "col": 5,
           "carrying": false,
           "alive": true
@@ -11453,16 +11442,16 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 2,
+          "col": 4,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
         "rescuer_0": -0.09,
-        "rescuer_2": -0.01
+        "rescuer_2": -0.09
       }
     },
     {
@@ -11527,7 +11516,7 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 5,
+          "row": 6,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -11542,9 +11531,9 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 2,
+          "col": 4,
           "carrying": false,
           "alive": true
         }
@@ -11625,8 +11614,8 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
-          "row": 5,
+          "floor": 0,
+          "row": 6,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -11641,15 +11630,15 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 2,
+          "col": 4,
           "carrying": false,
           "alive": true
         }
       ],
       "rewards": {
-        "rescuer_0": 0.57,
+        "rescuer_0": -0.01,
         "rescuer_2": -0.01
       }
     },
@@ -11724,7 +11713,7 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 1,
+          "floor": 0,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -11740,9 +11729,9 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 2,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
@@ -11823,7 +11812,7 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 0,
+          "floor": 1,
           "row": 5,
           "col": 6,
           "carrying": false,
@@ -11839,9 +11828,9 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 1,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
@@ -11922,8 +11911,8 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 0,
-          "row": 6,
+          "floor": 1,
+          "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -11938,9 +11927,9 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 1,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
@@ -12021,9 +12010,9 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 0,
-          "row": 6,
-          "col": 5,
+          "floor": 1,
+          "row": 4,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
@@ -12037,9 +12026,9 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 1,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
@@ -12120,9 +12109,9 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 0,
-          "row": 7,
-          "col": 5,
+          "floor": 1,
+          "row": 4,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
@@ -12136,9 +12125,9 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 1,
+          "col": 6,
           "carrying": false,
           "alive": true
         }
@@ -12219,8 +12208,8 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 0,
-          "row": 7,
+          "floor": 1,
+          "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -12235,9 +12224,9 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 1,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
@@ -12318,9 +12307,9 @@
       "rescuers": [
         {
           "id": "rescuer_0",
-          "floor": 0,
-          "row": 7,
-          "col": 7,
+          "floor": 1,
+          "row": 5,
+          "col": 6,
           "carrying": false,
           "alive": true
         },
@@ -12334,9 +12323,9 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 1,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
@@ -12418,7 +12407,7 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 7,
+          "row": 5,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -12433,9 +12422,9 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 1,
+          "col": 6,
           "carrying": false,
           "alive": true
         }
@@ -12517,7 +12506,7 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 7,
+          "row": 4,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -12532,9 +12521,9 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 4,
-          "col": 7,
+          "floor": 0,
+          "row": 1,
+          "col": 5,
           "carrying": false,
           "alive": true
         }
@@ -12616,7 +12605,7 @@
         {
           "id": "rescuer_0",
           "floor": 0,
-          "row": 7,
+          "row": 5,
           "col": 6,
           "carrying": false,
           "alive": true
@@ -12631,9 +12620,9 @@
         },
         {
           "id": "rescuer_2",
-          "floor": 1,
-          "row": 5,
-          "col": 7,
+          "floor": 0,
+          "row": 1,
+          "col": 5,
           "carrying": false,
           "alive": true
         }

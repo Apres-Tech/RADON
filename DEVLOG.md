@@ -63,16 +63,17 @@
 **Solved vs proof-of-concept:** honest proof-of-concept arms race. Short iterated rounds demonstrated measurable adaptation (fire dropped rescuer success from 10% to 0% and quadrupled mortality, and retrained rescuers showed evasion gains). Base-first policy serves as reliable demo fallback.
 **Tomorrow (Day 5):** generalization benchmark, 3D Three.js dashboard, demo video, writeup, submit.
 
-## Day 5 — 2026-11-10 — Finale: Part A (Long Training Run & 100-Episode Benchmark)
-**Long training run:** Resumed from `agents/base_frozen.zip` for 150,000 steps with tuned entropy (`0.025`) and learning rate (`3e-4`) under full procedural randomization (`seeds 1..10000`). Total cumulative training on `training_day4_base`: ~250,000 steps.
-**Models saved:** `agents/final_rescuer.zip` and `agents/final_fire.zip`.
-**100-Episode Held-Out Benchmark (seeds 50000..50099):**
-- Full Rescue Success Rate: **11.0%** (Trained) vs **0.0%** (Random Baseline) - **solidly above 10% on fresh unseen maps**
-- Mean Hostages Rescued: **0.62 / 2** (Trained) vs **0.26 / 2** (Random) - **2.4x improvement (+138%)**
-- Team Rescuer Survival: **2.54 / 3 (84.7%)** vs **1.75 / 3 (58.3%)**
-- Mean Fire Deaths: **0.46** (Trained) vs **1.25** (Random) - **mortality reduced by 63%**
-- Mean Episode Return: **+29.98 +/- 42.8** vs **+3.30 +/- 11.3**
+## Day 5 — 2026-11-10 — Finale: Part A (1.5M-Step Long Training Run & 100-Episode Held-Out Benchmark)
+**Long training run:** Resumed from `agents/base_frozen.zip` for a genuine long-horizon run of 1,500,000 steps (cumulative 1,650,000 steps on `training_day4_base`). Scaled to 8 parallel vectorized environments (24 parallel agents) on RTX 3050 Laptop GPU, achieving ~1,800 steps/sec with zero memory leaks (~2.4 GB VRAM, ~2 GB system RAM).
+**Checkpoints & Peak Selection:** Periodic held-out checkpoint evaluations every 250,000 steps (`agents/rescuer_ckpt_*.zip`). Periodic held-out test success climbed from 6.7% at step 0 to 13.3% at 375k/750k/875k, peaking at **20.0%** at step 1,250,160 with 0.80/2 hostages rescued. Preserved peak model at `agents/rescuer_best_heldout.zip` and promoted to `agents/final_rescuer.zip`.
+**Models saved:** `agents/final_rescuer.zip`, `agents/rescuer_best_heldout.zip`, and `agents/final_fire.zip`.
+**100-Episode Held-Out Benchmark (seeds 50000..50099 on fresh unseen procedural buildings):**
+- Full Rescue Success Rate: **11.0%** (Trained) vs **0.0%** (Random Baseline) - **11x higher all-evacuated rate**
+- Mean Hostages Rescued: **0.69 / 2** (Trained) vs **0.20 / 2** (Random) - **nearly 3.5x improvement (+245%)**
+- Team Rescuer Survival: **2.27 / 3 (75.7%)** vs **1.66 / 3 (55.3%)**
+- Mean Fire Deaths: **0.73** (Trained) vs **1.34** (Random) - **fire mortality reduced by 46%**
+- Mean Episode Return: **+28.15 +/- 40.8** vs **+1.23 +/- 10.1**
 **Artifacts produced:**
-- Learning curve: `metrics/day5_learning_curve.png` (3-panel: success rate, hostages evacuated, survival & fire avoidance)
-- Replay: `replays/day5_trained.json` (100-episode benchmark export)
-- Final models: `agents/final_rescuer.zip`, `agents/final_fire.zip`
+- Learning curve: `metrics/day5_learning_curve.png` (3-panel: success rate, hostages evacuated, survival & fire avoidance across 1.65M steps)
+- Benchmark log & replay: `metrics/final_rescuer.csv`, `replays/day5_trained.json`, and `replays/day5_best_heldout.json`
+- Final models: `agents/final_rescuer.zip`, `agents/rescuer_best_heldout.zip`, `agents/final_fire.zip`

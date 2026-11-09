@@ -13,6 +13,9 @@ htmlcov/
 dist/
 build/
 
+# Intermediate training checkpoints
+agents/rescuer_ckpt_*.zip
+
 # IDE & OS
 .vscode/
 .idea/

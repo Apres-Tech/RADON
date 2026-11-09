@@ -25,8 +25,9 @@ def plot_learning_curves(
 
     is_sanity = "sanity" in str(csv_path).lower()
     is_day3 = "day3" in str(csv_path).lower() or "floor" in str(csv_path).lower()
-    max_hostages = 1 if is_sanity else (4 if is_day3 else 3)
-    max_rescuers = 2 if is_sanity else 4
+    is_day4_or_5 = any(k in str(csv_path).lower() for k in ["day4", "day5", "final", "adversary"])
+    max_hostages = 1 if is_sanity else (2 if is_day4_or_5 else (4 if is_day3 else 3))
+    max_rescuers = 2 if is_sanity else (3 if is_day4_or_5 else 4)
 
     num_panels = 3 if has_survival and has_generalization else 2
     fig_width = 20 if num_panels == 3 else 15
