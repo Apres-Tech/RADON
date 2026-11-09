@@ -21,13 +21,20 @@ def plot_learning_curves(
     timesteps = df["timestep"].values
 
     has_generalization = "train_success" in df.columns and "test_success" in df.columns
+    has_survival = "mean_rescuers_surviving" in df.columns
 
     is_sanity = "sanity" in str(csv_path).lower()
     is_day3 = "day3" in str(csv_path).lower() or "floor" in str(csv_path).lower()
     max_hostages = 1 if is_sanity else (4 if is_day3 else 3)
+    max_rescuers = 2 if is_sanity else 4
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 5.8), dpi=150)
+    num_panels = 3 if has_survival and has_generalization else 2
+    fig_width = 20 if num_panels == 3 else 15
+    fig, axes = plt.subplots(1, num_panels, figsize=(fig_width, 5.8), dpi=150)
     plt.subplots_adjust(wspace=0.28)
+
+    ax1, ax2 = axes[0], axes[1]
+    ax3 = axes[2] if num_panels == 3 else None
 
     # Style
     plt.rcParams["font.family"] = "sans-serif"
@@ -62,6 +69,26 @@ def plot_learning_curves(
         ax2.grid(True, **grid_kwargs)
         ax2.set_title("Hostages Evacuated: Train vs Held-Out Test", fontsize=12, fontweight="bold", pad=10)
         ax2.legend(loc="lower right", framealpha=0.9)
+
+        # --- Panel 3: Survival Rate & Fire Avoidance ---
+        if ax3 is not None:
+            surviving = df["mean_rescuers_surviving"].values
+            ax3.plot(timesteps, surviving, color="#00838F", linewidth=2.2, marker="^", markersize=4, label=f"Surviving Rescuers (/{max_rescuers})")
+            ax3.axhline(float(max_rescuers), color="#80CBC4", linestyle=":", label=f"Team Size ({max_rescuers})")
+            ax3.set_xlabel("Environment Timesteps", fontsize=11, fontweight="bold")
+            ax3.set_ylabel(f"Surviving Rescuers (out of {max_rescuers})", color="#00838F", fontsize=11, fontweight="bold")
+            ax3.set_ylim(-0.05, max_rescuers * 1.15)
+            ax3.grid(True, **grid_kwargs)
+
+            if "fire_deaths" in df.columns:
+                fire_deaths = df["fire_deaths"].values
+                ax3_twin = ax3.twinx()
+                ax3_twin.plot(timesteps, fire_deaths, color="#C62828", linewidth=2.0, linestyle="--", marker="x", markersize=4, label="Fire Deaths")
+                ax3_twin.set_ylabel("Fire Deaths", color="#C62828", fontsize=11, fontweight="bold")
+                ax3_twin.set_ylim(-0.1, max(3.0, max(fire_deaths) * 1.2 if len(fire_deaths) else 3.0))
+
+            ax3.set_title("Team Survival & Hazard Avoidance", fontsize=12, fontweight="bold", pad=10)
+            ax3.legend(loc="lower left", framealpha=0.9)
 
     else:
         # Backward compatibility for legacy single-curve CSVs

@@ -14,7 +14,7 @@ from env.tiles import Action, Tile
 
 def watch_episode(
     model_path: str | Path | None = None,
-    preset: str = "training_day2",
+    preset: str = "training_day3",
     seed: int = 42,
     deterministic: bool = False,
     delay: float = 0.1,
@@ -23,6 +23,8 @@ def watch_episode(
     """Runs a single episode and displays ASCII rendering and agent diagnostics at each step."""
     if preset == "sanity":
         config = EnvConfig.sanity(seed=seed)
+    elif preset == "training_day3":
+        config = EnvConfig.training_day3(seed=seed)
     else:
         config = EnvConfig.training_day2(seed=seed)
 
@@ -96,7 +98,7 @@ def watch_episode(
             r = env.rescuers[aid]
             c_tag = "CARRYING" if r.carrying else "free"
             a_tag = "ALIVE" if r.alive else "DEAD"
-            status_strs.append(f"{aid}: ({r.row},{r.col}) [{a_tag}, {c_tag}, rew={total_rewards[aid]:+.1f}]")
+            status_strs.append(f"{aid}: F{r.floor}({r.row},{r.col}) [{a_tag}, {c_tag}, rew={total_rewards[aid]:+.1f}]")
         print("  " + " | ".join(status_strs[:2]))
         if len(status_strs) > 2:
             print("  " + " | ".join(status_strs[2:]))
@@ -113,6 +115,7 @@ def watch_episode(
     print(f"  Result:              {'ALL RESCUED (SUCCESS!)' if all_evacuated else 'INCOMPLETE'}")
     print(f"  Hostages Rescued:    {rescued_total} / {config.n_hostages}")
     print(f"  Rescuers Surviving:  {surviving_total} / {config.n_rescuers}")
+    print(f"  Fire Deaths:         {env.fire_deaths}")
     print(f"  Total Return:        {sum(total_rewards.values()):+.2f}")
     print("=" * 65)
     env.close()
@@ -121,7 +124,7 @@ def watch_episode(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Watch RADON episode in ASCII")
     parser.add_argument("--model-path", type=str, default=None, help="Model checkpoint path")
-    parser.add_argument("--preset", type=str, default="training_day2", choices=["training_day2", "sanity"])
+    parser.add_argument("--preset", type=str, default="training_day3", choices=["training_day3", "training_day2", "sanity"])
     parser.add_argument("--seed", type=int, default=42, help="Map seed")
     parser.add_argument("--deterministic", action="store_true", help="Deterministic policy")
     parser.add_argument("--delay", type=float, default=0.05, help="Delay between steps in seconds")

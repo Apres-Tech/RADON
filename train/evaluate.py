@@ -26,6 +26,7 @@ def run_episodes(
     rescued_counts = []
     successes = []
     surviving_counts = []
+    fire_deaths_counts = []
     episode_lengths = []
 
     for ep_idx in range(num_episodes):
@@ -62,11 +63,13 @@ def run_episodes(
         rescued = sum(1 for h in env.hostages if h.rescued)
         success = 1.0 if rescued == env.config.n_hostages else 0.0
         surviving = sum(1 for r in env.rescuers.values() if r.alive)
+        f_deaths = getattr(env, "fire_deaths", env.config.n_rescuers - surviving)
 
         returns.append(ep_return)
         rescued_counts.append(rescued)
         successes.append(success)
         surviving_counts.append(surviving)
+        fire_deaths_counts.append(f_deaths)
         episode_lengths.append(env.current_step)
 
     return {
@@ -75,6 +78,7 @@ def run_episodes(
         "mean_rescued": float(np.mean(rescued_counts)),
         "success_rate": float(np.mean(successes)),
         "mean_surviving": float(np.mean(surviving_counts)),
+        "mean_fire_deaths": float(np.mean(fire_deaths_counts)),
         "mean_length": float(np.mean(episode_lengths)),
     }
 
@@ -84,11 +88,18 @@ def compare_and_report(
     num_episodes: int = 100,
     base_seed: int = 42,
     deterministic: bool = False,
-    replay_out: Path | str = "replays/day2_trained.json",
+    replay_out: Path | str = "replays/day3_trained.json",
     vary_seeds: bool = False,
+    preset: str = "training_day3",
 ):
-    """Loads trained model, evaluates against random policy, prints table, exports replay."""
-    config = EnvConfig.training_day2(seed=base_seed)
+    """Loads trained model, evaluates against random baseline, prints table, exports replay."""
+    if preset == "sanity":
+        config = EnvConfig.sanity(seed=base_seed)
+    elif preset == "training_day3":
+        config = EnvConfig.training_day3(seed=base_seed)
+    else:
+        config = EnvConfig.training_day2(seed=base_seed)
+
     env = RadonRescueEnv(config=config)
 
     # 1. Evaluate Random Policy
@@ -121,17 +132,19 @@ def compare_and_report(
     env.close()
 
     # 3. Print Side-by-Side Comparison Table
+    max_h = config.n_hostages
     print("\n" + "=" * 76)
-    print(f"  RADON Day 2 Policy Evaluation Benchmark ({num_episodes} Episodes)")
+    print(f"  RADON Day 3 Policy Evaluation Benchmark ({num_episodes} Episodes)")
     print("=" * 76)
-    header = f"{'Metric':<32} | {'Random Baseline':<18} | {'Trained PPO (Day 2)':<18}"
+    header = f"{'Metric':<32} | {'Random Baseline':<18} | {'Trained PPO (Day 3)':<18}"
     print(header)
     print("-" * 76)
     rows = [
-        ("Mean Hostages Rescued (/3)", f"{random_metrics['mean_rescued']:4.2f} / 3", f"{trained_metrics['mean_rescued']:4.2f} / 3"),
+        (f"Mean Hostages Rescued (/{max_h})", f"{random_metrics['mean_rescued']:4.2f} / {max_h}", f"{trained_metrics['mean_rescued']:4.2f} / {max_h}"),
         ("Success Rate (All Rescued)", f"{random_metrics['success_rate']*100:5.1f}%", f"{trained_metrics['success_rate']*100:5.1f}%"),
         ("Mean Episode Return", f"{random_metrics['mean_return']:+7.2f} +/- {random_metrics['std_return']:.1f}", f"{trained_metrics['mean_return']:+7.2f} +/- {trained_metrics['std_return']:.1f}"),
-        ("Mean Rescuers Surviving (/4)", f"{random_metrics['mean_surviving']:4.2f} / 4", f"{trained_metrics['mean_surviving']:4.2f} / 4"),
+        (f"Mean Rescuers Surviving (/{config.n_rescuers})", f"{random_metrics['mean_surviving']:4.2f} / {config.n_rescuers}", f"{trained_metrics['mean_surviving']:4.2f} / {config.n_rescuers}"),
+        ("Mean Fire Deaths", f"{random_metrics['mean_fire_deaths']:4.2f}", f"{trained_metrics['mean_fire_deaths']:4.2f}"),
         ("Mean Episode Length (steps)", f"{random_metrics['mean_length']:5.1f} steps", f"{trained_metrics['mean_length']:5.1f} steps"),
     ]
     for label, r_val, t_val in rows:
@@ -151,12 +164,19 @@ def compare_and_report(
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Evaluate RADON Day 2 Policy")
+    parser = argparse.ArgumentParser(description="Evaluate RADON Day 3 Policy")
     parser.add_argument(
         "--model-path",
         type=str,
-        default="agents/ppo_day2_rescue_team.zip",
+        default="agents/ppo_day3_two_floors.zip",
         help="Path to saved model checkpoint",
+    )
+    parser.add_argument(
+        "--preset",
+        type=str,
+        default="training_day3",
+        choices=["training_day3", "training_day2", "sanity"],
+        help="Environment preset (default: training_day3)",
     )
     parser.add_argument(
         "--episodes",
@@ -167,8 +187,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--base-seed",
         type=int,
-        default=42,
-        help="Base seed for evaluation episodes (default: 42)",
+        default=50000,
+        help="Base seed for evaluation episodes (default: 50000 held-out)",
     )
     parser.add_argument(
         "--deterministic",
@@ -183,7 +203,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--replay-out",
         type=str,
-        default="replays/day2_5_trained.json",
+        default="replays/day3_trained.json",
         help="Path for exported replay JSON",
     )
     args = parser.parse_args()
@@ -194,4 +214,5 @@ if __name__ == "__main__":
         deterministic=args.deterministic,
         replay_out=args.replay_out,
         vary_seeds=args.fresh_maps,
+        preset=args.preset,
     )
