@@ -51,7 +51,7 @@
 - Visual inspector: `train/watch.py` supporting multi-floor ASCII views, live floor coordinates (`F0`/`F1`), and hazard metrics.
 **Tomorrow (Day 4):** Adversary fire modeling, dynamic hazard generation / self-play, and heterogeneous specialist rescuer roles.
 
-## Day 4 — 2026-11-09 — Self-Play Adaptive Fire Adversary
+## Day 4 — 2026-11-10 — Self-Play Adaptive Fire Adversary
 **Base-first:** day4_base config (2 floors, 10x10, 3 rescuers, 2 hostages), held-out success 10.0% (mean rescued 0.57/2, survival 85.7%).
   Frozen demo-safe base: agents/base_frozen.zip.
 **Fire controller:** pluggable; curriculum (reliable, escalating spread) + policy (learned PPO adversary) impls via `FireController` interface.
