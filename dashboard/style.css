@@ -683,6 +683,74 @@ input:checked + .slider.round:before {
   transform: translateX(16px);
 }
 
+/* Big Unmistakable Episode Verdict Banner */
+.verdict-banner {
+  position: absolute;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 28px;
+  border-radius: 12px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 150;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75);
+  animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+}
+
+.verdict-banner.win {
+  background: rgba(6, 78, 59, 0.95);
+  border: 2px solid #10b981;
+  box-shadow: 0 0 40px rgba(16, 185, 129, 0.55);
+}
+
+.verdict-banner.lose {
+  background: rgba(127, 29, 29, 0.95);
+  border: 2px solid #ef4444;
+  box-shadow: 0 0 40px rgba(239, 68, 68, 0.55);
+}
+
+.verdict-icon {
+  font-size: 38px;
+  line-height: 1;
+}
+
+.verdict-title {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.verdict-banner.win .verdict-title {
+  color: #34d399;
+}
+
+.verdict-banner.lose .verdict-title {
+  color: #fca5a5;
+}
+
+.verdict-subtitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin-top: 3px;
+}
+
+.verdict-stats {
+  font-size: 11px;
+  color: #cbd5e1;
+  margin-top: 4px;
+}
+
+@keyframes popIn {
+  0% { transform: translate(-50%, -20px) scale(0.9); opacity: 0; }
+  100% { transform: translate(-50%, 0) scale(1); opacity: 1; }
+}
+
 /* Spinner */
 .spinner {
   display: inline-block;

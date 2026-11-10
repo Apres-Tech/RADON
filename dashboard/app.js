@@ -94,7 +94,26 @@ const dom = {
   metaName: document.getElementById("meta-name"),
   metaSeed: document.getElementById("meta-seed"),
   metaOutcome: document.getElementById("meta-outcome"),
+  verdictBanner: document.getElementById("verdict-banner"),
+  verdictIcon: document.getElementById("verdict-icon"),
+  verdictTitle: document.getElementById("verdict-title"),
+  verdictSubtitle: document.getElementById("verdict-subtitle"),
+  verdictStats: document.getElementById("verdict-stats"),
 };
+
+function showVerdict(type, title, subtitle, stats) {
+  if (!dom.verdictBanner) return;
+  dom.verdictBanner.className = `verdict-banner ${type}`;
+  dom.verdictIcon.textContent = (type === 'win') ? '🏆' : (title.includes('WIPED') ? '💀' : '⏳');
+  dom.verdictTitle.textContent = title;
+  dom.verdictSubtitle.textContent = subtitle;
+  dom.verdictStats.innerHTML = stats;
+  dom.verdictBanner.style.display = 'flex';
+}
+
+function hideVerdict() {
+  if (dom.verdictBanner) dom.verdictBanner.style.display = 'none';
+}
 
 // Smooth easing (Hermite smoothstep)
 function smoothStep(t) {
@@ -185,11 +204,11 @@ function animate() {
       updateInterpolatedEntities(currentProgress);
 
       if (isContinuousLive) {
-        // Auto-advance in live mode
+        // Auto-advance in live mode after short pause showing verdict banner
         pausePlayback();
         setTimeout(() => {
           if (isContinuousLive) generateUnseenEpisode(false);
-        }, 1200);
+        }, 2500);
       } else {
         // Loop or pause
         currentProgress = 0.0;
@@ -678,18 +697,41 @@ function updateInterpolatedEntities(progress) {
   dom.timelineSlider.value = f0Idx;
   dom.currentFrameLbl.textContent = f0Idx;
 
-  // Status tag
-  if (rescuedCount === config.n_hostages) {
-    dom.completionTag.textContent = "All Evacuated (Success)";
+  // Status tag & Unmistakable WIN / LOSE Banner Resolution
+  const allRescued = (rescuedCount === config.n_hostages);
+  const allDead = (survivingCount === 0);
+  const isFinished = (f0Idx === totalFrames - 1) || allRescued || allDead;
+
+  if (allRescued) {
+    dom.completionTag.textContent = `✅ WIN — All ${rescuedCount}/${config.n_hostages} Evacuated!`;
     dom.completionTag.style.color = "#10b981";
-  } else if (survivingCount === 0) {
-    dom.completionTag.textContent = "Team Overrun";
+    showVerdict(
+      "win",
+      "MISSION ACCOMPLISHED — WIN",
+      `All ${rescuedCount}/${config.n_hostages} hostages safely evacuated in ${frame0.t} steps!`,
+      `Rescuers Surviving: ${survivingCount}/${config.n_rescuers} &bull; Fire Deaths: ${config.n_rescuers - survivingCount}`
+    );
+  } else if (allDead) {
+    dom.completionTag.textContent = `❌ LOSE — Squad Wiped Out (${rescuedCount}/${config.n_hostages} Saved)`;
     dom.completionTag.style.color = "#ef4444";
+    showVerdict(
+      "lose",
+      "MISSION FAILED — LOSE (WIPED)",
+      `Rescuer squad wiped out by flames. Only ${rescuedCount}/${config.n_hostages} hostages saved.`,
+      `Rescuers Surviving: 0/${config.n_rescuers} &bull; Active Fire Tiles: ${fireCount}`
+    );
   } else if (f0Idx === totalFrames - 1) {
-    dom.completionTag.textContent = `Completed (${rescuedCount}/${config.n_hostages} Evacuated)`;
-    dom.completionTag.style.color = rescuedCount > 0 ? "#f59e0b" : "#94a3b8";
+    dom.completionTag.textContent = `❌ LOSE — Time Expired (${rescuedCount}/${config.n_hostages} Saved)`;
+    dom.completionTag.style.color = "#ef4444";
+    showVerdict(
+      "lose",
+      "MISSION FAILED — LOSE (TIMEOUT)",
+      `Time expired at step ${frame0.t}. Saved ${rescuedCount}/${config.n_hostages} hostages.`,
+      `Rescuers Surviving: ${survivingCount}/${config.n_rescuers} &bull; Active Fire Tiles: ${fireCount}`
+    );
   } else {
-    dom.completionTag.textContent = "In Progress";
+    hideVerdict();
+    dom.completionTag.textContent = `In Progress (Step ${frame0.t} / ${config.max_steps})`;
     dom.completionTag.style.color = "#38bdf8";
   }
 }
@@ -699,6 +741,7 @@ function loadReplay(replayData, replayTitle = "Replay") {
   currentReplay = replayData;
   currentProgress = 0.0;
   pausePlayback();
+  hideVerdict();
 
   buildBuilding(replayData);
   initEntityPool(replayData.config);

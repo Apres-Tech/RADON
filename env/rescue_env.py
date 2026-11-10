@@ -227,19 +227,38 @@ class RadonRescueEnv(ParallelEnv):
 
         return {"grid": grid_obs, "self": self_feat}
 
+    @property
+    def verdict(self) -> str:
+        """Returns episode outcome: 'WIN', 'LOSE_WIPED', 'LOSE_TIMEOUT', or 'IN_PROGRESS'."""
+        all_hostages_rescued = all(h.rescued for h in self.hostages)
+        if all_hostages_rescued:
+            return "WIN"
+        all_rescuers_dead = not any(r.alive for r in self.rescuers.values())
+        if all_rescuers_dead:
+            return "LOSE_WIPED"
+        if self.current_step >= self.config.max_steps:
+            return "LOSE_TIMEOUT"
+        return "IN_PROGRESS"
+
     def _get_info(self, agent_id: str) -> Dict[str, Any]:
         """Returns diagnostic info for an agent."""
         rescuer = self.rescuers[agent_id]
+        rescued_count = sum(1 for h in self.hostages if h.rescued)
+        living_count = sum(1 for r in self.rescuers.values() if r.alive)
         return {
             "alive": rescuer.alive,
             "carrying": rescuer.carrying,
             "floor": rescuer.floor,
             "row": rescuer.row,
             "col": rescuer.col,
-            "hostages_rescued": sum(1 for h in self.hostages if h.rescued),
+            "hostages_rescued": rescued_count,
+            "total_hostages": self.config.n_hostages,
             "step": self.current_step,
+            "max_steps": self.config.max_steps,
             "fire_deaths": getattr(self, "fire_deaths", 0),
-            "rescuers_alive": sum(1 for r in self.rescuers.values() if r.alive),
+            "rescuers_alive": living_count,
+            "total_rescuers": self.config.n_rescuers,
+            "verdict": self.verdict,
         }
 
     def _drop_carried_hostage_on_death(self, rescuer: Rescuer) -> None:

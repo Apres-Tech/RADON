@@ -320,11 +320,21 @@ def generate_episode(req: GenerateRequest):
 
             recorder.record_step(rewards)
 
-        # Outcome summary
+        # Outcome summary & WIN/LOSE verdict
         rescued_count = sum(1 for h in env.hostages if h.rescued)
         survivors_count = sum(1 for r in env.rescuers.values() if r.alive)
         fire_deaths = config.n_rescuers - survivors_count
         all_evacuated = (rescued_count == config.n_hostages)
+
+        if all_evacuated:
+            verdict = "WIN"
+            verdict_reason = f"All {rescued_count}/{config.n_hostages} hostages safely evacuated in {step_count} steps!"
+        elif survivors_count == 0:
+            verdict = "LOSE"
+            verdict_reason = f"Rescuer squad wiped out by fire ({rescued_count}/{config.n_hostages} saved)."
+        else:
+            verdict = "LOSE"
+            verdict_reason = f"Time expired at step {step_count} ({rescued_count}/{config.n_hostages} saved, {survivors_count}/{config.n_rescuers} survivors)."
 
         replay_payload = recorder.to_dict()
         replay_payload["summary"] = {
@@ -337,6 +347,8 @@ def generate_episode(req: GenerateRequest):
             "total_rescuers": config.n_rescuers,
             "fire_deaths": fire_deaths,
             "all_rescued": all_evacuated,
+            "verdict": verdict,
+            "verdict_reason": verdict_reason,
             "team_return": round(sum(total_rewards.values()), 2),
             "model_used": models_state["rescuer_path"],
             "fire_model_used": models_state["fire_path"] if fire_mode == "adversarial" else None,
