@@ -131,43 +131,74 @@ def generate_building(config: EnvConfig, seed: Optional[int] = None) -> Building
             grids[f, :, 0] = Tile.WALL
             grids[f, :, w - 1] = Tile.WALL
 
-        # 2. Interior walls with doorways
+        # 2. Interior walls with WIDE doorways (open office floor plan)
+        door_width = 3 if (h >= 16 or w >= 16) else 2
         for f in range(floors):
             # Choose vertical dividing lines
-            max_v = max(1, min(3, w - 6))
+            max_v = max(1, min(2, (w - 6) // 4))
             n_v_walls = rng.integers(1, max_v + 1)
-            v_cols = rng.choice(np.arange(3, w - 3), size=n_v_walls, replace=False)
-            for vc in v_cols:
-                grids[f, 1 : h - 1, vc] = Tile.WALL
-                # Punch 2-3 doorways in each vertical wall
-                doors = rng.choice(np.arange(1, h - 1), size=min(h - 2, rng.integers(2, 4)), replace=False)
-                grids[f, doors, vc] = Tile.EMPTY
+            # Space dividers nicely
+            min_col = 3
+            max_col = w - 4
+            if max_col > min_col:
+                v_cols = rng.choice(np.arange(min_col, max_col), size=min(n_v_walls, max_col - min_col), replace=False)
+                for vc in v_cols:
+                    grids[f, 1 : h - 1, vc] = Tile.WALL
+                    # Punch 2-3 WIDE doorways (each 2-3 tiles wide)
+                    n_doors = min(3, max(2, (h - 2) // 5))
+                    door_candidates = [r for r in range(2, h - 2 - door_width, door_width + 1)]
+                    if door_candidates:
+                        chosen_starts = rng.choice(door_candidates, size=min(n_doors, len(door_candidates)), replace=False)
+                        for d_start in chosen_starts:
+                            grids[f, d_start : d_start + door_width, vc] = Tile.EMPTY
+                    else:
+                        grids[f, 1 : h - 1, vc] = Tile.EMPTY
 
             # Choose horizontal dividing lines
-            max_h = max(1, min(3, h - 6))
+            max_h = max(1, min(2, (h - 6) // 4))
             n_h_walls = rng.integers(1, max_h + 1)
-            h_rows = rng.choice(np.arange(3, h - 3), size=n_h_walls, replace=False)
-            for hr in h_rows:
-                grids[f, hr, 1 : w - 1] = Tile.WALL
-                # Punch 2-3 doorways in each horizontal wall
-                doors = rng.choice(np.arange(1, w - 1), size=min(w - 2, rng.integers(2, 4)), replace=False)
-                grids[f, hr, doors] = Tile.EMPTY
+            min_row = 3
+            max_row = h - 4
+            if max_row > min_row:
+                h_rows = rng.choice(np.arange(min_row, max_row), size=min(n_h_walls, max_row - min_row), replace=False)
+                for hr in h_rows:
+                    grids[f, hr, 1 : w - 1] = Tile.WALL
+                    # Punch 2-3 WIDE doorways
+                    n_doors = min(3, max(2, (w - 2) // 5))
+                    door_candidates = [c for c in range(2, w - 2 - door_width, door_width + 1)]
+                    if door_candidates:
+                        chosen_starts = rng.choice(door_candidates, size=min(n_doors, len(door_candidates)), replace=False)
+                        for d_start in chosen_starts:
+                            grids[f, hr, d_start : d_start + door_width] = Tile.EMPTY
+                    else:
+                        grids[f, hr, 1 : w - 1] = Tile.EMPTY
 
-            # Add a few random pillar blocks
-            n_pillars = rng.integers(1, 4) if (h <= 12 or w <= 12) else rng.integers(2, 6)
+            # Add a few open architectural pillars (never blocking doorways)
+            n_pillars = 2 if (h <= 14 or w <= 14) else 4
             for _ in range(n_pillars):
-                pr = rng.integers(2, h - 2)
-                pc = rng.integers(2, w - 2)
-                grids[f, pr, pc] = Tile.WALL
+                pr = rng.integers(3, h - 3)
+                pc = rng.integers(3, w - 3)
+                # Only place pillar if surrounding area is open
+                if np.sum(grids[f, pr - 1 : pr + 2, pc - 1 : pc + 2] == Tile.WALL) <= 1:
+                    grids[f, pr, pc] = Tile.WALL
 
-        # 3. Stairs: Same (row, col) across ALL floors (only if floors > 1)
+        # 3. Stairs: Same (row, col) across ALL floors (wide/prominent stairwell)
         stairs_list: List[Tuple[int, int]] = []
         if floors > 1:
             potential_stairs = []
-            for r in range(2, h - 2):
-                for c in range(2, w - 2):
+            # Prefer central open locations
+            mid_r, mid_c = h // 2, w // 2
+            for r in range(max(2, mid_r - 4), min(h - 2, mid_r + 4)):
+                for c in range(max(2, mid_c - 4), min(w - 2, mid_c + 4)):
                     if all(grids[f, r, c] == Tile.EMPTY for f in range(floors)):
                         potential_stairs.append((r, c))
+
+            if not potential_stairs:
+                # Fallback to any empty spot
+                for r in range(2, h - 2):
+                    for c in range(2, w - 2):
+                        if all(grids[f, r, c] == Tile.EMPTY for f in range(floors)):
+                            potential_stairs.append((r, c))
 
             if not potential_stairs:
                 continue
@@ -175,33 +206,53 @@ def generate_building(config: EnvConfig, seed: Optional[int] = None) -> Building
             stair_idx = rng.integers(0, len(potential_stairs))
             stair_rc = potential_stairs[stair_idx]
             stairs_list = [stair_rc]
-            for f in range(floors):
-                grids[f, stair_rc[0], stair_rc[1]] = Tile.STAIRS
+            # If map is large, create a 2-tile wide stair landing
+            if w >= 16 and (stair_rc[0], stair_rc[1] + 1) in potential_stairs:
+                stairs_list.append((stair_rc[0], stair_rc[1] + 1))
 
-        # 4. Exits: ONLY on floor 0 (at least 1 exit, e.g. 1 or 2)
-        potential_exits = []
-        for r in range(1, h - 1):
-            for c in range(1, w - 1):
-                if grids[0, r, c] == Tile.EMPTY and (r, c) not in stairs_list:
-                    # Prefer positions near border
-                    if r == 1 or r == h - 2 or c == 1 or c == w - 2:
-                        potential_exits.append((0, r, c))
+            for s_rc in stairs_list:
+                for f in range(floors):
+                    grids[f, s_rc[0], s_rc[1]] = Tile.STAIRS
 
-        if not potential_exits:
-            # Fallback to any empty tile on floor 0
+        # 4. Multi-Tile Exit ZONES on Floor 0 (e.g. 2x2 or 2x1 entrance portals)
+        exits_list: List[Tuple[int, int, int]] = []
+        stairs_set = set(stairs_list)
+        # Find candidate 2x2 zones along bottom or top perimeter
+        zone_candidates = []
+        for r in (h - 3, 1):
+            for c in range(2, w - 3, 3):
+                zone_coords = [(0, r, c), (0, r + 1, c), (0, r, c + 1), (0, r + 1, c + 1)]
+                if all(
+                    1 <= zr < h - 1 and 1 <= zc < w - 1
+                    and grids[0, zr, zc] != Tile.WALL
+                    and (zr, zc) not in stairs_set
+                    for (_, zr, zc) in zone_coords
+                ):
+                    zone_candidates.append(zone_coords)
+
+        if zone_candidates:
+            # Pick 1 or 2 exit zones
+            n_zones = 2 if (len(zone_candidates) >= 2 and w >= 16) else 1
+            chosen_zone_indices = rng.choice(len(zone_candidates), size=n_zones, replace=False)
+            for z_idx in chosen_zone_indices:
+                for z_coord in zone_candidates[z_idx]:
+                    if z_coord not in exits_list:
+                        exits_list.append(z_coord)
+                        grids[z_coord[0], z_coord[1], z_coord[2]] = Tile.EXIT
+        else:
+            # Fallback to single-tile exits if tight map
+            potential_exits = []
             for r in range(1, h - 1):
                 for c in range(1, w - 1):
-                    if grids[0, r, c] == Tile.EMPTY and (r, c) not in stairs_list:
+                    if grids[0, r, c] == Tile.EMPTY and (r, c) not in stairs_set:
                         potential_exits.append((0, r, c))
-
-        if not potential_exits:
-            continue
-
-        n_exits = min(2, len(potential_exits))
-        exit_indices = rng.choice(len(potential_exits), size=n_exits, replace=False)
-        exits_list = [potential_exits[i] for i in exit_indices]
-        for exit_pos in exits_list:
-            grids[exit_pos[0], exit_pos[1], exit_pos[2]] = Tile.EXIT
+            if not potential_exits:
+                continue
+            n_exits = min(4, len(potential_exits))
+            exit_indices = rng.choice(len(potential_exits), size=n_exits, replace=False)
+            exits_list = [potential_exits[i] for i in exit_indices]
+            for ep in exits_list:
+                grids[ep[0], ep[1], ep[2]] = Tile.EXIT
 
         # 5. Rescuer Spawns: on floor 0 near exits or on empty reachable tiles
         potential_spawns = []
@@ -228,7 +279,7 @@ def generate_building(config: EnvConfig, seed: Optional[int] = None) -> Building
             for i in rng.choice(len(potential_spawns), size=n_rescuers, replace=False)
         ]
 
-        # 6. Hostages: Distribute across floors on EMPTY tiles
+        # 6. Hostages: Distribute across floors in OPEN, clearly reachable spots (no dead-ends)
         hostage_list = []
         hostages_per_floor = [n_hostages // floors] * floors
         for i in range(n_hostages % floors):
@@ -238,20 +289,30 @@ def generate_building(config: EnvConfig, seed: Optional[int] = None) -> Building
         occupied_locs = set(exits_list) | set(rescuer_spawns)
         for f in range(floors):
             floor_empty = []
+            open_candidates = []
             for r in range(1, h - 1):
                 for c in range(1, w - 1):
                     loc = (f, r, c)
                     if grids[loc] == Tile.EMPTY and loc not in occupied_locs:
                         floor_empty.append(loc)
+                        # Check surrounding openness (at least 3 open cardinal neighbors)
+                        open_count = sum(
+                            1
+                            for dr, dc in ((-1, 0), (1, 0), (0, -1), (0, 1))
+                            if 0 <= r + dr < h and 0 <= c + dc < w and grids[f, r + dr, c + dc] == Tile.EMPTY
+                        )
+                        if open_count >= 3:
+                            open_candidates.append(loc)
 
             target_count = hostages_per_floor[f]
-            if len(floor_empty) < target_count:
+            pool = open_candidates if len(open_candidates) >= target_count else floor_empty
+            if len(pool) < target_count:
                 failed_hostages = True
                 break
 
-            chosen = rng.choice(len(floor_empty), size=target_count, replace=False)
+            chosen = rng.choice(len(pool), size=target_count, replace=False)
             for idx in chosen:
-                h_pos = floor_empty[idx]
+                h_pos = pool[idx]
                 hostage_list.append(h_pos)
                 occupied_locs.add(h_pos)
                 grids[h_pos] = Tile.HOSTAGE
@@ -259,7 +320,7 @@ def generate_building(config: EnvConfig, seed: Optional[int] = None) -> Building
         if failed_hostages or len(hostage_list) != n_hostages:
             continue
 
-        # 7. Initial Fire: Place a few fire tiles (not on exits, stairs, hostages, rescuer spawns)
+        # 7. Initial Fire: Place a few fire tiles away from spawns & exits
         fires_list = []
         if getattr(config, "fire_enabled", True):
             for f in range(floors):
@@ -268,7 +329,10 @@ def generate_building(config: EnvConfig, seed: Optional[int] = None) -> Building
                     for c in range(1, w - 1):
                         loc = (f, r, c)
                         if grids[loc] == Tile.EMPTY and loc not in occupied_locs:
-                            floor_candidates.append(loc)
+                            # Keep initial fire safely away from spawns on Floor 0
+                            min_spawn_dist = min(abs(r - sr) + abs(c - sc) for (_, sr, sc) in rescuer_spawns) if rescuer_spawns else 10
+                            if min_spawn_dist >= 4 or f > 0:
+                                floor_candidates.append(loc)
 
                 if floor_candidates:
                     n_fires = min(len(floor_candidates), rng.integers(1, 3))

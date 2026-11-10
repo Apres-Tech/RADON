@@ -62,6 +62,52 @@ class EnvConfig:
         return 2 * self.view_radius + 1
 
     @classmethod
+    def showcase(
+        cls,
+        grid_size: int = 20,
+        n_rescuers: Optional[int] = None,
+        n_hostages: Optional[int] = None,
+        max_steps: Optional[int] = None,
+        seed: Optional[int] = None,
+    ) -> "EnvConfig":
+        """Showcase preset: 2 floors, open office-style floorplans with wide doorways, 2x2 exit zones.
+        
+        Supports scaling grid_size for curriculum (12 -> 16 -> 20).
+        """
+        if n_rescuers is None:
+            n_rescuers = 5 if grid_size >= 18 else (4 if grid_size >= 14 else 3)
+        if n_hostages is None:
+            n_hostages = 4 if grid_size >= 18 else (3 if grid_size >= 14 else 2)
+        if max_steps is None:
+            max_steps = 400 if grid_size >= 18 else (250 if grid_size >= 14 else 180)
+
+        fire_max = 60 if grid_size >= 18 else (40 if grid_size >= 14 else 25)
+        fire_start = 25 if grid_size >= 18 else (20 if grid_size >= 14 else 15)
+
+        return cls(
+            floors=2,
+            grid_h=grid_size,
+            grid_w=grid_size,
+            n_rescuers=n_rescuers,
+            n_hostages=n_hostages,
+            max_steps=max_steps,
+            view_radius=3,
+            fire_spread_prob=0.006,
+            fire_spread_start_step=fire_start,
+            fire_max_tiles=fire_max,
+            fire_enabled=True,
+            carry_capacity=1,
+            seed=seed,
+            step_reward=-0.01,
+            pickup_reward=5.0,
+            delivery_reward=25.0,
+            death_reward=-2.0,
+            team_completion_reward=35.0,
+            enable_shaping=True,
+            shaping_coef=0.08,
+        )
+
+    @classmethod
     def training_day4_base(cls, seed: Optional[int] = None) -> "EnvConfig":
         """Base solvable preset for Day 4: 2 floors, 10x10 grid, 3 rescuers, 2 hostages (1/floor), max_steps=160."""
         return cls(
