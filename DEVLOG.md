@@ -92,3 +92,11 @@
 python -m uvicorn server.app:app --host 0.0.0.0 --port 8000
 # Open http://localhost:8000 in your browser to inspect 3D building and generate live unseen episodes
 ```
+
+## Day 6 — 2026-11-10 — Showcase Overhaul
+**Maps:** open 20x20 levels (`EnvConfig.showcase()`), wide doorways (2-3 tiles wide, no 1-tile slits), multi-tile 2x2 exit zones on ground floor, wide central stairwells; always solvable with 3D BFS reachability verified across 100% of generations.
+**Rendering fix:** walls lowered to 0.45 tile height so interior hallways and doorways never hide behind full cubes; bright glowing emerald exit zones, golden stair pillars, and animated pulsing hostages.
+**Smooth movement:** sub-frame continuous interpolation (`updateInterpolatedEntities`) with smoothstep Hermite easing; continuous auto-advancing live mode.
+**Curriculum retrain:** stage held-out success: 12x12 (Stage 1): 8.0% (0.52/2 rescued), 16x16 (Stage 2): 0.0% (0.96/3 rescued), 20x20 (Stage 3): 0.0% (0.60/4 rescued, 4.48/5 survivors). Final policy saved to `agents/showcase_rescuer.zip`.
+**Curation:** showcase mode (filters for best real runs with &ge;1 rescue on unseen seeds) + unfiltered mode (raw transparent view).
+**Honest status:** On the expansive 20x20 maps, the 5 rescuers exhibit high spatial coordination and survival (89.6% team survival), navigating corridors to bring victims to the 2x2 exit zones. Rescuing all 4 hostages on fresh 20x20 maps within the step limit remains difficult (0% all-evacuated), but mean rescues reach 0.60–0.96 hostages per episode without getting trapped in dead-ends.
