@@ -189,3 +189,4 @@ Follow this exact 90-second sequence when recording your screen demo:
 | `CUDA available: False` | PyTorch was installed without CUDA support or driver is missing. | Reinstall PyTorch CUDA wheel: `pip install torch==2.5.1+cu121 --extra-index-url https://download.pytorch.org/whl/cu121`. |
 | `HTTP 503: Rescuer model not loaded` | File `agents/final_rescuer.zip` is missing. | Confirm `agents/final_rescuer.zip` exists in the repository. If not, copy `agents/base_frozen.zip` to `agents/final_rescuer.zip`. |
 | Backend dot is red `Offline (Viewing Mode)` | Uvicorn server is not running in a terminal. | Start the server with `python -m uvicorn server.app:app --port 8000`. The frontend will automatically reconnect. Pre-recorded replays remain fully playable offline. |
+

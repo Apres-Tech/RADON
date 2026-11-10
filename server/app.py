@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Optional
 
 from fastapi import FastAPI, HTTPException, Query, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, Response, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 import torch
@@ -348,12 +348,41 @@ def generate_episode(req: GenerateRequest):
         )
 
 
+FAVICON_SVG = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🔥</text></svg>"""
+
+
+@app.get("/favicon.ico")
+def favicon():
+    """Serves an inline flame SVG favicon to avoid 404 errors."""
+    return Response(content=FAVICON_SVG, media_type="image/svg+xml")
+
+
+@app.get("/style.css")
+def get_style():
+    """Serves the dashboard stylesheet directly at /style.css."""
+    css_path = DASHBOARD_DIR / "style.css"
+    if css_path.exists():
+        return FileResponse(css_path, media_type="text/css")
+    raise HTTPException(status_code=404, detail="style.css not found")
+
+
+@app.get("/app.js")
+def get_app_js():
+    """Serves the dashboard script directly at /app.js."""
+    js_path = DASHBOARD_DIR / "app.js"
+    if js_path.exists():
+        return FileResponse(js_path, media_type="application/javascript")
+    raise HTTPException(status_code=404, detail="app.js not found")
+
+
 # Static assets
 if METRICS_DIR.exists():
     app.mount("/metrics_static", StaticFiles(directory=str(METRICS_DIR)), name="metrics_static")
 
 if DASHBOARD_DIR.exists():
     app.mount("/dashboard", StaticFiles(directory=str(DASHBOARD_DIR), html=True), name="dashboard")
+    # Also mount at root as fallback for any other dashboard static assets
+    app.mount("/", StaticFiles(directory=str(DASHBOARD_DIR), html=True), name="root_static")
 
 
 @app.get("/")
