@@ -38,7 +38,7 @@ let currentFloorFilter = "both"; // "both", "0", "1"
 let currentFireMode = "curriculum";
 let currentPreset = "showcase";
 let isContinuousLive = false;
-let curationMode = "showcase"; // "showcase" (curated best real runs) or "unfiltered" (raw)
+let curationMode = "unfiltered"; // "unfiltered" (default: raw honest view) or "showcase" (curated best runs)
 
 // Three.js groups
 let buildingGroup = null;
@@ -874,7 +874,7 @@ async function generateUnseenEpisode(isManualClick = true) {
         fire_mode: currentFireMode,
         seed: Math.floor(50000 + Math.random() * 49999),
         preset: currentPreset,
-        max_steps: currentPreset === "showcase" ? 350 : 160,
+        max_steps: currentPreset === "showcase" ? 220 : (currentPreset === "showcase_hard" ? 400 : (currentPreset === "training_day3" ? 200 : 160)),
       };
 
       const res = await fetch("/generate", {
@@ -903,7 +903,7 @@ async function generateUnseenEpisode(isManualClick = true) {
     }
 
     const summary = chosenReplay.summary || {};
-    const curationTag = curationMode === "showcase" ? "Showcase Curated" : "Unfiltered";
+    const curationTag = curationMode === "showcase" ? "Showcase Filtered" : "Unfiltered Raw";
     const title = `${curationTag} (Seed ${summary.seed}, ${summary.fire_mode})`;
 
     loadReplay(chosenReplay, title);
@@ -1068,11 +1068,11 @@ function setupEventHandlers() {
       curationMode = btn.dataset.curation;
 
       if (curationMode === "showcase") {
-        dom.curationCaption.textContent = "Featuring verified real runs with ≥1 rescue on fresh held-out maps.";
-        dom.curationCaption.style.color = "#34d399";
+        dom.curationCaption.textContent = "Filtered for presentation: showing runs where at least 1 rescue occurred. Raw policy win rate: 6.7%.";
+        dom.curationCaption.style.color = "#f59e0b";
       } else {
-        dom.curationCaption.textContent = "Raw unfiltered live generation (displays all seeds as-is).";
-        dom.curationCaption.style.color = "#94a3b8";
+        dom.curationCaption.textContent = "Raw unbiased policy execution on fresh held-out maps (no filtering). Real win rate: 6.7%.";
+        dom.curationCaption.style.color = "#34d399";
       }
     });
   });

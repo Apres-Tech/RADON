@@ -35,8 +35,17 @@ python -m uvicorn server.app:app --host 0.0.0.0 --port 8000
 
 ---
 
-## 🏆 Key Results: 100-Episode Held-Out Generalization Benchmark
+## 🏆 Key Results: Held-Out Generalization Benchmark
 
+### 1. 14×14 Multi-Floor Showcase Benchmark (Day 7 Finale)
+Evaluated across **30 fresh held-out procedural buildings** (`seeds 50000..50029`) on the 14×14 office layout (2 floors, 4 rescuers, 3 hostages, `max_steps=220`):
+- **Full Rescue WIN Rate (All 3 Rescued):** **6.7%** (2/30 unseen maps completely cleared)
+- **Partial Rescue Rate:** **46.7%** of unseen maps achieve &ge;1 rescue (with 7/30 maps achieving 2/3 rescues)
+- **Mean Hostages Rescued:** **0.70 / 3 (23.3%)**
+- **Rescuer Team Survival Rate:** **3.40 / 4 (85.0%)**
+- **Adversary Compatibility:** Size-invariant observation pipeline allows learned adversary fire PPO to run across 10×10, 14×14, and 20×20 maps without crashes.
+
+### 2. 10×10 Solvable Benchmark (Day 5 Long Run)
 Evaluated over **100 never-seen procedural buildings** (`seeds 50000..50099`) under active dynamic fire:
 
 | Evaluation Metric | Random Policy Baseline | Trained PPO Rescuer (Day 5 Finale) | Relative Advantage |
@@ -49,6 +58,12 @@ Evaluated over **100 never-seen procedural buildings** (`seeds 50000..50099`) un
 | **Mean Episode Steps** | 151.6 steps | **148.1 steps** | Faster, goal-directed clearance |
 
 *During 1.65M-step long-horizon training, periodic held-out evaluation peaked at **20.0%** all-evacuated success rate.*
+
+### 🕹️ Live Curation Mode & Complete Transparency
+In the 3D dashboard:
+- **Unfiltered (Raw - Default):** Generates directly from the trained policy on a fresh unseen seed with zero filtering. Shows the raw held-out performance exactly as measured in the benchmark.
+- **Showcase (Best Runs):** Filters for presentation-ready runs where at least 1 rescue occurred. A prominent disclaimer pill clearly states the raw policy baseline (6.7% win rate) to prevent any misunderstanding.
+- **Episode Verdict Banner:** Every episode ends with an unmistakable **WIN** (all hostages evacuated) or **LOSE** (timed out or team wiped) banner with clear statistics.
 
 ---
 

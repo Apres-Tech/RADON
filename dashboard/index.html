@@ -36,6 +36,10 @@
         <span style="color:#a78bfa; font-weight:700;">GPU:</span>
         <span id="device-text">CUDA</span>
       </div>
+      <div class="status-pill benchmark-pill" id="benchmark-stat-pill" title="Official held-out evaluation across 30 fresh unseen maps (seeds 50000..50029)">
+        <span style="color:#10b981; font-weight:700;">Trained Policy:</span>
+        <span id="benchmark-stat-text">6.7% Full WIN Rate &bull; 23.3% Rescued (Held-Out 14x14)</span>
+      </div>
     </div>
     <div class="header-actions">
       <button class="btn" id="open-analytics-btn">
@@ -116,7 +120,8 @@
     <div class="control-group">
       <div class="control-label">Level Layout Preset</div>
       <select id="preset-select" class="input-select">
-        <option value="showcase" selected>Showcase 20x20 (Open Floorplan, 4 Hostages)</option>
+        <option value="showcase" selected>Showcase 14x14 (Office Layout, 4 Rescuers, 3 Hostages)</option>
+        <option value="showcase_hard">Showcase 20x20 Hard (5 Rescuers, 4 Hostages)</option>
         <option value="training_day4_base">Day 4 Base 10x10 (Solvable 2-Floor)</option>
         <option value="training_day3">Day 3 Standard 12x12 (4 Rescuers)</option>
       </select>
@@ -136,11 +141,11 @@
     <div class="control-group">
       <div class="control-label">Live Curation Mode</div>
       <div class="segmented-control" id="curation-mode-control">
-        <div class="segmented-btn active" data-curation="showcase">Showcase (Best Runs)</div>
-        <div class="segmented-btn" data-curation="unfiltered">Unfiltered (Raw)</div>
+        <div class="segmented-btn active" data-curation="unfiltered">Unfiltered (Raw)</div>
+        <div class="segmented-btn" data-curation="showcase">Showcase (Best Runs)</div>
       </div>
       <div id="curation-caption" style="font-size:10px; color:#34d399; margin-top:2px;">
-        Featuring verified real runs with &ge;1 rescue on fresh held-out maps.
+        Raw unbiased policy execution on fresh held-out maps (no filtering). Real win rate: 6.7%.
       </div>
     </div>
 
