@@ -64,24 +64,25 @@ class EnvConfig:
     @classmethod
     def showcase(
         cls,
-        grid_size: int = 20,
+        grid_size: int = 14,
         n_rescuers: Optional[int] = None,
         n_hostages: Optional[int] = None,
         max_steps: Optional[int] = None,
         seed: Optional[int] = None,
     ) -> "EnvConfig":
-        """Showcase preset: 2 floors, open office-style floorplans with wide doorways, 2x2 exit zones.
+        """Showcase preset: 2 floors, 14x14 default (office layout, wide doors, 2x2 exits).
         
-        Supports scaling grid_size for curriculum (12 -> 16 -> 20).
+        Default 14x14: 4 rescuers, 3 hostages, generous max_steps=220, fire tuned to threaten but allow rescue.
+        Supports scaling grid_size for curriculum / custom runs.
         """
         if n_rescuers is None:
             n_rescuers = 5 if grid_size >= 18 else (4 if grid_size >= 14 else 3)
         if n_hostages is None:
             n_hostages = 4 if grid_size >= 18 else (3 if grid_size >= 14 else 2)
         if max_steps is None:
-            max_steps = 400 if grid_size >= 18 else (250 if grid_size >= 14 else 180)
+            max_steps = 400 if grid_size >= 18 else (220 if grid_size >= 14 else 180)
 
-        fire_max = 60 if grid_size >= 18 else (40 if grid_size >= 14 else 25)
+        fire_max = 60 if grid_size >= 18 else (35 if grid_size >= 14 else 25)
         fire_start = 25 if grid_size >= 18 else (20 if grid_size >= 14 else 15)
 
         return cls(
@@ -105,6 +106,20 @@ class EnvConfig:
             team_completion_reward=35.0,
             enable_shaping=True,
             shaping_coef=0.08,
+        )
+
+    @classmethod
+    def showcase_hard(
+        cls,
+        seed: Optional[int] = None,
+    ) -> "EnvConfig":
+        """Showcase hard mode: 20x20 grid, 5 rescuers, 4 hostages, max_steps=400."""
+        return cls.showcase(
+            grid_size=20,
+            n_rescuers=5,
+            n_hostages=4,
+            max_steps=400,
+            seed=seed,
         )
 
     @classmethod

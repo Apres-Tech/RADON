@@ -268,6 +268,8 @@ def generate_episode(req: GenerateRequest):
     # Config preset
     if req.preset == "showcase":
         config = EnvConfig.showcase(seed=seed)
+    elif req.preset == "showcase_hard":
+        config = EnvConfig.showcase_hard(seed=seed)
     elif req.preset == "training_day3":
         config = EnvConfig.training_day3(seed=seed)
     elif req.preset == "sanity":

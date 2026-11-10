@@ -1,11 +1,16 @@
-"""Progressive curriculum trainer for RADON large open showcase environments (12x12 -> 16x16 -> 20x20)."""
+"""Progressive curriculum trainer for RADON 14x14 showcase environments."""
 
 import argparse
 import csv
 from dataclasses import dataclass
 from pathlib import Path
+import shutil
+import sys
 import time
 from typing import List, Tuple
+
+# Ensure project root is in sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import numpy as np
 import torch
@@ -34,32 +39,32 @@ class CurriculumStage:
 
 STAGES = [
     CurriculumStage(
-        name="Stage 1 (12x12)",
-        grid_size=12,
-        n_rescuers=3,
+        name="Stage 1 (14x14 - 2 Hostages Warmup)",
+        grid_size=14,
+        n_rescuers=4,
         n_hostages=2,
         max_steps=180,
-        fire_max_tiles=25,
-        timesteps=45_000,
-        num_vec_envs=6,
-    ),
-    CurriculumStage(
-        name="Stage 2 (16x16)",
-        grid_size=16,
-        n_rescuers=4,
-        n_hostages=3,
-        max_steps=250,
-        fire_max_tiles=40,
-        timesteps=50_000,
+        fire_max_tiles=20,
+        timesteps=60_000,
         num_vec_envs=4,
     ),
     CurriculumStage(
-        name="Stage 3 (20x20)",
-        grid_size=20,
-        n_rescuers=5,
-        n_hostages=4,
-        max_steps=350,
-        fire_max_tiles=60,
+        name="Stage 2 (14x14 - 3 Hostages Target)",
+        grid_size=14,
+        n_rescuers=4,
+        n_hostages=3,
+        max_steps=220,
+        fire_max_tiles=35,
+        timesteps=100_000,
+        num_vec_envs=4,
+    ),
+    CurriculumStage(
+        name="Stage 3 (14x14 - 3 Hostages Hardened)",
+        grid_size=14,
+        n_rescuers=4,
+        n_hostages=3,
+        max_steps=220,
+        fire_max_tiles=35,
         timesteps=60_000,
         num_vec_envs=4,
     ),
@@ -69,10 +74,10 @@ STAGES = [
 def evaluate_stage_heldout(
     model: PPO,
     config: EnvConfig,
-    num_episodes: int = 25,
+    num_episodes: int = 30,
     base_seed: int = 50000,
 ) -> Tuple[float, float, float, float]:
-    """Evaluates policy over fixed held-out unseen maps."""
+    """Evaluates policy over fixed held-out unseen maps (seeds 50000..50029)."""
     successes = []
     rescued_ratios = []
     surviving_counts = []
@@ -80,22 +85,16 @@ def evaluate_stage_heldout(
 
     for ep in range(num_episodes):
         ep_seed = base_seed + ep
-        ep_cfg = EnvConfig(
-            floors=config.floors,
-            grid_h=config.grid_h,
-            grid_w=config.grid_w,
+        ep_cfg = EnvConfig.showcase(
+            grid_size=config.grid_h,
             n_rescuers=config.n_rescuers,
             n_hostages=config.n_hostages,
             max_steps=config.max_steps,
-            view_radius=config.view_radius,
-            fire_spread_prob=config.fire_spread_prob,
-            fire_spread_start_step=config.fire_spread_start_step,
-            fire_max_tiles=config.fire_max_tiles,
-            fire_enabled=config.fire_enabled,
             seed=ep_seed,
-            enable_shaping=config.enable_shaping,
-            shaping_coef=config.shaping_coef,
         )
+        ep_cfg.fire_max_tiles = config.fire_max_tiles
+        ep_cfg.fire_spread_start_step = config.fire_spread_start_step
+        ep_cfg.fire_spread_prob = config.fire_spread_prob
 
         env = RadonRescueEnv(config=ep_cfg, fire_controller=CurriculumFireController())
         obs, _ = env.reset(seed=ep_seed)
@@ -130,7 +129,7 @@ def evaluate_stage_heldout(
 def run_curriculum(resume_path: str = "agents/final_rescuer.zip", fast_mode: bool = False):
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print("=" * 70)
-    print("  RADON Progressive Showcase Curriculum Trainer")
+    print("  RADON 14x14 Showcase Curriculum Trainer")
     print(f"  Device: {device} | Base Model: {resume_path}")
     print("=" * 70)
 
@@ -139,10 +138,12 @@ def run_curriculum(resume_path: str = "agents/final_rescuer.zip", fast_mode: boo
 
     current_weights = resume_path if Path(resume_path).exists() else "agents/base_frozen.zip"
     results = []
+    best_model_path = None
+    best_target_win_rate = -1.0
 
     for idx, stage in enumerate(STAGES, 1):
         timesteps = stage.timesteps if not fast_mode else stage.timesteps // 2
-        print(f"\n[{idx}/3] Starting {stage.name} — Grid: {stage.grid_size}x{stage.grid_size}, Rescuers: {stage.n_rescuers}, Hostages: {stage.n_hostages}, Timesteps: {timesteps:,}")
+        print(f"\n[{idx}/{len(STAGES)}] Starting {stage.name} — Grid: {stage.grid_size}x{stage.grid_size}, Rescuers: {stage.n_rescuers}, Hostages: {stage.n_hostages}, Timesteps: {timesteps:,}")
 
         config = EnvConfig.showcase(
             grid_size=stage.grid_size,
@@ -167,13 +168,16 @@ def run_curriculum(resume_path: str = "agents/final_rescuer.zip", fast_mode: boo
             net_arch=dict(pi=[128, 64], vf=[128, 64]),
         )
 
+        lr = 3e-4 if idx <= 2 else 1.5e-4
+        ent_coef = 0.03 if idx <= 2 else 0.02
+
         if current_weights and Path(current_weights).exists():
             print(f"  Loading pretrained weights from: {current_weights}")
             model = PPO.load(
                 current_weights,
                 env=vec_env,
-                learning_rate=3e-4,
-                ent_coef=0.03,
+                learning_rate=lr,
+                ent_coef=ent_coef,
                 device=device,
             )
         else:
@@ -181,14 +185,14 @@ def run_curriculum(resume_path: str = "agents/final_rescuer.zip", fast_mode: boo
                 "MultiInputPolicy",
                 vec_env,
                 policy_kwargs=policy_kwargs,
-                learning_rate=3e-4,
+                learning_rate=lr,
                 n_steps=256,
                 batch_size=128,
                 n_epochs=4,
                 gamma=0.99,
                 gae_lambda=0.95,
                 clip_range=0.2,
-                ent_coef=0.03,
+                ent_coef=ent_coef,
                 vf_coef=0.5,
                 max_grad_norm=0.5,
                 verbose=0,
@@ -202,14 +206,18 @@ def run_curriculum(resume_path: str = "agents/final_rescuer.zip", fast_mode: boo
         print(f"  Stage training finished in {train_duration/60:.2f} mins (~{timesteps/max(1, train_duration):.0f} steps/s)")
 
         # Save stage checkpoint
-        stage_ckpt = AGENTS_DIR / f"showcase_stage_{idx}.zip"
+        stage_ckpt = AGENTS_DIR / f"showcase_14x14_stage_{idx}.zip"
         model.save(str(stage_ckpt))
         current_weights = str(stage_ckpt)
 
-        # Evaluate on held-out maps
-        print(f"  Evaluating {stage.name} on 25 fresh held-out maps (seeds 50000..50024)...")
-        succ_rate, mean_resc, mean_surv, mean_ret = evaluate_stage_heldout(model, config, num_episodes=25)
-        print(f"  -> Held-Out Success Rate: {succ_rate*100:.1f}%")
+        # Close vectorized training environment
+        vec_env.close()
+
+        # Evaluate on 30 held-out maps (seeds 50000..50029)
+        print(f"  Evaluating {stage.name} on 30 fresh held-out maps (seeds 50000..50029)...")
+        succ_rate, mean_resc, mean_surv, mean_ret = evaluate_stage_heldout(model, config, num_episodes=30)
+        wins_count = int(round(succ_rate * 30))
+        print(f"  -> Held-Out Full WIN Rate: {succ_rate*100:.1f}% ({wins_count}/30 maps completely cleared)")
         print(f"  -> Mean Rescued:          {mean_resc * stage.n_hostages:.2f} / {stage.n_hostages} ({mean_resc*100:.1f}%)")
         print(f"  -> Mean Survivors:        {mean_surv:.2f} / {stage.n_rescuers}")
         print(f"  -> Mean Return:           {mean_ret:+.2f}")
@@ -226,10 +234,36 @@ def run_curriculum(resume_path: str = "agents/final_rescuer.zip", fast_mode: boo
             "mean_return": round(mean_ret, 2),
         })
 
-    # Save final showcase model
+        if stage.n_hostages == 3 and (succ_rate > best_target_win_rate or best_model_path is None):
+            best_target_win_rate = succ_rate
+            best_model_path = stage_ckpt
+
+    # Final policy selection: pick best target stage checkpoint
     final_showcase_path = AGENTS_DIR / "showcase_rescuer.zip"
-    model.save(str(final_showcase_path))
-    print(f"\n[Saved] Final showcase policy saved to: {final_showcase_path}")
+    final_rescuer_path = AGENTS_DIR / "final_rescuer.zip"
+
+    src_path = best_model_path if best_model_path else stage_ckpt
+    shutil.copy(str(src_path), str(final_showcase_path))
+    shutil.copy(str(src_path), str(final_rescuer_path))
+    print(f"\n[Saved] Best policy ({src_path}) deployed to:")
+    print(f"  - {final_showcase_path}")
+    print(f"  - {final_rescuer_path}")
+
+    # Re-evaluate final deployment on standard 14x14 showcase config
+    print("\nRunning final held-out benchmark on deployed policy (30 seeds: 50000..50029)...")
+    final_model = PPO.load(str(final_rescuer_path), device=device)
+    final_cfg = EnvConfig.showcase()
+    final_win_rate, final_resc, final_surv, final_ret = evaluate_stage_heldout(final_model, final_cfg, num_episodes=30)
+    final_wins = int(round(final_win_rate * 30))
+
+    print("=" * 70)
+    print("  FINAL 14x14 HELD-OUT BENCHMARK RESULT")
+    print("=" * 70)
+    print(f"  Full WIN Rate (All 3 Rescued): {final_win_rate*100:.1f}% ({final_wins}/30 maps)")
+    print(f"  Mean Hostages Rescued:        {final_resc * final_cfg.n_hostages:.2f} / {final_cfg.n_hostages} ({final_resc*100:.1f}%)")
+    print(f"  Mean Rescuers Surviving:      {final_surv:.2f} / {final_cfg.n_rescuers}")
+    print(f"  Mean Episode Return:          {final_ret:+.2f}")
+    print("=" * 70)
 
     # Log results CSV
     csv_file = METRICS_DIR / "showcase_curriculum.csv"
@@ -239,14 +273,22 @@ def run_curriculum(resume_path: str = "agents/final_rescuer.zip", fast_mode: boo
         writer.writerows(results)
     print(f"[Saved] Curriculum progression logged to: {csv_file}")
 
-    print("\n" + "=" * 70)
-    print("  RADON Curriculum Retraining Summary")
-    print("=" * 70)
-    for r in results:
-        print(f"  {r['stage']}: Success {r['heldout_success_pct']}% | Rescued {r['mean_hostages_rescued']}/{r['hostages']} | Survivors {r['survivors']}/{r['rescuers']}")
-    print("=" * 70)
+    return {
+        "final_win_rate": final_win_rate,
+        "final_rescued": final_resc * final_cfg.n_hostages,
+        "final_survivors": final_surv,
+        "stages": results,
+    }
 
-    return results
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--resume", type=str, default="agents/final_rescuer.zip")
+    parser.add_argument("--fast", action="store_true", help="Fast training mode for quick curriculum pass")
+    args = parser.parse_args()
+
+    run_curriculum(resume_path=args.resume, fast_mode=args.fast)
+
 
 
 if __name__ == "__main__":

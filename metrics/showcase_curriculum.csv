@@ -1,4 +1,4 @@
 stage,grid_size,rescuers,hostages,timesteps,heldout_success_pct,mean_hostages_rescued,survivors,mean_return
-Stage 1 (12x12),12,3,2,45000,8.0,0.52,2.4,8.42
-Stage 2 (16x16),16,4,3,50000,0.0,0.96,3.32,9.71
-Stage 3 (20x20),20,5,4,60000,0.0,0.6,4.48,85.45
+Stage 1 (14x14 - 2 Hostages Warmup),14,4,2,60000,3.3,0.4,3.67,24.96
+Stage 2 (14x14 - 3 Hostages Target),14,4,3,100000,3.3,0.77,3.17,30.09
+Stage 3 (14x14 - 3 Hostages Hardened),14,4,3,60000,6.7,0.67,3.3,41.82

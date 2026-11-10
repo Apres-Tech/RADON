@@ -16,6 +16,7 @@ build/
 # Intermediate training checkpoints
 agents/rescuer_ckpt_*.zip
 agents/showcase_stage_*.zip
+agents/showcase_14x14_stage_*.zip
 
 # IDE & OS
 .vscode/
