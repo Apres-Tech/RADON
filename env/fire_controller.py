@@ -303,12 +303,12 @@ def select_frontier_ignition(
 class PolicyFireController(FireController):
     """Learned policy-driven fire controller powered by a trained adversary PPO model."""
 
-    def __init__(self, model_path: Optional[str] = None, deterministic: bool = False):
+    def __init__(self, model_path: Optional[str] = None, model: Optional[object] = None, deterministic: bool = False):
         self.model_path = model_path
         self.deterministic = deterministic
-        self.model = None
+        self.model = model
         self.config = None
-        if model_path is not None:
+        if self.model is None and model_path is not None:
             from pathlib import Path
             p = Path(model_path)
             if p.exists():
