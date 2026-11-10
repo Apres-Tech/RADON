@@ -137,6 +137,27 @@ class CurriculumFireController(FireController):
         return [frontier[i] for i in chosen_indices]
 
 
+def resize_to_canonical(
+    grid_obs: np.ndarray, target_h: int = 10, target_w: int = 10
+) -> np.ndarray:
+    """Downsamples/resizes (C, H, W) to canonical fixed resolution (C, target_h, target_w)
+    using windowed max-pooling to preserve sparse feature indicators (stairs, exits, victims, agents).
+    """
+    c, h, w = grid_obs.shape
+    if h == target_h and w == target_w:
+        return grid_obs
+
+    out = np.zeros((c, target_h, target_w), dtype=np.float32)
+    for tr in range(target_h):
+        r0 = int(np.floor(tr * h / target_h))
+        r1 = max(r0 + 1, int(np.ceil((tr + 1) * h / target_h)))
+        for tc in range(target_w):
+            c0 = int(np.floor(tc * w / target_w))
+            c1 = max(c0 + 1, int(np.ceil((tc + 1) * w / target_w)))
+            out[:, tr, tc] = np.max(grid_obs[:, r0:r1, c0:c1], axis=(1, 2))
+    return out
+
+
 def build_fire_observation(
     grids: np.ndarray,
     fire_positions: List[Tuple[int, int, int]],
@@ -148,7 +169,7 @@ def build_fire_observation(
 ) -> Dict[str, np.ndarray]:
     """Constructs multi-channel global grid and scalar vector for the adversary fire policy.
 
-    Grid channels across all floors (shape: (6 * floors, grid_h, grid_w)):
+    Grid channels across all floors (canonical shape: (6 * floors, 10, 10)):
       Channel 0: Wall
       Channel 1: Fire
       Channel 2: Living rescuers
@@ -206,7 +227,10 @@ def build_fire_observation(
         dtype=np.float32,
     )
 
-    return {"grid": grid_obs, "scalars": scalars}
+    # Downsample to canonical 10x10 grid to guarantee size-invariance across any map dimensions
+    canonical_grid = resize_to_canonical(grid_obs, target_h=10, target_w=10)
+
+    return {"grid": canonical_grid, "scalars": scalars}
 
 
 def select_frontier_ignition(
