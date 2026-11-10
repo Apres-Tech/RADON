@@ -24,9 +24,9 @@ def parse_args():
     parser.add_argument(
         "--preset",
         type=str,
-        choices=["training_day4_base", "training_day3", "training_day2", "sanity"],
+        choices=["showcase", "training_day4_base", "training_day3", "training_day2", "sanity"],
         default="training_day4_base",
-        help="Configuration preset: 'training_day4_base', 'training_day3', 'training_day2', or 'sanity' (default: 'training_day4_base')",
+        help="Configuration preset: 'showcase', 'training_day4_base', 'training_day3', 'training_day2', or 'sanity' (default: 'training_day4_base')",
     )
     parser.add_argument(
         "--seed",
@@ -130,7 +130,9 @@ def train(args):
 
     # 1. Environment creation based on preset (fresh maps by default for generalization)
     cfg_seed = args.seed if args.fixed_map else None
-    if args.preset == "sanity":
+    if args.preset == "showcase":
+        config = EnvConfig.showcase(seed=cfg_seed)
+    elif args.preset == "sanity":
         config = EnvConfig.sanity(seed=cfg_seed)
     elif args.preset == "training_day4_base":
         config = EnvConfig.training_day4_base(seed=cfg_seed)
