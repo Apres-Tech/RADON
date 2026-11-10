@@ -77,3 +77,18 @@
 - Learning curve: `metrics/day5_learning_curve.png` (3-panel: success rate, hostages evacuated, survival & fire avoidance across 1.65M steps)
 - Benchmark log & replay: `metrics/final_rescuer.csv`, `replays/day5_trained.json`, and `replays/day5_best_heldout.json`
 - Final models: `agents/final_rescuer.zip`, `agents/rescuer_best_heldout.zip`, `agents/final_fire.zip`
+
+## Day 5 (B/C/D) — 2026-11-10 — Dashboard, Runbook, Submission
+**Dashboard:** FastAPI backend with async `/generate` (live unseen-map inference on seeds 50000+) + Three.js 3D multi-floor replay viewer; interactive controls (play, pause, scrub, speed, floor isolation) and fire mode toggle (curriculum vs learned PPO adversary). Pre-recorded fallback guarantee for zero offline crashes.
+**Runbook:** `RUNBOOK.md` — plain-language copy-paste operator guide covering prerequisites, one-command dashboard startup, 100-episode held-out evaluation re-runs, training continuation, terminal ASCII inspection, curve generation, demo screen recording sequence, and top troubleshooting resolutions.
+**Submission:**
+- Repository: https://github.com/Apres-Tech/RADON
+- Presentation Slides: https://github.com/Apres-Tech/RADON/blob/main/docs/RADON_Presentation.pdf
+- Demo Video Guide: https://github.com/Apres-Tech/RADON#demo-video-recording-guide
+- Technical Writeup: https://github.com/Apres-Tech/RADON/blob/main/docs/RADON_Technical_Writeup.pdf
+**How to run (summary):**
+```bash
+.venv\Scripts\activate
+python -m uvicorn server.app:app --host 0.0.0.0 --port 8000
+# Open http://localhost:8000 in your browser to inspect 3D building and generate live unseen episodes
+```
