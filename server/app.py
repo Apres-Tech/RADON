@@ -61,6 +61,7 @@ def load_models_at_startup() -> None:
 
     # 1. Rescuer policy
     rescuer_candidates = [
+        AGENTS_DIR / "showcase_rescuer.zip",
         AGENTS_DIR / "final_rescuer.zip",
         AGENTS_DIR / "rescuer_best_heldout.zip",
         AGENTS_DIR / "base_frozen.zip",
@@ -105,8 +106,8 @@ def startup_event():
 class GenerateRequest(BaseModel):
     fire_mode: str = Field(default="curriculum", description="Fire mode: 'none', 'curriculum', or 'adversarial'")
     seed: Optional[int] = Field(default=None, description="Held-out map seed (defaults to random 50000..99999)")
-    preset: str = Field(default="training_day4_base", description="Environment preset")
-    max_steps: Optional[int] = Field(default=160, description="Max episode steps")
+    preset: str = Field(default="showcase", description="Environment preset")
+    max_steps: Optional[int] = Field(default=350, description="Max episode steps")
 
 
 @app.get("/health")
@@ -265,7 +266,9 @@ def generate_episode(req: GenerateRequest):
     seed = req.seed if req.seed is not None else random.randint(50000, 99999)
 
     # Config preset
-    if req.preset == "training_day3":
+    if req.preset == "showcase":
+        config = EnvConfig.showcase(seed=seed)
+    elif req.preset == "training_day3":
         config = EnvConfig.training_day3(seed=seed)
     elif req.preset == "sanity":
         config = EnvConfig.sanity(seed=seed)
