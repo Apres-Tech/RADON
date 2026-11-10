@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RADON — Autonomous Multi-Agent Rescue Simulation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 3D Canvas -->
+  <div id="canvas-container"></div>
+
+  <!-- Header -->
+  <header class="app-header glass-panel">
+    <div class="brand">
+      <div class="brand-logo">RADON</div>
+      <div class="brand-badge">Multi-Agent RL 3D</div>
+    </div>
+    <div class="header-status">
+      <div class="status-pill" id="backend-status-pill">
+        <span class="status-dot" id="status-dot"></span>
+        <span id="backend-status-text">Connecting...</span>
+      </div>
+      <div class="status-pill" id="device-pill" style="display:none;">
+        <span style="color:#a78bfa; font-weight:700;">GPU:</span>
+        <span id="device-text">CUDA</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn" id="open-analytics-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 9l-5 5-4-4-6 6"/></svg>
+        Learning Curves & Benchmark
+      </button>
+      <button class="btn" id="reset-cam-btn" title="Reset Camera View (R)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        Reset Camera
+      </button>
+    </div>
+  </header>
+
+  <!-- Left Panel: Live Telemetry & Rescuer Team HUD -->
+  <aside id="left-panel" class="glass-panel">
+    <div>
+      <div class="panel-title">Mission Telemetry</div>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-label">Evacuated</div>
+          <div class="stat-value rescued" id="stat-rescued">0 <span class="stat-unit">/ 2</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Surviving Rescuers</div>
+          <div class="stat-value survivors" id="stat-survivors">3 <span class="stat-unit">/ 3</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Active Fire Tiles</div>
+          <div class="stat-value fire" id="stat-fire">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Step / Horizon</div>
+          <div class="stat-value step" id="stat-step">0 <span class="stat-unit">/ 160</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel-title">Rescuer Tactical Status</div>
+      <div class="rescuer-list" id="rescuer-list">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+
+    <div>
+      <div class="panel-title">Floor View Isolator</div>
+      <div class="view-mode-buttons">
+        <button class="view-btn active" data-floor="both">Both Floors</button>
+        <button class="view-btn" data-floor="0">Floor 0 (Exits)</button>
+        <button class="view-btn" data-floor="1">Floor 1 (Upper)</button>
+      </div>
+    </div>
+
+    <div style="font-size:11px; color:#64748b; line-height:1.5; margin-top:auto;">
+      <strong>3D Controls:</strong> Left-drag to rotate; right-drag to pan; scroll to zoom.<br>
+      <strong>Hotkeys:</strong> Space (play/pause), Left/Right (step), R (reset camera), G (generate).
+    </div>
+  </aside>
+
+  <!-- Right Panel: Replay Selection & Live Generator -->
+  <aside id="right-panel" class="glass-panel">
+    <div class="control-group">
+      <div class="control-label">Load Replay Dataset</div>
+      <select id="replay-select" class="input-select">
+        <option value="">Fetching replays...</option>
+      </select>
+    </div>
+
+    <hr style="border:0; border-top:1px solid rgba(255,255,255,0.08); margin:4px 0;">
+
+    <div class="control-group">
+      <div class="control-label">Live Episode Generator</div>
+      <div style="font-size:11px; color:#94a3b8; margin-bottom:4px;">
+        Simulate the trained policy on a <strong>fresh, unseen held-out building</strong> (seed 50,000+).
+      </div>
+    </div>
+
+    <div class="control-group">
+      <div class="control-label">Fire Adversary Mode</div>
+      <div class="segmented-control" id="fire-mode-control">
+        <div class="segmented-btn active" data-mode="curriculum">Curriculum</div>
+        <div class="segmented-btn fire-adv" data-mode="adversarial">Adversary PPO</div>
+        <div class="segmented-btn" data-mode="none">None</div>
+      </div>
+      <div id="fire-mode-caption" style="font-size:10px; color:#64748b; margin-top:2px;">
+        Natural stochastic fire spread from ignition points.
+      </div>
+    </div>
+
+    <div class="control-group">
+      <button class="btn btn-primary" id="generate-btn" style="width:100%; justify-content:center; padding:10px;">
+        <span class="spinner" id="generate-spinner" style="display:none;"></span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="generate-icon"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        <span id="generate-btn-text">Generate on Unseen Map</span>
+      </button>
+    </div>
+
+    <div id="active-episode-meta" style="font-size:11px; color:#94a3b8; background:rgba(255,255,255,0.03); padding:8px 10px; border-radius:6px; border:1px solid rgba(255,255,255,0.05); display:none;">
+      <div><strong>Active Replay:</strong> <span id="meta-name">-</span></div>
+      <div><strong>Map Seed:</strong> <span id="meta-seed">-</span></div>
+      <div><strong>Outcome:</strong> <span id="meta-outcome">-</span></div>
+    </div>
+  </aside>
+
+  <!-- Notification Toast -->
+  <div class="toast-notification" id="toast-notification">
+    <span id="toast-message">Notification</span>
+  </div>
+
+  <!-- Bottom Playback Control Bar -->
+  <footer class="playback-bar glass-panel">
+    <div class="playback-buttons">
+      <button class="btn-icon" id="prev-frame-btn" title="Previous Step (Left Arrow)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+      </button>
+      <button class="btn-icon play-btn" id="play-pause-btn" title="Play / Pause (Space)">
+        <svg id="play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="pause-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+      </button>
+      <button class="btn-icon" id="next-frame-btn" title="Next Step (Right Arrow)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+      </button>
+    </div>
+
+    <div class="scrubber-container">
+      <div class="scrubber-track">
+        <input type="range" class="timeline-slider" id="timeline-slider" min="0" max="0" value="0" step="1">
+      </div>
+      <div class="timeline-info">
+        <span>Frame <strong id="current-frame-lbl">0</strong> of <strong id="total-frames-lbl">0</strong></span>
+        <span id="episode-completion-tag" style="color:#10b981; font-weight:700;">In Progress</span>
+      </div>
+    </div>
+
+    <div class="speed-selector">
+      <div class="speed-chip" data-speed="0.5">0.5x</div>
+      <div class="speed-chip active" data-speed="1.0">1x</div>
+      <div class="speed-chip" data-speed="2.0">2x</div>
+      <div class="speed-chip" data-speed="4.0">4x</div>
+    </div>
+  </footer>
+
+  <!-- Analytics & Benchmark Modal -->
+  <div class="modal-overlay" id="analytics-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 style="font-size:18px; font-weight:800; background:linear-gradient(135deg, #60a5fa, #34d399); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">RADON Evaluation & Arms Race Telemetry</h2>
+        <button class="btn-icon" id="close-modal-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-tabs">
+        <button class="tab-btn active" data-tab="learning-curve">1.65M-Step Learning Curve</button>
+        <button class="tab-btn" data-tab="arms-race">Self-Play Arms Race</button>
+        <button class="tab-btn" data-tab="benchmark">100-Episode Benchmark</button>
+      </div>
+
+      <div id="tab-learning-curve" class="tab-content">
+        <div class="chart-container">
+          <img src="/metrics_static/day5_learning_curve.png" alt="RADON Day 5 1.65M Learning Curve" onerror="this.alt='Learning curve image loading or metrics_static not accessible'">
+          <div style="font-size:12px; color:#94a3b8; margin-top:8px;">
+            Three-panel generalization breakdown: all-evacuated success rate (peaking at 20%), mean hostages rescued (up to 0.8/2), and team rescuer survival (75–85%).
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-arms-race" class="tab-content" style="display:none;">
+        <div class="chart-container">
+          <img src="/metrics_static/day4_selfplay_arms_race.png" alt="RADON Self-Play Adversarial Arms Race" onerror="this.alt='Arms race image loading or metrics_static not accessible'">
+          <div style="font-size:12px; color:#94a3b8; margin-top:8px;">
+            Iterated self-play progression: R0 baseline (10% success, 0.43 deaths) &rarr; R1 trained fire attacks chokepoints (0% success, 1.85 deaths) &rarr; R2 retrained rescuer learns defensive pathfinding.
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-benchmark" class="tab-content" style="display:none;">
+        <table class="benchmark-table">
+          <thead>
+            <tr>
+              <th>Evaluation Metric</th>
+              <th>Random Policy</th>
+              <th>Trained Rescuer (Day 5 Long Run)</th>
+              <th>Advantage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>All-Evacuated Success Rate</strong></td>
+              <td>0.0%</td>
+              <td style="color:#34d399; font-weight:700;">11.0%</td>
+              <td>+11.0% (11/100 cleared)</td>
+            </tr>
+            <tr>
+              <td><strong>Mean Hostages Rescued (/2)</strong></td>
+              <td>0.20 / 2</td>
+              <td style="color:#34d399; font-weight:700;">0.69 / 2</td>
+              <td>+245% (~3.5x higher)</td>
+            </tr>
+            <tr>
+              <td><strong>Rescuer Team Survival</strong></td>
+              <td>1.66 / 3 (55.3%)</td>
+              <td style="color:#38bdf8; font-weight:700;">2.27 / 3 (75.7%)</td>
+              <td>+36.8% higher survival</td>
+            </tr>
+            <tr>
+              <td><strong>Mean Fire Fatalities</strong></td>
+              <td>1.34</td>
+              <td style="color:#f87171; font-weight:700;">0.73</td>
+              <td>Fire mortality cut by 46%</td>
+            </tr>
+            <tr>
+              <td><strong>Mean Episode Return</strong></td>
+              <td>+1.23 ± 10.1</td>
+              <td style="color:#a78bfa; font-weight:700;">+28.15 ± 40.8</td>
+              <td>+26.92 reward gain</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="font-size:11px; color:#64748b; margin-top:10px;">
+          * Protocol: 100 held-out unseen procedural building maps (seeds 50000..50099) with dynamic fire hazard.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+
