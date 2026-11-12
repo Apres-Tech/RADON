@@ -47,6 +47,7 @@ class EnvConfig:
     carry_capacity: int = 1
     carry_overtime: bool = False
     obs_bfs_features: bool = True
+    obs_centralized_critic: bool = False
     seed: Optional[int] = None
 
     # Reward values
@@ -73,6 +74,7 @@ class EnvConfig:
         seed: Optional[int] = None,
         carry_overtime: bool = False,
         obs_bfs_features: bool = True,
+        obs_centralized_critic: bool = False,
     ) -> "EnvConfig":
         """Showcase preset: 2 floors, 14x14 default (office layout, wide doors, 2x2 exits).
         
@@ -104,6 +106,7 @@ class EnvConfig:
             carry_capacity=1,
             carry_overtime=carry_overtime,
             obs_bfs_features=obs_bfs_features,
+            obs_centralized_critic=obs_centralized_critic,
             seed=seed,
             step_reward=-0.01,
             pickup_reward=5.0,
@@ -120,6 +123,7 @@ class EnvConfig:
         seed: Optional[int] = None,
         carry_overtime: bool = False,
         obs_bfs_features: bool = True,
+        obs_centralized_critic: bool = False,
     ) -> "EnvConfig":
         """Showcase hard mode: 20x20 grid, 5 rescuers, 4 hostages, max_steps=400."""
         return cls.showcase(
@@ -130,6 +134,7 @@ class EnvConfig:
             seed=seed,
             carry_overtime=carry_overtime,
             obs_bfs_features=obs_bfs_features,
+            obs_centralized_critic=obs_centralized_critic,
         )
 
     @classmethod
@@ -138,6 +143,7 @@ class EnvConfig:
         seed: Optional[int] = None,
         carry_overtime: bool = False,
         obs_bfs_features: bool = True,
+        obs_centralized_critic: bool = False,
     ) -> "EnvConfig":
         """Base solvable preset for Day 4: 2 floors, 10x10 grid, 3 rescuers, 2 hostages (1/floor), max_steps=160."""
         return cls(
@@ -155,6 +161,7 @@ class EnvConfig:
             carry_capacity=1,
             carry_overtime=carry_overtime,
             obs_bfs_features=obs_bfs_features,
+            obs_centralized_critic=obs_centralized_critic,
             seed=seed,
             step_reward=-0.01,
             pickup_reward=5.0,

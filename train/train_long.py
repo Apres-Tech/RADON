@@ -242,12 +242,13 @@ def train_long(
     print("=" * 76)
 
     # Resolve environment config
+    obs_centralized = (arch == "centralized")
     if preset == "showcase":
-        cfg = EnvConfig.showcase()
+        cfg = EnvConfig.showcase(obs_centralized_critic=obs_centralized)
     elif preset == "showcase_hard":
-        cfg = EnvConfig.showcase_hard()
+        cfg = EnvConfig.showcase_hard(obs_centralized_critic=obs_centralized)
     else:
-        cfg = EnvConfig.training_day4_base()
+        cfg = EnvConfig.training_day4_base(obs_centralized_critic=obs_centralized)
 
     def _fc_factory():
         return CurriculumFireController()

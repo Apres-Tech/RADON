@@ -69,22 +69,34 @@ class RadonRescueEnv(ParallelEnv):
         view_dim = self.config.view_size
         use_bfs = getattr(self.config, "obs_bfs_features", True)
         self_dim = 13 if use_bfs else 6
-        return spaces.Dict(
-            {
-                "grid": spaces.Box(
-                    low=0.0,
-                    high=1.0,
-                    shape=(NUM_OBS_CHANNELS, view_dim, view_dim),
-                    dtype=np.float32,
-                ),
-                "self": spaces.Box(
-                    low=-1.0 if use_bfs else 0.0,
-                    high=1.0,
-                    shape=(self_dim,),
-                    dtype=np.float32,
-                ),
-            }
-        )
+        space_dict = {
+            "grid": spaces.Box(
+                low=0.0,
+                high=1.0,
+                shape=(NUM_OBS_CHANNELS, view_dim, view_dim),
+                dtype=np.float32,
+            ),
+            "self": spaces.Box(
+                low=-1.0 if use_bfs else 0.0,
+                high=1.0,
+                shape=(self_dim,),
+                dtype=np.float32,
+            ),
+        }
+        if getattr(self.config, "obs_centralized_critic", False):
+            space_dict["global"] = spaces.Box(
+                low=0.0,
+                high=1.0,
+                shape=(6 * self.config.floors, 10, 10),
+                dtype=np.float32,
+            )
+            space_dict["global_scalars"] = spaces.Box(
+                low=0.0,
+                high=1.0,
+                shape=(4,),
+                dtype=np.float32,
+            )
+        return spaces.Dict(space_dict)
 
     @lru_cache(maxsize=None)
     def action_space(self, agent: str) -> spaces.Discrete:
@@ -171,7 +183,11 @@ class RadonRescueEnv(ParallelEnv):
             grid_obs[CHANNEL_WALL, :, :] = 1.0
             self_dim = 13 if getattr(self.config, "obs_bfs_features", True) else 6
             self_feat = np.zeros(self_dim, dtype=np.float32)
-            return {"grid": grid_obs, "self": self_feat}
+            dead_obs = {"grid": grid_obs, "self": self_feat}
+            if getattr(self.config, "obs_centralized_critic", False):
+                dead_obs["global"] = np.zeros((6 * self.config.floors, 10, 10), dtype=np.float32)
+                dead_obs["global_scalars"] = np.zeros(4, dtype=np.float32)
+            return dead_obs
 
         curr_floor = rescuer.floor
         for dr_idx, dr in enumerate(range(-rad, rad + 1)):
@@ -307,7 +323,18 @@ class RadonRescueEnv(ParallelEnv):
             )
             self_feat = np.concatenate([self_feat, bfs_feat])
 
-        return {"grid": grid_obs, "self": self_feat}
+        obs_dict = {"grid": grid_obs, "self": self_feat}
+        if getattr(self.config, "obs_centralized_critic", False):
+            if not hasattr(self, "_cached_global_step") or self._cached_global_step != self.current_step:
+                from train.centralized import build_centralized_global_state
+                self._cached_global_grid, self._cached_global_scalars = build_centralized_global_state(
+                    self, target_h=10, target_w=10
+                )
+                self._cached_global_step = self.current_step
+            obs_dict["global"] = self._cached_global_grid
+            obs_dict["global_scalars"] = self._cached_global_scalars
+
+        return obs_dict
 
     @property
     def verdict(self) -> str:
