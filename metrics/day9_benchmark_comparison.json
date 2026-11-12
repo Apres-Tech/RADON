@@ -1,0 +1,49 @@
+{
+  "protocol": {
+    "num_episodes": 100,
+    "seed_range": "50000..50099",
+    "preset": "showcase (14x14, 2 floors, 4 rescuers, 3 hostages)",
+    "max_steps": 220,
+    "carry_overtime": false
+  },
+  "baseline_day8": {
+    "model": "agents/final_rescuer.zip",
+    "architecture": "Local 7x7 CNN + 6-dim self vector (no BFS / no memory)",
+    "full_win_rate": 1.0,
+    "full_wins": "1/100",
+    "partial_rescue_rate": 52.0,
+    "mean_rescued": 0.76,
+    "rescued_pct": 25.3,
+    "timeouts": 99,
+    "wipes": 0,
+    "oscillation_rate": 73.7,
+    "unrescued_reachability": 95.0,
+    "team_survival": 3.35,
+    "fire_deaths": 0.65,
+    "mean_episode_length": 219.5
+  },
+  "day9_final": {
+    "model": "agents/best_bfs_mlp.zip",
+    "architecture": "Stage 1 Multi-Floor BFS Navigation Delta Features (13-dim self vector) + PPO MultiInputPolicy",
+    "full_win_rate": 96.0,
+    "full_wins": "96/100",
+    "partial_rescue_rate": 100.0,
+    "mean_rescued": 2.96,
+    "rescued_pct": 98.7,
+    "timeouts": 3,
+    "wipes": 1,
+    "oscillation_rate": 56.4,
+    "unrescued_reachability": 99.0,
+    "team_survival": 3.37,
+    "fire_deaths": 0.63,
+    "mean_episode_length": 96.2
+  },
+  "delta": {
+    "full_win_rate_gain": "+95.0% (96x)",
+    "partial_rescue_rate_gain": "+48.0%",
+    "mean_rescued_gain": "+2.20 / 3 (+289%)",
+    "timeouts_reduction": "-96 (cut by 97%)",
+    "oscillation_drop": "-17.3%",
+    "episode_length_reduction": "-123.3 steps (2.3x faster clearance)"
+  }
+}
