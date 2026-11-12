@@ -30,9 +30,10 @@ class RescueExtractor(BaseFeaturesExtractor):
             nn.ReLU(),
         )
 
-        # 6-dim self vector MLP
+        # Self vector MLP (handles 6-dim legacy or 13-dim BFS-augmented self vector)
+        self_dim = observation_space["self"].shape[0]
         self.mlp = nn.Sequential(
-            nn.Linear(6, 32),
+            nn.Linear(self_dim, 32),
             nn.ReLU(),
         )
 

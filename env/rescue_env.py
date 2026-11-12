@@ -67,6 +67,8 @@ class RadonRescueEnv(ParallelEnv):
     def observation_space(self, agent: str) -> spaces.Dict:
         """Returns the cached observation space for the specified agent."""
         view_dim = self.config.view_size
+        use_bfs = getattr(self.config, "obs_bfs_features", True)
+        self_dim = 13 if use_bfs else 6
         return spaces.Dict(
             {
                 "grid": spaces.Box(
@@ -76,9 +78,9 @@ class RadonRescueEnv(ParallelEnv):
                     dtype=np.float32,
                 ),
                 "self": spaces.Box(
-                    low=0.0,
+                    low=-1.0 if use_bfs else 0.0,
                     high=1.0,
-                    shape=(6,),
+                    shape=(self_dim,),
                     dtype=np.float32,
                 ),
             }
@@ -164,10 +166,11 @@ class RadonRescueEnv(ParallelEnv):
 
         grid_obs = np.zeros((NUM_OBS_CHANNELS, view_dim, view_dim), dtype=np.float32)
 
-        # If rescuer is dead, return all-wall obs
+        # If rescuer is dead, return all-wall obs and zero self-vector
         if not rescuer.alive:
             grid_obs[CHANNEL_WALL, :, :] = 1.0
-            self_feat = np.zeros(6, dtype=np.float32)
+            self_dim = 13 if getattr(self.config, "obs_bfs_features", True) else 6
+            self_feat = np.zeros(self_dim, dtype=np.float32)
             return {"grid": grid_obs, "self": self_feat}
 
         curr_floor = rescuer.floor
@@ -231,6 +234,78 @@ class RadonRescueEnv(ParallelEnv):
             ],
             dtype=np.float32,
         )
+
+        if getattr(self.config, "obs_bfs_features", True):
+            if rescuer.carrying:
+                active_dist_map = getattr(self, "_exit_dist_map", None)
+                active_origin_floor = getattr(self, "_exit_origin_floor", None)
+            else:
+                active_dist_map = getattr(self, "_hostage_dist_map", None)
+                active_origin_floor = getattr(self, "_hostage_origin_floor", None)
+
+            if (
+                active_dist_map is not None
+                and 0 <= rescuer.floor < active_dist_map.shape[0]
+                and 0 <= rescuer.row < active_dist_map.shape[1]
+                and 0 <= rescuer.col < active_dist_map.shape[2]
+            ):
+                cur_d = int(active_dist_map[rescuer.floor, rescuer.row, rescuer.col])
+            else:
+                cur_d = 999
+
+            if cur_d >= 900:
+                # No reachable goal
+                delta_up = 0.0
+                delta_down = 0.0
+                delta_left = 0.0
+                delta_right = 0.0
+                norm_dist = 1.0
+                goal_diff_floor = 0.0
+                has_goal = 0.0
+            else:
+                max_possible_dist = float(self.config.floors * (self.config.grid_h + self.config.grid_w))
+                norm_dist = min(1.0, float(cur_d) / max(1.0, max_possible_dist))
+                has_goal = 1.0
+
+                target_floor = (
+                    active_origin_floor[rescuer.floor, rescuer.row, rescuer.col]
+                    if active_origin_floor is not None
+                    else rescuer.floor
+                )
+                goal_diff_floor = 1.0 if target_floor != rescuer.floor else 0.0
+
+                # 4 directional moves: Up (-1, 0), Down (+1, 0), Left (0, -1), Right (0, 1)
+                dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+                deltas = []
+                for dr, dc in dirs:
+                    nr, nc = rescuer.row + dr, rescuer.col + dc
+                    if nr < 0 or nr >= self.config.grid_h or nc < 0 or nc >= self.config.grid_w:
+                        deltas.append(1.0)
+                    elif self.grids[rescuer.floor, nr, nc] in (Tile.WALL, Tile.FIRE):
+                        deltas.append(1.0)
+                    else:
+                        nd = int(active_dist_map[rescuer.floor, nr, nc])
+                        if nd >= 900:
+                            deltas.append(1.0)
+                        else:
+                            raw_diff = float(nd - cur_d)
+                            deltas.append(float(np.clip(raw_diff, -1.0, 1.0)))
+
+                delta_up, delta_down, delta_left, delta_right = deltas
+
+            bfs_feat = np.array(
+                [
+                    delta_up,
+                    delta_down,
+                    delta_left,
+                    delta_right,
+                    norm_dist,
+                    goal_diff_floor,
+                    has_goal,
+                ],
+                dtype=np.float32,
+            )
+            self_feat = np.concatenate([self_feat, bfs_feat])
 
         return {"grid": grid_obs, "self": self_feat}
 
@@ -358,30 +433,38 @@ class RadonRescueEnv(ParallelEnv):
         return spread_occurred
 
     def _recompute_shaping_maps(self, update_exits: bool = True) -> None:
-        """Precomputes or updates multi-floor BFS shortest-path distance maps for potential shaping."""
-        if not self.config.enable_shaping or not self.building_map:
+        """Precomputes or updates multi-floor BFS shortest-path distance maps for potential shaping and observation."""
+        if not (self.config.enable_shaping or getattr(self.config, "obs_bfs_features", True)) or not self.building_map:
             return
         if update_exits or not hasattr(self, "_exit_dist_map") or self._exit_dist_map is None:
-            self._exit_dist_map = self._compute_multi_floor_bfs_dist_map(self.building_map.exits)
+            self._exit_dist_map, self._exit_origin_floor = self._compute_multi_floor_bfs_dist_map(
+                self.building_map.exits, return_origins=True
+            )
 
         hostage_targets = [
             (h.floor, h.row, h.col)
             for h in self.hostages
             if not h.rescued and h.carried_by is None
         ]
-        self._hostage_dist_map = self._compute_multi_floor_bfs_dist_map(hostage_targets)
+        self._hostage_dist_map, self._hostage_origin_floor = self._compute_multi_floor_bfs_dist_map(
+            hostage_targets, return_origins=True
+        )
 
-    def _compute_multi_floor_bfs_dist_map(self, targets: List[Tuple[int, int, int]]) -> np.ndarray:
+    def _compute_multi_floor_bfs_dist_map(
+        self, targets: List[Tuple[int, int, int]], return_origins: bool = False
+    ) -> Any:
         """Computes shortest path 3D BFS distance map across floors and stairs respecting walls."""
         floors, h, w = self.config.floors, self.config.grid_h, self.config.grid_w
         dist_map = np.full((floors, h, w), fill_value=999, dtype=np.int32)
+        origin_floor = np.full((floors, h, w), fill_value=-1, dtype=np.int32)
         if not targets:
-            return dist_map
+            return (dist_map, origin_floor) if return_origins else dist_map
 
         queue: deque[Tuple[int, int, int]] = deque()
         for tf, tr, tc in targets:
             if 0 <= tf < floors and 0 <= tr < h and 0 <= tc < w:
                 dist_map[tf, tr, tc] = 0
+                origin_floor[tf, tr, tc] = tf
                 queue.append((tf, tr, tc))
 
         stairs_set = set(self.building_map.stairs) if self.building_map else set()
@@ -389,6 +472,7 @@ class RadonRescueEnv(ParallelEnv):
         while queue:
             f, r, c = queue.popleft()
             d = dist_map[f, r, c]
+            orig_f = origin_floor[f, r, c]
 
             # 1. Lateral moves on same floor (impassable: WALL and FIRE)
             for dr, dc in ((-1, 0), (1, 0), (0, -1), (0, 1)):
@@ -396,6 +480,7 @@ class RadonRescueEnv(ParallelEnv):
                 if 0 <= nr < h and 0 <= nc < w:
                     if self.grids[f, nr, nc] not in (Tile.WALL, Tile.FIRE) and dist_map[f, nr, nc] > d + 1:
                         dist_map[f, nr, nc] = d + 1
+                        origin_floor[f, nr, nc] = orig_f
                         queue.append((f, nr, nc))
 
             # 2. Inter-floor transition via stairs (impassable: WALL and FIRE)
@@ -404,9 +489,10 @@ class RadonRescueEnv(ParallelEnv):
                     if 0 <= nf < floors:
                         if self.grids[nf, r, c] not in (Tile.WALL, Tile.FIRE) and dist_map[nf, r, c] > d + 1:
                             dist_map[nf, r, c] = d + 1
+                            origin_floor[nf, r, c] = orig_f
                             queue.append((nf, r, c))
 
-        return dist_map
+        return (dist_map, origin_floor) if return_origins else dist_map
 
     def step(
         self, actions: Dict[str, int]

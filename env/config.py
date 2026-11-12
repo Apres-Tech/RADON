@@ -46,6 +46,7 @@ class EnvConfig:
     fire_enabled: bool = True
     carry_capacity: int = 1
     carry_overtime: bool = False
+    obs_bfs_features: bool = True
     seed: Optional[int] = None
 
     # Reward values
@@ -71,6 +72,7 @@ class EnvConfig:
         max_steps: Optional[int] = None,
         seed: Optional[int] = None,
         carry_overtime: bool = False,
+        obs_bfs_features: bool = True,
     ) -> "EnvConfig":
         """Showcase preset: 2 floors, 14x14 default (office layout, wide doors, 2x2 exits).
         
@@ -101,6 +103,7 @@ class EnvConfig:
             fire_enabled=True,
             carry_capacity=1,
             carry_overtime=carry_overtime,
+            obs_bfs_features=obs_bfs_features,
             seed=seed,
             step_reward=-0.01,
             pickup_reward=5.0,
@@ -116,6 +119,7 @@ class EnvConfig:
         cls,
         seed: Optional[int] = None,
         carry_overtime: bool = False,
+        obs_bfs_features: bool = True,
     ) -> "EnvConfig":
         """Showcase hard mode: 20x20 grid, 5 rescuers, 4 hostages, max_steps=400."""
         return cls.showcase(
@@ -125,10 +129,16 @@ class EnvConfig:
             max_steps=400,
             seed=seed,
             carry_overtime=carry_overtime,
+            obs_bfs_features=obs_bfs_features,
         )
 
     @classmethod
-    def training_day4_base(cls, seed: Optional[int] = None, carry_overtime: bool = False) -> "EnvConfig":
+    def training_day4_base(
+        cls,
+        seed: Optional[int] = None,
+        carry_overtime: bool = False,
+        obs_bfs_features: bool = True,
+    ) -> "EnvConfig":
         """Base solvable preset for Day 4: 2 floors, 10x10 grid, 3 rescuers, 2 hostages (1/floor), max_steps=160."""
         return cls(
             floors=2,
@@ -144,6 +154,7 @@ class EnvConfig:
             fire_enabled=True,
             carry_capacity=1,
             carry_overtime=carry_overtime,
+            obs_bfs_features=obs_bfs_features,
             seed=seed,
             step_reward=-0.01,
             pickup_reward=5.0,

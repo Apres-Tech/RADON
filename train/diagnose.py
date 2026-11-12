@@ -95,15 +95,25 @@ def run_diagnostics(
         if not loaded:
             model = PPO.load(model_path, device=device)
 
+    # Auto-detect whether model expects 6 or 13 self-features
+    obs_bfs_features = True
+    if model is not None and hasattr(model, "observation_space"):
+        try:
+            self_space = model.observation_space["self"]
+            if self_space.shape[0] == 6:
+                obs_bfs_features = False
+        except Exception:
+            pass
+
     # Resolve config
     if preset == "showcase":
-        cfg_template = EnvConfig.showcase()
+        cfg_template = EnvConfig.showcase(obs_bfs_features=obs_bfs_features)
     elif preset == "showcase_hard":
-        cfg_template = EnvConfig.showcase_hard()
+        cfg_template = EnvConfig.showcase_hard(obs_bfs_features=obs_bfs_features)
     elif preset == "training_day4_base":
-        cfg_template = EnvConfig.training_day4_base()
+        cfg_template = EnvConfig.training_day4_base(obs_bfs_features=obs_bfs_features)
     else:
-        cfg_template = EnvConfig.showcase()
+        cfg_template = EnvConfig.showcase(obs_bfs_features=obs_bfs_features)
 
     # Track metrics
     full_wins = 0
@@ -126,11 +136,11 @@ def run_diagnostics(
     for ep in range(num_episodes):
         ep_seed = base_seed + ep
         if preset == "showcase":
-            cfg = EnvConfig.showcase(seed=ep_seed)
+            cfg = EnvConfig.showcase(seed=ep_seed, obs_bfs_features=obs_bfs_features)
         elif preset == "showcase_hard":
-            cfg = EnvConfig.showcase_hard(seed=ep_seed)
+            cfg = EnvConfig.showcase_hard(seed=ep_seed, obs_bfs_features=obs_bfs_features)
         else:
-            cfg = EnvConfig.training_day4_base(seed=ep_seed)
+            cfg = EnvConfig.training_day4_base(seed=ep_seed, obs_bfs_features=obs_bfs_features)
 
         env = RadonRescueEnv(config=cfg, fire_controller=CurriculumFireController())
         obs, _ = env.reset(seed=ep_seed)
