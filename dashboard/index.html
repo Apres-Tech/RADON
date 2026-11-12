@@ -36,9 +36,9 @@
         <span style="color:#a78bfa; font-weight:700;">GPU:</span>
         <span id="device-text">CUDA</span>
       </div>
-      <div class="status-pill benchmark-pill" id="benchmark-stat-pill" title="Official held-out evaluation across 100 fresh unseen maps (seeds 50000..50099)">
+      <div class="status-pill benchmark-pill" id="benchmark-stat-pill" title="Honest evaluation across held-out unseen maps (seeds 50000+)">
         <span style="color:#10b981; font-weight:700;">Trained Policy:</span>
-        <span id="benchmark-stat-text">96.0% Full WIN Rate &bull; 98.7% Rescued (Held-Out 14x14)</span>
+        <span id="benchmark-stat-text">No Adversary: 96.0% | Balanced Fight: ~50% (Held-Out Mazes)</span>
       </div>
       <div class="status-pill overtime-pill" id="overtime-pill" style="display:none;" title="Carry Overtime active: clock extending while rescuer carries">
         <span class="pulse-amber-dot"></span>
@@ -131,10 +131,20 @@
     <div class="control-group">
       <div class="control-label">Level Layout Preset</div>
       <select id="preset-select" class="input-select">
-        <option value="showcase" selected>Showcase 14x14 (Office Layout, 4 Rescuers, 3 Hostages)</option>
+        <option value="maze" selected>Day 10 Large Maze 20x20 (Chokepoints, 5 Rescuers, 4 Hostages)</option>
+        <option value="showcase">Showcase 14x14 (Office Layout, 4 Rescuers, 3 Hostages)</option>
         <option value="showcase_hard">Showcase 20x20 Hard (5 Rescuers, 4 Hostages)</option>
         <option value="training_day4_base">Day 4 Base 10x10 (Solvable 2-Floor)</option>
         <option value="training_day3">Day 3 Standard 12x12 (4 Rescuers)</option>
+      </select>
+    </div>
+
+    <div class="control-group" id="difficulty-group">
+      <div class="control-label">Combat Difficulty Preset</div>
+      <select id="difficulty-select" class="input-select">
+        <option value="balanced" selected>Balanced Fight (~50% Win Rate Target)</option>
+        <option value="easy">Easy Mode (~70% Win Rate)</option>
+        <option value="brutal">Brutal Mode (~30% Win Rate)</option>
       </select>
     </div>
 

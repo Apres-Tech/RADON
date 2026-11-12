@@ -64,6 +64,7 @@ const dom = {
   deviceText: document.getElementById("device-text"),
   replaySelect: document.getElementById("replay-select"),
   presetSelect: document.getElementById("preset-select"),
+  difficultySelect: document.getElementById("difficulty-select"),
   continuousToggle: document.getElementById("continuous-toggle"),
   curationModeControl: document.getElementById("curation-mode-control"),
   curationCaption: document.getElementById("curation-caption"),
@@ -593,6 +594,23 @@ function initEntityPool(config) {
     entityGroup.add(fire);
     fireMeshes.push(fire);
   }
+
+  // 4. Ash Pool (Charred dark floor with glowing embers)
+  ashMeshes = [];
+  const ashGeo = new THREE.BoxGeometry(0.92, 0.05, 0.92);
+  const ashMat = new THREE.MeshStandardMaterial({
+    color: 0x18181b, // deep charcoal
+    roughness: 0.95,
+    metalness: 0.05,
+    emissive: 0x991b1b, // subtle ember red
+    emissiveIntensity: 0.25,
+  });
+  for (let i = 0; i < maxFires; i++) {
+    const ash = new THREE.Mesh(ashGeo, ashMat);
+    ash.visible = false;
+    entityGroup.add(ash);
+    ashMeshes.push(ash);
+  }
 }
 
 // Continuous Sub-Frame Interpolation Update (Smooth Polygon-Game Movement!)
@@ -691,6 +709,25 @@ function updateInterpolatedEntities(progress) {
     }
   });
 
+  // 3b. Ash Meshes (Charred floor with subtle ember glow)
+  const frameAsh = frame0.ash || [];
+  ashMeshes.forEach((mesh, idx) => {
+    if (idx < frameAsh.length) {
+      const ap = frameAsh[idx];
+      const floor = ap[0];
+      const row = ap[1];
+      const col = ap[2];
+      const isVisible = (currentFloorFilter === "both" || String(floor) === currentFloorFilter);
+      mesh.visible = isVisible;
+      if (isVisible) {
+        const yBase = floor * CONFIG.floorHeight;
+        mesh.position.set(col, yBase + 0.025, row);
+      }
+    } else {
+      mesh.visible = false;
+    }
+  });
+
   // 4. Update HUD Telemetry
   const rescuedCount = frame0.hostages.filter(h => h.length > 3 && h[3]).length;
   const survivingCount = frame0.rescuers.filter(r => r.alive).length;
@@ -727,14 +764,23 @@ function updateInterpolatedEntities(progress) {
     return;
   }
 
-  // Rescuer tactical cards
+  // Rescuer tactical cards with HP & invulnerability
   let rescuerHtml = "";
   frame0.rescuers.forEach((r, i) => {
     const colorHex = `#${CONFIG.agentColors[i % CONFIG.agentColors.length].toString(16).padStart(6, "0")}`;
     let badge = "";
-    if (!r.alive) badge = '<span class="rescuer-status-badge badge-dead">Dead</span>';
-    else if (r.carrying) badge = '<span class="rescuer-status-badge badge-carrying">Carrying</span>';
-    else badge = '<span class="rescuer-status-badge badge-free">Free</span>';
+    let hpDisplay = "";
+    if (!r.alive) {
+      badge = '<span class="rescuer-status-badge badge-dead">Dead</span>';
+      hpDisplay = '<span style="color:#ef4444; font-size:11px; font-weight:700;">💀 KIA</span>';
+    } else {
+      const hp = r.hp !== undefined ? r.hp : 2;
+      const isInvuln = !!r.invulnerable;
+      const hearts = "❤️".repeat(Math.max(0, hp)) + "🖤".repeat(Math.max(0, 2 - hp));
+      hpDisplay = `<span style="font-size:11px;" title="HP: ${hp}/2${isInvuln ? ' (Invulnerable)' : ''}">${hearts}${isInvuln ? " 🛡️" : ""}</span>`;
+      if (r.carrying) badge = '<span class="rescuer-status-badge badge-carrying">Carrying</span>';
+      else badge = '<span class="rescuer-status-badge badge-free">Free</span>';
+    }
 
     rescuerHtml += `
       <div class="rescuer-card">
@@ -743,6 +789,7 @@ function updateInterpolatedEntities(progress) {
           <span>${r.id}</span>
         </div>
         <div>F${r.floor} (${r.row}, ${r.col})</div>
+        <div>${hpDisplay}</div>
         <div>${badge}</div>
       </div>
     `;
@@ -939,11 +986,13 @@ async function generateUnseenEpisode(isManualClick = true) {
 
     while (attempts < maxFilterAttempts) {
       attempts++;
+      const difficulty = dom.difficultySelect ? dom.difficultySelect.value : "balanced";
       const payload = {
         fire_mode: currentFireMode,
         seed: Math.floor(50000 + Math.random() * 49999),
         preset: currentPreset,
-        max_steps: currentPreset === "showcase" ? 220 : (currentPreset === "showcase_hard" ? 400 : (currentPreset === "training_day3" ? 200 : 160)),
+        difficulty: difficulty,
+        max_steps: currentPreset === "maze" ? 350 : (currentPreset === "showcase" ? 220 : (currentPreset === "showcase_hard" ? 400 : (currentPreset === "training_day3" ? 200 : 160))),
       };
 
       const res = await fetch("/generate", {

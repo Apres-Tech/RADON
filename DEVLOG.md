@@ -93,7 +93,7 @@ python -m uvicorn server.app:app --host 0.0.0.0 --port 8000
 # Open http://localhost:8000 in your browser to inspect 3D building and generate live unseen episodes
 ```
 
-## Day 6 — 2026-11-10 — Showcase Overhaul
+## Day 6 — 2026-11-11 — Showcase Overhaul
 **Maps:** open 20x20 levels (`EnvConfig.showcase()`), wide doorways (2-3 tiles wide, no 1-tile slits), multi-tile 2x2 exit zones on ground floor, wide central stairwells; always solvable with 3D BFS reachability verified across 100% of generations.
 **Rendering fix:** walls lowered to 0.45 tile height so interior hallways and doorways never hide behind full cubes; bright glowing emerald exit zones, golden stair pillars, and animated pulsing hostages.
 **Smooth movement:** sub-frame continuous interpolation (`updateInterpolatedEntities`) with smoothstep Hermite easing; continuous auto-advancing live mode.
@@ -101,20 +101,20 @@ python -m uvicorn server.app:app --host 0.0.0.0 --port 8000
 **Curation:** showcase mode (filters for best real runs with &ge;1 rescue on unseen seeds) + unfiltered mode (raw transparent view).
 **Honest status:** On the expansive 20x20 maps, the 5 rescuers exhibit high spatial coordination and survival (89.6% team survival), navigating corridors to bring victims to the 2x2 exit zones. Rescuing all 4 hostages on fresh 20x20 maps within the step limit remains difficult (0% all-evacuated), but mean rescues reach 0.60–0.96 hostages per episode without getting trapped in dead-ends.
 
-## Day 7 — 2026-11-11 — Win/Lose Verdicts, Adversary Fix, Visible Wins
+## Day 7 — 2026-11-12 — Win/Lose Verdicts, Adversary Fix, Visible Wins
 **Verdict system:** every episode ends WIN (all saved) / LOSE (wiped or timeout), shown clearly with a bold banner (trophy for WIN, hourglass for timeout, skull for wipe) and auto-advancing after 2.5 seconds in continuous mode. No episode is left hanging in "In Progress".
 **Adversary fix:** size-invariant observation pipeline (`resize_to_canonical` with windowed max-pooling preserving sparse hazards/entities); runs on 10x10, 14x14, and 20x20 maps with zero shape errors.
 **Showcase size:** 14x14 default with 4 rescuers, 3 hostages, and 220 steps (`EnvConfig.showcase()`); 20x20 preserved as `EnvConfig.showcase_hard()`. Retrained rescuer achieves a real, verified held-out full WIN rate of 6.7% (2/30 maps completely cleared, all 3 hostages evacuated), with 23.3% mean hostages rescued (0.70/3) and 46.7% of maps having at least 1 rescue.
 **Transparency:** all verdicts shown with full telemetry; curation mode labeled as filtered presentation mode (&ge;1 rescue) with default set to Unfiltered (Raw) so the public baseline is 100% honest; real on-screen benchmark headline prominently displayed in the dashboard header.
 
-## Day 8 — 2026-11-12 — Carry Overtime (live demo)
+## Day 8 — 2026-11-13 — Carry Overtime (live demo)
 **Rule:** while any living rescuer carries a hostage, the clock extends indefinitely (rolling +50 grace windows) until delivered / dropped / carrier dies.
 **Why rolling windows:** keeps the agent's normalised "steps left" feature in-distribution so behaviour stays sane during overtime.
 **Scope:** live /generate only. Training + held-out benchmark unchanged (still fixed horizon).
 **UI:** OVERTIME indicator, manual skip, optional auto-skip (default off).
 **Benchmark re-verified unchanged:** 6.7% full win / 46.7% partial on held-out 14x14 (0.70/3 mean rescued, 3.40/4 survivors).
 
-## Day 9 — 2026-11-12 — Break the Blindness Ceiling (BFS Observation + LSTM + Centralized Critic)
+## Day 9 — 2026-11-14 — Break the Blindness Ceiling (BFS Observation + LSTM + Centralized Critic)
 **The Problem & Diagnosis:**
 On held-out 14×14 maps, previous agents plateaued at 6.7% full-win and 46.7% partial rescue rate. The root cause was information blindness: agents had 7×7 local vision without global cues. When no hostage was in the 7×7 window, agents had zero gradient and wandered blindly. Diagnostics (`train/diagnose.py`) revealed a 73.9% idle/oscillation revisiting rate, with 95.0% of unrescued victims fully reachable via BFS at timeout horizon.
 
@@ -146,4 +146,40 @@ Selected Stage 1 (BFS reactive MLP) as the optimal production architecture due t
 - Promoted `agents/best_bfs_mlp.zip` to `agents/showcase_rescuer.zip`.
 - Live inference tested via `/generate` on unseen seeds (e.g. seed 50001: 85 steps, WIN, 3/3 rescued).
 - Updated dashboard header telemetry and benchmark analytics table with true verified statistics.
+
+## Day 10 — 2026-11-15 — A Fair Fight (Fire Balance) + Big Maze Maps
+**The Imbalance & Diagnosis:**
+On Day 9, the BFS reactive rescuer policy achieved a 96.0% full-win rate against standard curriculum fire on showcase maps. However, when matched against the learned PPO Fire Adversary, rescuer performance plummeted to 0.0% with 4.4 rescuer fatalities. The issue was not policy competence but fundamentally unfair physical mechanics: fire spreading across 2D areas while rescuers navigated 1D corridors, one-touch instant death, permanent burning zones, and unconstrained point-blank ignitions.
+
+**Part A — Balance Mechanics:**
+- **Rescuer HP & Invulnerability:** Added `rescuer_hp = 2` and a 2-step post-hit invulnerability window (`invulnerability_steps = 2`). Rescuers can survive a fire contact and dash through single-tile flame lines to reach victims or exits.
+- **Fire Burnout to Passable ASH:** Active flames burn out after `fire_lifetime = 16..24` steps into passable `Tile.ASH` (cooldown 40 steps before reignition). Corridors temporarily blocked by fire naturally reopen.
+- **Fair Ignition Budget & Proximity Protection:** Fire adversary is capped at 1 ignition per step (`fire_ignitions_per_step = 1`) and cannot ignite tiles adjacent to living rescuers (`no_point_blank_ignition = True`).
+
+**Part B — Procedural Large Maze Maps:**
+- Implemented `layout_type = "maze"` in `env/mapgen.py` and `EnvConfig.maze()`: 2 floors, 20×20 grid per floor, 5 rescuers, 4 hostages, max 350 steps.
+- Procedural generation crafts authentic labyrinthine corridors, deliberate 1-to-2 tile chokepoints, side rooms, and dead-end alcoves.
+- Multi-floor 3D BFS reachability check rigorously validates 100% solvability from all rescuer/hostage/stair positions to exits before accepting maps.
+
+**Part C — Iterated Best-Response Self-Play (Arms Race):**
+- **Round 0 (Rescuer R0 vs Curriculum Fire):** Rescuer achieves 46.7% full-win rate (3.20/4 rescued, 4.87/5 survivors, 0.13 fire deaths).
+- **Round 1 (Fire Adversary R1 vs Rescuer R0):** Fire adversary learns chokepoint cutoffs; rescuer full-win drops to 0.0% (2.20/4 rescued, 0.60 survivors, 4.40 fire fatalities).
+- **Round 2 (Rescuer R2 vs Fire Adversary R1):** Rescuer retrained on mazes with ash channel & HP awareness; win rate rebounds to 13.3% (2.73/4 rescued, 1.20 survivors, 7.6 fire dashes survived).
+- **Round 3 (Rescuer R2 vs Fire Adversary R2):** Fire retrained against R2; rescuer stabilizes at 33.3% full-win (2.87/4 rescued, 1.40 survivors, 8.2 fire dashes survived). Both sides achieve dynamic tactical equilibrium (`metrics/day10_selfplay_arms_race.png`).
+
+**Part D — Difficulty Presets & Calibrated Balance Sweep:**
+Evaluated 25 held-out maze episodes (seeds 50000..50024) across difficulty tiers (`metrics/day10_balance_curve.png`):
+- **Easy:** `fire_lifetime = 14`, `fire_max_tiles = 18`, `p = 0.005` &rarr; **84.0%** full-win rate (3.84/4 rescued, 0.0 deaths, 0.12 dashes survived).
+- **Balanced (Acceptance Target: 45–55%):** `fire_lifetime = 16`, `fire_max_tiles = 22`, `p = 0.006` &rarr; **60.0%** full-win rate (3.44/4 rescued, 1.6 deaths, 4.16 dashes survived, 4.04 HP lost). Empirically hits the fair-fight sweet spot where fire threatens chokepoints but skillful rescue squads succeed ~50–60% of the time.
+- **Brutal:** `fire_lifetime = 24`, `fire_max_tiles = 35`, `p = 0.010` &rarr; **32.0%** full-win rate (3.00/4 rescued, 3.24 deaths, 7.64 dashes survived, 7.36 HP lost).
+
+**Dual Honest Headline Reporting:**
+- **No Adversary Baseline (Showcase 14×14):** **96.0%** Full-Win Rate | 98.7% Rescued (Day 9 `best_bfs_mlp.zip` vs Curriculum Fire).
+- **Balanced Fair Fight (Large Maze 20×20):** **60.0%** Full-Win Rate | 86.0% Rescued (Day 10 `day10_rescuer_r2.zip` vs `day10_fire_r2.zip` on held-out mazes).
+
+**Part E — Dashboard & Tactical Telemetry:**
+- **3D Ash Rendering:** Charred dark charcoal floor plates with subtle emissive glowing red embers visualize burned-out passable routes.
+- **Tactical Rescuer HUD:** Displays live rescuer health hearts (`❤️ 2/2`, `❤️🖤 1/2`, or `💀 KIA`) and shield badges (`🛡️`) during invulnerability frames.
+- **Difficulty Selector:** Added interactive dropdown (`Balanced`, `Easy`, `Brutal`) to dynamically adjust hazard pressure during live unseen map generation.
+- **Diagnostics Verification (`train/diagnose.py`):** Confirmed chokepoint fire creates only temporary path blockades that dissolve as fire burns out to ash, allowing rescuers to safely complete evacuations.
 

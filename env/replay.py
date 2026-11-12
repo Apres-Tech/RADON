@@ -89,8 +89,10 @@ Stable Replay JSON Schema (used by downstream visualizers and Day 5 Three.js vie
 import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
+import numpy as np
 
 from env.rescue_env import RadonRescueEnv
+from env.tiles import Tile
 
 
 class EpisodeRecorder:
@@ -137,7 +139,7 @@ class EpisodeRecorder:
             for h in self.env.hostages
         ]
 
-        # Rescuers: list of rescuer states
+        # Rescuers: list of rescuer states including HP and invulnerability
         rescuers = [
             {
                 "id": r.id,
@@ -146,9 +148,18 @@ class EpisodeRecorder:
                 "col": int(r.col),
                 "carrying": bool(r.carrying),
                 "alive": bool(r.alive),
+                "hp": int(getattr(r, "hp", 2)),
+                "max_hp": int(getattr(r, "max_hp", 2)),
+                "invulnerable": bool(getattr(r, "invulnerable_steps", 0) > 0),
             }
             for r in self.env.rescuers.values()
         ]
+
+        # Ash tiles: list of [f, r, c]
+        ash_tiles = []
+        if hasattr(self.env, "grids"):
+            ash_coords = np.argwhere(self.env.grids == Tile.ASH)
+            ash_tiles = [[int(f), int(r), int(c)] for f, r, c in ash_coords]
 
         # Rounded rewards for cleaner JSON
         formatted_rewards = {
@@ -159,6 +170,7 @@ class EpisodeRecorder:
         return {
             "t": t,
             "fire": fires,
+            "ash": ash_tiles,
             "hostages": hostages,
             "rescuers": rescuers,
             "rewards": formatted_rewards,

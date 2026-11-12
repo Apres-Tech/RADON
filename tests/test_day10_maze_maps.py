@@ -79,3 +79,4 @@ if __name__ == "__main__":
     test_maze_generation_and_chokepoints()
     test_held_out_solvability_and_env_rollout()
     print("\nALL DAY 10 MAZE MAP TESTS PASSED SUCCESSFULLY!")
+

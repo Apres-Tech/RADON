@@ -61,6 +61,8 @@ def load_models_at_startup() -> None:
 
     # 1. Rescuer policy
     rescuer_candidates = [
+        AGENTS_DIR / "day10_rescuer_r2.zip",
+        AGENTS_DIR / "day10_rescuer_r0.zip",
         AGENTS_DIR / "showcase_rescuer.zip",
         AGENTS_DIR / "final_rescuer.zip",
         AGENTS_DIR / "rescuer_best_heldout.zip",
@@ -84,6 +86,8 @@ def load_models_at_startup() -> None:
 
     # 2. Fire adversary policy
     fire_candidates = [
+        AGENTS_DIR / "day10_fire_r2.zip",
+        AGENTS_DIR / "day10_fire_r1.zip",
         AGENTS_DIR / "final_fire.zip",
         AGENTS_DIR / "fire_adversary_r1.zip",
     ]
@@ -106,7 +110,8 @@ def startup_event():
 class GenerateRequest(BaseModel):
     fire_mode: str = Field(default="curriculum", description="Fire mode: 'none', 'curriculum', or 'adversarial'")
     seed: Optional[int] = Field(default=None, description="Held-out map seed (defaults to random 50000..99999)")
-    preset: str = Field(default="showcase", description="Environment preset")
+    preset: str = Field(default="maze", description="Environment preset: 'maze', 'showcase', 'showcase_hard'")
+    difficulty: str = Field(default="balanced", description="Difficulty preset: 'easy', 'balanced', or 'brutal'")
     max_steps: Optional[int] = Field(default=None, description="Max episode steps")
     carry_overtime: bool = Field(default=True, description="Enable carry overtime rule (default: True for live)")
 
@@ -241,10 +246,30 @@ def get_metrics():
         except Exception as e:
             metrics_data["error_selfplay"] = str(e)
 
+    day10_arms_race_csv = METRICS_DIR / "day10_selfplay_arms_race.csv"
+    if day10_arms_race_csv.exists():
+        try:
+            with open(day10_arms_race_csv, "r", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                metrics_data["day10_selfplay_arms_race"] = list(reader)
+        except Exception as e:
+            metrics_data["error_day10_arms_race"] = str(e)
+
+    day10_balance_csv = METRICS_DIR / "day10_balance_curve.csv"
+    if day10_balance_csv.exists():
+        try:
+            with open(day10_balance_csv, "r", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                metrics_data["day10_balance_curve"] = list(reader)
+        except Exception as e:
+            metrics_data["error_day10_balance"] = str(e)
+
     # Provide URLs for static plots
     metrics_data["charts"] = {
         "learning_curve_png": "/metrics_static/day5_learning_curve.png",
         "arms_race_png": "/metrics_static/day4_selfplay_arms_race.png",
+        "day10_arms_race_png": "/metrics_static/day10_selfplay_arms_race.png",
+        "day10_balance_curve_png": "/metrics_static/day10_balance_curve.png",
     }
 
     return metrics_data
@@ -267,7 +292,15 @@ def generate_episode(req: GenerateRequest):
     seed = req.seed if req.seed is not None else random.randint(50000, 99999)
 
     # Config preset
-    if req.preset == "showcase":
+    if req.preset == "maze":
+        diff = (req.difficulty or "balanced").lower()
+        if diff == "easy":
+            config = EnvConfig.maze_easy(seed=seed, carry_overtime=req.carry_overtime)
+        elif diff == "brutal":
+            config = EnvConfig.maze_brutal(seed=seed, carry_overtime=req.carry_overtime)
+        else:
+            config = EnvConfig.maze_balanced(seed=seed, carry_overtime=req.carry_overtime)
+    elif req.preset == "showcase":
         config = EnvConfig.showcase(seed=seed, carry_overtime=req.carry_overtime)
     elif req.preset == "showcase_hard":
         config = EnvConfig.showcase_hard(seed=seed, carry_overtime=req.carry_overtime)
@@ -294,7 +327,7 @@ def generate_episode(req: GenerateRequest):
         if fire_model is None:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Adversary fire model not loaded. Check agents/final_fire.zip or use 'curriculum' fire mode.",
+                detail="Adversary fire model not loaded. Check agents/day10_fire_r2.zip or use 'curriculum' fire mode.",
             )
         fire_controller = PolicyFireController(model=fire_model, deterministic=False)
     else:  # curriculum (default)
@@ -315,12 +348,15 @@ def generate_episode(req: GenerateRequest):
         while env.agents and step_count < safety_max:
             step_count += 1
             actions = {}
-            for agent_id in env.agents:
-                agent_obs = {
-                    k: np.expand_dims(v, axis=0) for k, v in obs[agent_id].items()
+            living_agents = [aid for aid in env.agents if env.rescuers[aid].alive]
+            if living_agents:
+                batch_obs = {
+                    k: np.stack([obs[aid][k] for aid in living_agents], axis=0)
+                    for k in obs[living_agents[0]].keys()
                 }
-                action, _ = model.predict(agent_obs, deterministic=False)
-                actions[agent_id] = int(action[0])
+                acts, _ = model.predict(batch_obs, deterministic=False)
+                for aid, act in zip(living_agents, acts):
+                    actions[aid] = int(act)
 
             obs, rewards, terminations, truncations, infos = env.step(actions)
             for a, r in rewards.items():
