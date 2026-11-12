@@ -5,6 +5,7 @@ gymnasium==1.0.0
 pettingzoo==1.27.0
 supersuit==3.11.0
 stable-baselines3==2.4.1
+sb3-contrib==2.4.0
 torch==2.5.1+cu121
 matplotlib==3.11.2
 fastapi>=0.110.0

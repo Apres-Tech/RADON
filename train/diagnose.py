@@ -131,7 +131,9 @@ def run_diagnostics(
     end_distances: List[float] = []
 
     # LSTM state tracking per agent if recurrent
-    is_recurrent = hasattr(model, "policy") and hasattr(model.policy, "lstm")
+    is_recurrent = hasattr(model, "policy") and (
+        hasattr(model.policy, "lstm") or hasattr(model.policy, "lstm_actor")
+    )
 
     for ep in range(num_episodes):
         ep_seed = base_seed + ep
