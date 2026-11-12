@@ -417,7 +417,7 @@ def generate_episode(req: GenerateRequest):
         )
 
 
-FAVICON_SVG = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🔥</text></svg>"""
+FAVICON_SVG = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#d71921"/></svg>"""
 
 
 @app.get("/favicon.ico")

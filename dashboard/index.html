@@ -3,100 +3,100 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RADON — Autonomous Multi-Agent Rescue Simulation</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+  <title>RADON // SPEC-01 — Autonomous Multi-Agent Rescue Simulation</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23d71921'/></svg>">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- 3D Canvas -->
+  <!-- 3D Stage -->
   <div id="canvas-container"></div>
 
-  <!-- Big Unmistakable Episode Verdict Banner (WIN / LOSE) -->
+  <!-- Big Unmistakable Episode Verdict Banner (Nothing OS Technical Spec Block) -->
   <div id="verdict-banner" class="verdict-banner" style="display:none;">
-    <div class="verdict-icon" id="verdict-icon">🏆</div>
+    <div class="verdict-icon" id="verdict-icon">[ 01 ]</div>
     <div class="verdict-details">
-      <div class="verdict-title" id="verdict-title">MISSION ACCOMPLISHED — WIN</div>
-      <div class="verdict-subtitle" id="verdict-subtitle">All 3/3 hostages successfully evacuated in 78 steps!</div>
-      <div class="verdict-stats" id="verdict-stats">Rescuers Surviving: 4/4 &bull; Fire Deaths: 0</div>
+      <div class="verdict-title" id="verdict-title">[ VERDICT: MISSION_SUCCESS ]</div>
+      <div class="verdict-subtitle" id="verdict-subtitle">All hostages successfully evacuated.</div>
+      <div class="verdict-stats" id="verdict-stats">Survivors: 5/5 &bull; Fatalities: 0</div>
     </div>
   </div>
 
   <!-- Header -->
   <header class="app-header glass-panel">
     <div class="brand">
-      <div class="brand-logo">RADON</div>
-      <div class="brand-badge">Multi-Agent RL 3D</div>
+      <div class="brand-logo">RADON // SPEC-01</div>
+      <div class="brand-badge">NOTHING-OS // MARL</div>
     </div>
     <div class="header-status">
       <div class="status-pill" id="backend-status-pill">
-        <span class="status-dot" id="status-dot"></span>
-        <span id="backend-status-text">Connecting...</span>
+        <span class="status-dot pulse" id="status-dot"></span>
+        <span id="backend-status-text">SYS: CONNECTING</span>
       </div>
       <div class="status-pill" id="device-pill" style="display:none;">
-        <span style="color:#a78bfa; font-weight:700;">GPU:</span>
+        <span style="color:var(--mute);">ACCEL:</span>
         <span id="device-text">CUDA</span>
       </div>
       <div class="status-pill benchmark-pill" id="benchmark-stat-pill" title="Honest evaluation across held-out unseen maps (seeds 50000+)">
-        <span style="color:#10b981; font-weight:700;">Trained Policy:</span>
-        <span id="benchmark-stat-text">No Adversary: 96.0% | Balanced Fight: ~50% (Held-Out Mazes)</span>
+        <span style="color:var(--mute);">BENCHMARK:</span>
+        <span id="benchmark-stat-text">NO-ADV: 96.0% | FAIR FIGHT: 60.0%</span>
       </div>
       <div class="status-pill overtime-pill" id="overtime-pill" style="display:none;" title="Carry Overtime active: clock extending while rescuer carries">
         <span class="pulse-amber-dot"></span>
-        <span id="overtime-pill-text">OVERTIME — rescuer carrying (+0)</span>
+        <span id="overtime-pill-text">OVERTIME: ACTIVE (+0)</span>
       </div>
     </div>
     <div class="header-actions">
       <button class="btn" id="open-analytics-btn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 9l-5 5-4-4-6 6"/></svg>
-        Learning Curves & Benchmark
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 9l-5 5-4-4-6 6"/></svg>
+        Data Sheet
       </button>
       <button class="btn" id="reset-cam-btn" title="Reset Camera View (R)">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-        Reset Camera
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        Camera [R]
       </button>
     </div>
   </header>
 
-  <!-- Left Panel: Live Telemetry & Rescuer Team HUD -->
+  <!-- Left Panel: Live Telemetry & Rescuer Team Spec -->
   <aside id="left-panel" class="glass-panel">
     <div>
-      <div class="panel-title">Mission Telemetry</div>
+      <div class="panel-title">[ 01 // TELEMETRY ]</div>
       <div class="stat-grid">
         <div class="stat-card">
           <div class="stat-label">Evacuated</div>
-          <div class="stat-value rescued" id="stat-rescued">0 <span class="stat-unit">/ 2</span></div>
+          <div class="stat-value rescued" id="stat-rescued">0 <span class="stat-unit">/ 4</span></div>
         </div>
         <div class="stat-card">
-          <div class="stat-label">Surviving Rescuers</div>
-          <div class="stat-value survivors" id="stat-survivors">3 <span class="stat-unit">/ 3</span></div>
+          <div class="stat-label">Squad Alive</div>
+          <div class="stat-value survivors" id="stat-survivors">5 <span class="stat-unit">/ 5</span></div>
         </div>
         <div class="stat-card">
-          <div class="stat-label">Active Fire Tiles</div>
+          <div class="stat-label">Hazard Nodes</div>
           <div class="stat-value fire" id="stat-fire">0</div>
         </div>
         <div class="stat-card">
           <div class="stat-label">Step / Horizon</div>
-          <div class="stat-value step" id="stat-step">0 <span class="stat-unit">/ 160</span></div>
+          <div class="stat-value step" id="stat-step">0 <span class="stat-unit">/ 350</span></div>
         </div>
       </div>
       <div id="overtime-badge" class="overtime-banner" style="display:none;">
-        <span class="overtime-icon">⏳</span>
+        <span class="overtime-icon">[!]</span>
         <div class="overtime-text">
-          <div class="overtime-headline">OVERTIME IN EFFECT</div>
-          <div class="overtime-desc" id="overtime-desc">Rescuer carrying hostage — rolling +50 grace window (+0 steps)</div>
+          <div class="overtime-headline">OVERTIME RULE ENGAGED</div>
+          <div class="overtime-desc" id="overtime-desc">Rescuer carrying hostage — rolling +50 grace window.</div>
         </div>
       </div>
     </div>
 
     <div>
-      <div class="panel-title">Rescuer Tactical Status</div>
+      <div class="panel-title">[ 02 // SQUAD TACTICAL STATUS ]</div>
       <div class="rescuer-list" id="rescuer-list">
         <!-- Rendered dynamically -->
       </div>
     </div>
 
     <div>
-      <div class="panel-title">Floor View Isolator</div>
+      <div class="panel-title">[ 03 // FLOOR ISOLATOR ]</div>
       <div class="view-mode-buttons">
         <button class="view-btn active" data-floor="both">Both Floors</button>
         <button class="view-btn" data-floor="0">Floor 0 (Exits)</button>
@@ -104,35 +104,35 @@
       </div>
     </div>
 
-    <div style="font-size:11px; color:#64748b; line-height:1.5; margin-top:auto;">
-      <strong>3D Controls:</strong> Left-drag to rotate; right-drag to pan; scroll to zoom.<br>
-      <strong>Hotkeys:</strong> Space (play/pause), Left/Right (step), R (reset camera), G (generate).
+    <div style="font-family:var(--font-mono); font-size:10px; color:var(--mute); line-height:1.6; margin-top:auto; border-top:1px solid var(--line-dark); padding-top:8px;">
+      NAV: Left-drag rotate &bull; Right-drag pan &bull; Scroll zoom.<br>
+      KEYS: Space (Play/Pause) &bull; R (Reset) &bull; G (Generate).
     </div>
   </aside>
 
   <!-- Right Panel: Replay Selection & Live Generator -->
   <aside id="right-panel" class="glass-panel">
     <div class="control-group">
-      <div class="control-label">Load Replay Dataset</div>
+      <div class="control-label">[ 01 // REPLAY ARCHIVE ]</div>
       <select id="replay-select" class="input-select">
         <option value="">Fetching replays...</option>
       </select>
     </div>
 
-    <hr style="border:0; border-top:1px solid rgba(255,255,255,0.08); margin:4px 0;">
+    <hr style="border:0; border-top:1px solid var(--line-dark); margin:2px 0;">
 
     <div class="control-group">
-      <div class="control-label">Live Episode Generator</div>
-      <div style="font-size:11px; color:#94a3b8; margin-bottom:4px;">
-        Simulate the trained policy on a <strong>fresh, unseen held-out building</strong> (seed 50,000+).
+      <div class="control-label">[ 02 // LIVE INFERENCE ]</div>
+      <div style="font-size:12px; color:var(--faint); line-height:1.4;">
+        Simulate trained policy on a <strong>fresh held-out maze</strong> (seeds 50,000+).
       </div>
     </div>
 
     <div class="control-group">
-      <div class="control-label">Level Layout Preset</div>
+      <div class="control-label">[ 03 // LEVEL LAYOUT ]</div>
       <select id="preset-select" class="input-select">
-        <option value="maze" selected>Day 10 Large Maze 20x20 (Chokepoints, 5 Rescuers, 4 Hostages)</option>
-        <option value="showcase">Showcase 14x14 (Office Layout, 4 Rescuers, 3 Hostages)</option>
+        <option value="maze" selected>Day 10 Large Maze 20x20 (5 Rescuers, 4 Hostages)</option>
+        <option value="showcase">Showcase 14x14 (4 Rescuers, 3 Hostages)</option>
         <option value="showcase_hard">Showcase 20x20 Hard (5 Rescuers, 4 Hostages)</option>
         <option value="training_day4_base">Day 4 Base 10x10 (Solvable 2-Floor)</option>
         <option value="training_day3">Day 3 Standard 12x12 (4 Rescuers)</option>
@@ -140,18 +140,18 @@
     </div>
 
     <div class="control-group" id="difficulty-group">
-      <div class="control-label">Combat Difficulty Preset</div>
+      <div class="control-label">[ 04 // HAZARD DIFFICULTY ]</div>
       <select id="difficulty-select" class="input-select">
-        <option value="balanced" selected>Balanced Fight (~50% Win Rate Target)</option>
-        <option value="easy">Easy Mode (~70% Win Rate)</option>
-        <option value="brutal">Brutal Mode (~30% Win Rate)</option>
+        <option value="balanced" selected>Balanced Fight (50-60% Target)</option>
+        <option value="easy">Easy Mode (~84% Win Rate)</option>
+        <option value="brutal">Brutal Mode (~32% Win Rate)</option>
       </select>
     </div>
 
     <div class="control-group">
-      <div class="control-label">Continuous Live Game</div>
-      <div style="display:flex; align-items:center; justify-content:space-between; background:rgba(0,0,0,0.25); padding:6px 10px; border-radius:6px; border:1px solid var(--border-color);">
-        <span style="font-size:12px; font-weight:600;">Auto-Advance Episodes</span>
+      <div class="control-label">[ 05 // CONTINUOUS MODE ]</div>
+      <div style="display:flex; align-items:center; justify-content:space-between; background:var(--ink); padding:6px 10px; border:1px solid var(--line-dark);">
+        <span style="font-family:var(--font-mono); font-size:11px;">AUTO-ADVANCE</span>
         <label class="toggle-switch">
           <input type="checkbox" id="continuous-toggle">
           <span class="slider round"></span>
@@ -160,18 +160,18 @@
     </div>
 
     <div class="control-group">
-      <div class="control-label">Overtime Auto-Skip (Escape Hatch)</div>
-      <div style="display:flex; align-items:center; justify-content:space-between; background:rgba(0,0,0,0.25); padding:6px 10px; border-radius:6px; border:1px solid var(--border-color);">
-        <span style="font-size:12px; font-weight:600;">Auto-Skip Overtime</span>
+      <div class="control-label">[ 06 // OVERTIME ESCAPE HATCH ]</div>
+      <div style="display:flex; align-items:center; justify-content:space-between; background:var(--ink); padding:6px 10px; border:1px solid var(--line-dark);">
+        <span style="font-family:var(--font-mono); font-size:11px;">AUTO-SKIP</span>
         <label class="toggle-switch">
           <input type="checkbox" id="autoskip-toggle">
           <span class="slider round"></span>
         </label>
       </div>
-      <div id="autoskip-config" style="display:none; margin-top:6px; background:rgba(0,0,0,0.2); padding:6px 10px; border-radius:6px; border:1px solid rgba(255,255,255,0.06);">
-        <div style="display:flex; align-items:center; justify-content:space-between; font-size:11px; color:#94a3b8;">
-          <span>Skip if overtime exceeds:</span>
-          <select id="autoskip-steps-select" class="input-select" style="width:105px; padding:2px 6px; font-size:11px;">
+      <div id="autoskip-config" style="display:none; margin-top:4px; background:var(--black); padding:6px 8px; border:1px solid var(--line-dark);">
+        <div style="display:flex; align-items:center; justify-content:space-between; font-size:11px; color:var(--mute);">
+          <span>Max Overtime:</span>
+          <select id="autoskip-steps-select" class="input-select" style="width:90px; padding:2px 4px; font-size:10px;">
             <option value="50">50 steps</option>
             <option value="100" selected>100 steps</option>
             <option value="150">150 steps</option>
@@ -182,46 +182,60 @@
     </div>
 
     <div class="control-group">
-      <div class="control-label">Live Curation Mode</div>
+      <div class="control-label">[ 07 // CURATION FILTER ]</div>
       <div class="segmented-control" id="curation-mode-control">
-        <div class="segmented-btn active" data-curation="unfiltered">Unfiltered (Raw)</div>
-        <div class="segmented-btn" data-curation="showcase">Showcase (Best Runs)</div>
+        <div class="segmented-btn active" data-curation="unfiltered">RAW (ALL)</div>
+        <div class="segmented-btn" data-curation="showcase">SHOWCASE (&ge;1)</div>
       </div>
-      <div id="curation-caption" style="font-size:10px; color:#34d399; margin-top:2px;">
-        Raw unbiased policy execution on fresh held-out maps (no filtering). Real win rate: 6.7%.
+      <div id="curation-caption" style="font-family:var(--font-mono); font-size:9px; color:var(--mute); margin-top:2px;">
+        Unfiltered held-out verification mode.
       </div>
     </div>
 
     <div class="control-group">
-      <div class="control-label">Fire Adversary Mode</div>
+      <div class="control-label">[ 08 // ADVERSARY BEHAVIOR ]</div>
       <div class="segmented-control" id="fire-mode-control">
-        <div class="segmented-btn active" data-mode="curriculum">Curriculum</div>
-        <div class="segmented-btn fire-adv" data-mode="adversarial">Adversary PPO</div>
-        <div class="segmented-btn" data-mode="none">None</div>
+        <div class="segmented-btn active" data-mode="curriculum">CURRICULUM</div>
+        <div class="segmented-btn fire-adv" data-mode="adversarial">PPO ADVERSARY</div>
+        <div class="segmented-btn" data-mode="none">NONE</div>
       </div>
-      <div id="fire-mode-caption" style="font-size:10px; color:#64748b; margin-top:2px;">
+      <div id="fire-mode-caption" style="font-family:var(--font-mono); font-size:9px; color:var(--mute); margin-top:2px;">
         Natural stochastic fire spread from ignition points.
       </div>
     </div>
 
-    <div class="control-group" style="display:flex; gap:8px;">
+    <div class="control-group" style="display:flex; gap:6px; margin-top:2px;">
       <button class="btn btn-primary" id="generate-btn" style="flex:1; justify-content:center; padding:10px;">
         <span class="spinner" id="generate-spinner" style="display:none;"></span>
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="generate-icon"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-        <span id="generate-btn-text">Generate on Unseen Map</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="generate-icon"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        <span id="generate-btn-text">Generate Episode</span>
       </button>
       <button class="btn btn-secondary" id="skip-episode-right-btn" style="padding:10px 14px; justify-content:center;" title="Skip current episode (S)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 4l10 8-10 8V4zm11 0h3v16h-3V4z"/></svg>
         <span>Skip</span>
       </button>
     </div>
 
-    <div id="active-episode-meta" style="font-size:11px; color:#94a3b8; background:rgba(255,255,255,0.03); padding:8px 10px; border-radius:6px; border:1px solid rgba(255,255,255,0.05); display:none;">
-      <div><strong>Active Replay:</strong> <span id="meta-name">-</span></div>
-      <div><strong>Map Seed:</strong> <span id="meta-seed">-</span></div>
-      <div><strong>Outcome:</strong> <span id="meta-outcome">-</span></div>
+    <div id="active-episode-meta" style="font-family:var(--font-mono); font-size:10px; color:var(--mute); background:var(--ink); padding:8px 10px; border:1px solid var(--line-dark); display:none;">
+      <div><strong>REPLAY:</strong> <span id="meta-name" style="color:var(--white);">-</span></div>
+      <div><strong>SEED:</strong> <span id="meta-seed" style="color:var(--white);">-</span></div>
+      <div><strong>OUTCOME:</strong> <span id="meta-outcome" style="color:var(--white);">-</span></div>
     </div>
   </aside>
+
+  <!-- Nothing OS Glyph Lower-Third Hero Display -->
+  <div id="nothing-hero" class="nothing-hero-card">
+    <div class="glyph-container">
+      <canvas id="glyph-canvas" width="240" height="110"></canvas>
+      <div class="glyph-caption">
+        <span class="glyph-signal-dot"></span>
+        <span id="glyph-mode-name">GLYPH // MATRIX DYNAMICS</span>
+      </div>
+    </div>
+    <div class="lower-third-text">
+      <h1 class="spec-title">RADON // SPEC-01</h1>
+      <p class="spec-desc">Autonomous multi-agent neural search and fire evacuation in procedural mazes.</p>
+    </div>
+  </div>
 
   <!-- Notification Toast -->
   <div class="toast-notification" id="toast-notification">
@@ -232,17 +246,16 @@
   <footer class="playback-bar glass-panel">
     <div class="playback-buttons">
       <button class="btn-icon" id="prev-frame-btn" title="Previous Step (Left Arrow)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
       </button>
       <button class="btn-icon play-btn" id="play-pause-btn" title="Play / Pause (Space)">
-        <svg id="play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        <svg id="pause-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        <svg id="play-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="pause-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
       </button>
       <button class="btn-icon" id="next-frame-btn" title="Next Step (Right Arrow)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
       </button>
-      <button class="btn btn-secondary skip-btn" id="skip-episode-btn" style="padding:6px 10px; font-size:12px; margin-left:4px;" title="Skip Episode (S)">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5 4l10 8-10 8V4zm11 0h3v16h-3V4z"/></svg>
+      <button class="btn btn-secondary skip-btn" id="skip-episode-btn" style="padding:6px 10px; font-size:11px;" title="Skip Episode (S)">
         <span>Skip</span>
       </button>
     </div>
@@ -252,26 +265,26 @@
         <input type="range" class="timeline-slider" id="timeline-slider" min="0" max="0" value="0" step="1">
       </div>
       <div class="timeline-info">
-        <span>Frame <strong id="current-frame-lbl">0</strong> of <strong id="total-frames-lbl">0</strong></span>
-        <span id="episode-completion-tag" style="color:#10b981; font-weight:700;">In Progress</span>
+        <span>CYCLE <strong id="current-frame-lbl">0</strong> / <strong id="total-frames-lbl">0</strong></span>
+        <span id="episode-completion-tag" style="color:var(--white); font-weight:700;">IN PROGRESS</span>
       </div>
     </div>
 
     <div class="speed-selector">
-      <div class="speed-chip" data-speed="0.5">0.5x</div>
-      <div class="speed-chip active" data-speed="1.0">1x</div>
-      <div class="speed-chip" data-speed="2.0">2x</div>
-      <div class="speed-chip" data-speed="4.0">4x</div>
+      <div class="speed-chip" data-speed="0.5">0.5X</div>
+      <div class="speed-chip active" data-speed="1.0">1.0X</div>
+      <div class="speed-chip" data-speed="2.0">2.0X</div>
+      <div class="speed-chip" data-speed="4.0">4.0X</div>
     </div>
   </footer>
 
-  <!-- Analytics & Benchmark Modal -->
+  <!-- Analytics & Benchmark Modal (Engineering Spec Sheet) -->
   <div class="modal-overlay" id="analytics-modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h2 style="font-size:18px; font-weight:800; background:linear-gradient(135deg, #60a5fa, #34d399); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">RADON Evaluation & Arms Race Telemetry</h2>
+        <h2>RADON // EVALUATION & BENCHMARK SPEC SHEET</h2>
         <button class="btn-icon" id="close-modal-btn">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
         </button>
       </div>
 
@@ -284,7 +297,7 @@
       <div id="tab-learning-curve" class="tab-content">
         <div class="chart-container">
           <img src="/metrics_static/day5_learning_curve.png" alt="RADON Day 5 1.65M Learning Curve" onerror="this.alt='Learning curve image loading or metrics_static not accessible'">
-          <div style="font-size:12px; color:#94a3b8; margin-top:8px;">
+          <div style="font-family:var(--font-mono); font-size:11px; color:var(--mute); margin-top:8px;">
             Three-panel generalization breakdown: all-evacuated success rate (peaking at 20%), mean hostages rescued (up to 0.8/2), and team rescuer survival (75–85%).
           </div>
         </div>
@@ -292,9 +305,9 @@
 
       <div id="tab-arms-race" class="tab-content" style="display:none;">
         <div class="chart-container">
-          <img src="/metrics_static/day4_selfplay_arms_race.png" alt="RADON Self-Play Adversarial Arms Race" onerror="this.alt='Arms race image loading or metrics_static not accessible'">
-          <div style="font-size:12px; color:#94a3b8; margin-top:8px;">
-            Iterated self-play progression: R0 baseline (10% success, 0.43 deaths) &rarr; R1 trained fire attacks chokepoints (0% success, 1.85 deaths) &rarr; R2 retrained rescuer learns defensive pathfinding.
+          <img src="/metrics_static/day10_selfplay_arms_race.png" alt="RADON Self-Play Adversarial Arms Race" onerror="this.alt='Arms race image loading or metrics_static not accessible'">
+          <div style="font-family:var(--font-mono); font-size:11px; color:var(--mute); margin-top:8px;">
+            Iterated best-response rounds: R0 (46.7%) &rarr; R1 trained fire attacks chokepoints (0.0%) &rarr; R2 rescuer adapts with ash recovery (13.3%) &rarr; R3 tactical balance (33.3%).
           </div>
         </div>
       </div>
@@ -304,8 +317,8 @@
           <thead>
             <tr>
               <th>Evaluation Metric (14x14 Held-Out)</th>
-              <th>Day 8 Baseline Policy</th>
-              <th>Day 9 Policy (BFS Navigation)</th>
+              <th>Baseline Policy</th>
+              <th>BFS Policy</th>
               <th>Advantage / Impact</th>
             </tr>
           </thead>
@@ -313,48 +326,48 @@
             <tr>
               <td><strong>Full WIN Rate (All Evacuated)</strong></td>
               <td>1.0% (1/100)</td>
-              <td style="color:#34d399; font-weight:700;">96.0% (96/100)</td>
+              <td style="color:var(--white); font-weight:700;">96.0% (96/100)</td>
               <td>+95.0% absolute (96x higher)</td>
             </tr>
             <tr>
               <td><strong>Partial Rescue Rate (&ge;1 Saved)</strong></td>
               <td>52.0%</td>
-              <td style="color:#34d399; font-weight:700;">100.0% (100/100)</td>
+              <td style="color:var(--white); font-weight:700;">100.0% (100/100)</td>
               <td>+48.0% (every mission saves victims)</td>
             </tr>
             <tr>
               <td><strong>Mean Hostages Rescued (/3)</strong></td>
               <td>0.76 / 3 (25.3%)</td>
-              <td style="color:#34d399; font-weight:700;">2.96 / 3 (98.7%)</td>
+              <td style="color:var(--white); font-weight:700;">2.96 / 3 (98.7%)</td>
               <td>+289% rescue volume (+2.20/map)</td>
             </tr>
             <tr>
               <td><strong>Episode Timeouts</strong></td>
               <td>99 / 100</td>
-              <td style="color:#34d399; font-weight:700;">3 / 100</td>
+              <td style="color:var(--white); font-weight:700;">3 / 100</td>
               <td>Timeouts slashed by 97%</td>
             </tr>
             <tr>
               <td><strong>Idle / Oscillation Rate</strong></td>
               <td>73.7%</td>
-              <td style="color:#38bdf8; font-weight:700;">56.4%</td>
+              <td style="color:var(--white); font-weight:700;">56.4%</td>
               <td>-17.3% blind wandering drop</td>
             </tr>
             <tr>
               <td><strong>Mean Episode Length</strong></td>
               <td>219.5 steps</td>
-              <td style="color:#38bdf8; font-weight:700;">96.2 steps</td>
+              <td style="color:var(--white); font-weight:700;">96.2 steps</td>
               <td>2.3x faster clearance speed</td>
             </tr>
             <tr>
               <td><strong>Rescuer Team Survival</strong></td>
               <td>3.35 / 4 (83.8%)</td>
-              <td style="color:#a78bfa; font-weight:700;">3.37 / 4 (84.3%)</td>
+              <td style="color:var(--white); font-weight:700;">3.37 / 4 (84.3%)</td>
               <td>Maintained robust fire evasion</td>
             </tr>
           </tbody>
         </table>
-        <div style="font-size:11px; color:#64748b; margin-top:10px;">
+        <div style="font-family:var(--font-mono); font-size:10px; color:var(--mute); margin-top:10px;">
           * Protocol: 100 held-out unseen procedural building maps (seeds 50000..50099), 14x14 2 floors, 4 rescuers, 3 hostages, fixed 220 horizon, no carry overtime.
         </div>
       </div>
@@ -367,4 +380,3 @@
   <script src="app.js"></script>
 </body>
 </html>
-
