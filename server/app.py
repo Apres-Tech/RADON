@@ -426,12 +426,19 @@ def favicon():
     return Response(content=FAVICON_SVG, media_type="image/svg+xml")
 
 
+NO_CACHE_HEADERS = {
+    "Cache-Control": "no-cache, no-store, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "0",
+}
+
+
 @app.get("/style.css")
 def get_style():
     """Serves the dashboard stylesheet directly at /style.css."""
     css_path = DASHBOARD_DIR / "style.css"
     if css_path.exists():
-        return FileResponse(css_path, media_type="text/css")
+        return FileResponse(css_path, media_type="text/css", headers=NO_CACHE_HEADERS)
     raise HTTPException(status_code=404, detail="style.css not found")
 
 
@@ -440,8 +447,19 @@ def get_app_js():
     """Serves the dashboard script directly at /app.js."""
     js_path = DASHBOARD_DIR / "app.js"
     if js_path.exists():
-        return FileResponse(js_path, media_type="application/javascript")
+        return FileResponse(js_path, media_type="application/javascript", headers=NO_CACHE_HEADERS)
     raise HTTPException(status_code=404, detail="app.js not found")
+
+
+@app.get("/")
+def index():
+    """Serves the 3D dashboard directly at the root URL with cache prevention."""
+    index_file = DASHBOARD_DIR / "index.html"
+    if index_file.exists():
+        return FileResponse(index_file, media_type="text/html", headers=NO_CACHE_HEADERS)
+    return HTMLResponse(
+        "<h2>RADON Simulation API is running.</h2><p>Dashboard not found at <code>dashboard/index.html</code>.</p>"
+    )
 
 
 # Static assets
@@ -452,15 +470,4 @@ if DASHBOARD_DIR.exists():
     app.mount("/dashboard", StaticFiles(directory=str(DASHBOARD_DIR), html=True), name="dashboard")
     # Also mount at root as fallback for any other dashboard static assets
     app.mount("/", StaticFiles(directory=str(DASHBOARD_DIR), html=True), name="root_static")
-
-
-@app.get("/")
-def index():
-    """Serves the 3D dashboard directly at the root URL."""
-    index_file = DASHBOARD_DIR / "index.html"
-    if index_file.exists():
-        return FileResponse(index_file, media_type="text/html")
-    return HTMLResponse(
-        "<h2>RADON Simulation API is running.</h2><p>Dashboard not found at <code>dashboard/index.html</code>.</p>"
-    )
 

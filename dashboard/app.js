@@ -12,13 +12,18 @@ const CONFIG = {
   floorHeight: 4.2,
   cellSize: 1.0,
   wallHeight: 0.45, // Low walls so doorways & hostages are never obscured
-  agentColor: 0xffffff, // Nothing Monochrome: Pure stark white
-  agentCarryColor: 0xd71921, // The ONE Red Accent (§3): Nothing Red signal
-  hostageColor: 0xffffff, // Stark white dot ring beacon
-  exitColor: 0xffffff,    // White wireframe
-  stairsColor: 0x9a9a9a,  // Muted technical grey
-  fireColor: 0xd71921,    // The ONE Red Accent (§3): Nothing Red
-  fireGlowColor: 0xd71921 // Pure red glow
+  agentColors: [
+    0x06b6d4, // Rescuer 0: Cyan
+    0x3b82f6, // Rescuer 1: Blue
+    0xa855f7, // Rescuer 2: Purple
+    0xf59e0b, // Rescuer 3: Amber
+    0xf43f5e, // Rescuer 4: Coral Red
+  ],
+  hostageColor: 0x10b981, // Emerald Green
+  exitColor: 0x22c55e,    // Bright Green
+  stairsColor: 0xeab308,  // Gold / Yellow
+  fireColor: 0xef4444,    // Crimson Fire
+  fireGlowColor: 0xff6b00 // Bright Orange Glow
 };
 
 let scene, camera, renderer, controls;
@@ -150,15 +155,15 @@ function lerp(a, b, t) {
   return a + (b - a) * t;
 }
 
-// Initialize 3D Engine (Nothing OS: Stage Pure Black #000000, Full-Bleed)
+// Initialize 3D Engine
 function initThree() {
   const width = dom.canvasContainer.clientWidth || window.innerWidth;
   const height = dom.canvasContainer.clientHeight || window.innerHeight;
 
-  // Scene: Pure Black #000000, no gradient, no haze
+  // Scene
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x000000);
-  scene.fog = new THREE.Fog(0x000000, 45, 115);
+  scene.background = new THREE.Color(0x0a0e17);
+  scene.fog = new THREE.FogExp2(0x0a0e17, 0.012);
 
   // Camera (framed for large open levels)
   camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
@@ -179,11 +184,11 @@ function initThree() {
   controls.maxPolarAngle = Math.PI / 2.05;
   controls.target.set(9.5, 2.0, 9.5);
 
-  // Lighting: High-contrast monochrome architectural illumination
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
+  // Lighting
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
   scene.add(ambientLight);
 
-  const mainLight = new THREE.DirectionalLight(0xffffff, 0.85);
+  const mainLight = new THREE.DirectionalLight(0xfff8ee, 0.9);
   mainLight.position.set(25, 35, 20);
   mainLight.castShadow = true;
   mainLight.shadow.mapSize.width = 2048;
@@ -196,7 +201,7 @@ function initThree() {
   mainLight.shadow.camera.bottom = -30;
   scene.add(mainLight);
 
-  const fillLight = new THREE.DirectionalLight(0x888888, 0.3);
+  const fillLight = new THREE.DirectionalLight(0x38bdf8, 0.35);
   fillLight.position.set(-20, 20, -20);
   scene.add(fillLight);
 
@@ -318,42 +323,42 @@ function buildBuilding(replayData) {
 
   // Materials
   const floorMaterial0 = new THREE.MeshStandardMaterial({
-    color: 0x080808,
-    roughness: 0.9,
-    metalness: 0.1,
+    color: 0x111827,
+    roughness: 0.85,
+    metalness: 0.15,
   });
 
   const floorMaterial1 = new THREE.MeshStandardMaterial({
-    color: 0x0e0e0e,
-    roughness: 0.85,
-    metalness: 0.1,
+    color: 0x1e293b,
+    roughness: 0.7,
+    metalness: 0.25,
     transparent: true,
     opacity: 0.72,
   });
 
-  // Low wall material: Nothing OS dark architectural matte finish with crisp edge lines
+  // Low wall material: sleek concrete finish with beveled edges
   const wallMaterial = new THREE.MeshStandardMaterial({
-    color: 0x141414,
-    roughness: 0.5,
-    metalness: 0.1,
+    color: 0x334155,
+    roughness: 0.6,
+    metalness: 0.3,
   });
 
-  const wallEdgeMat = new THREE.LineBasicMaterial({ color: 0x3c3c3c, linewidth: 1 });
+  const wallEdgeMat = new THREE.LineBasicMaterial({ color: 0x64748b, linewidth: 1 });
 
-  // Exit Zone Material: Stark Monochrome White Wireframe Pad
+  // Glowing Exit Zone Material (Emerald)
   const exitMaterial = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
-    emissive: 0xffffff,
-    emissiveIntensity: 0.45,
+    color: 0x10b981,
+    emissive: 0x059669,
+    emissiveIntensity: 0.9,
     roughness: 0.2,
   });
 
-  // Stairs Material: Technical Muted Grey
+  // Glowing Stairs Material (Amber Gold)
   const stairsMaterial = new THREE.MeshStandardMaterial({
-    color: 0x9a9a9a,
-    emissive: 0x444444,
-    emissiveIntensity: 0.3,
-    roughness: 0.4,
+    color: CONFIG.stairsColor,
+    emissive: 0xd97706,
+    emissiveIntensity: 0.75,
+    roughness: 0.3,
   });
 
   // 1. Build Floor Slabs
@@ -369,8 +374,8 @@ function buildBuilding(replayData) {
     floorPlanes.push(planeMesh);
     floorMeshes[f].push(planeMesh);
 
-    // Floor grid (Nothing OS thin monochrome dot grid lines)
-    const gridHelper = new THREE.GridHelper(gridW, gridW, 0x3c3c3c, 0x1a1a1a);
+    // Floor grid
+    const gridHelper = new THREE.GridHelper(gridW, gridW, 0x475569, 0x1e293b);
     gridHelper.position.set((gridW - 1) / 2.0, yPos + 0.01, (gridH - 1) / 2.0);
     buildingGroup.add(gridHelper);
     floorMeshes[f].push(gridHelper);
@@ -413,7 +418,7 @@ function buildBuilding(replayData) {
 
     // Exit beacon cylinder
     const beaconGeo = new THREE.CylinderGeometry(0.14, 0.14, 0.8, 12);
-    const beaconMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.45 });
+    const beaconMat = new THREE.MeshBasicMaterial({ color: 0x34d399, transparent: true, opacity: 0.5 });
     const beacon = new THREE.Mesh(beaconGeo, beaconMat);
     beacon.position.set(ec, 0.44, er);
     buildingGroup.add(beacon);
@@ -436,9 +441,9 @@ function buildBuilding(replayData) {
       buildingGroup.add(stair1);
       floorMeshes[1].push(stair1);
 
-      // Monochrome stair shaft column
+      // Gold stair shaft column
       const shaftGeo = new THREE.CylinderGeometry(0.22, 0.22, CONFIG.floorHeight, 10);
-      const shaftMat = new THREE.MeshStandardMaterial({ color: 0x9a9a9a, emissive: 0x333333, emissiveIntensity: 0.3 });
+      const shaftMat = new THREE.MeshStandardMaterial({ color: 0xf59e0b, emissive: 0xb45309, emissiveIntensity: 0.5 });
       const shaft = new THREE.Mesh(shaftGeo, shaftMat);
       shaft.position.set(sc, CONFIG.floorHeight / 2.0, sr);
       buildingGroup.add(shaft);
@@ -485,54 +490,51 @@ function initEntityPool(config) {
   const nHostages = config.n_hostages || 4;
   const maxFires = 96;
 
-  // 1. Rescuers (Nothing OS Stark Monochrome White with Signature Red Carrier Beacon)
+  // 1. Rescuers
   for (let i = 0; i < nRescuers; i++) {
     const rescuerId = `rescuer_${i}`;
+    const agentColor = CONFIG.agentColors[i % CONFIG.agentColors.length];
 
     const group = new THREE.Group();
 
-    // Body: Stark White Monochrome
+    // Body
     const bodyGeo = new THREE.CylinderGeometry(0.24, 0.28, 0.65, 12);
     const bodyMat = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
-      roughness: 0.25,
-      metalness: 0.15,
+      color: agentColor,
+      roughness: 0.35,
+      metalness: 0.3,
     });
     const body = new THREE.Mesh(bodyGeo, bodyMat);
     body.position.y = 0.38;
     body.castShadow = true;
     group.add(body);
 
-    // Helmet: Stark White
+    // Helmet
     const headGeo = new THREE.SphereGeometry(0.18, 12, 12);
-    const headMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.1 });
+    const headMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2 });
     const head = new THREE.Mesh(headGeo, headMat);
     head.position.y = 0.78;
     group.add(head);
 
-    // Visor: High-contrast Dark Slate
+    // Visor
     const visorGeo = new THREE.BoxGeometry(0.2, 0.08, 0.12);
-    const visorMat = new THREE.MeshBasicMaterial({ color: 0x141414 });
+    const visorMat = new THREE.MeshBasicMaterial({ color: agentColor });
     const visor = new THREE.Mesh(visorGeo, visorMat);
     visor.position.set(0, 0.78, 0.15);
     group.add(visor);
 
-    // Carrying pack: The ONE RED ACCENT (#D71921)
+    // Carrying pack (hostage carrier)
     const packGeo = new THREE.BoxGeometry(0.32, 0.32, 0.24);
-    const packMat = new THREE.MeshStandardMaterial({
-      color: CONFIG.agentCarryColor,
-      emissive: CONFIG.agentCarryColor,
-      emissiveIntensity: 0.95,
-    });
+    const packMat = new THREE.MeshStandardMaterial({ color: CONFIG.hostageColor, emissive: 0x059669, emissiveIntensity: 0.7 });
     const pack = new THREE.Mesh(packGeo, packMat);
     pack.position.set(0, 0.5, -0.24);
     pack.visible = false;
     group.add(pack);
     group.userData.pack = pack;
 
-    // Fallen halo: Muted dark grey
+    // Fallen halo
     const haloGeo = new THREE.RingGeometry(0.26, 0.34, 16);
-    const haloMat = new THREE.MeshBasicMaterial({ color: 0x3c3c3c, side: THREE.DoubleSide });
+    const haloMat = new THREE.MeshBasicMaterial({ color: 0xef4444, side: THREE.DoubleSide });
     const halo = new THREE.Mesh(haloGeo, haloMat);
     halo.rotation.x = Math.PI / 2;
     halo.position.y = 0.05;
@@ -544,16 +546,16 @@ function initEntityPool(config) {
     rescuerMeshes[rescuerId] = group;
   }
 
-  // 2. Hostages: Stark White Dot-Matrix Beacons
+  // 2. Hostages
   for (let i = 0; i < nHostages; i++) {
     const group = new THREE.Group();
 
     const bodyGeo = new THREE.CylinderGeometry(0.2, 0.22, 0.55, 12);
     const bodyMat = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
+      color: CONFIG.hostageColor,
       roughness: 0.3,
-      emissive: 0xffffff,
-      emissiveIntensity: 0.35,
+      emissive: 0x047857,
+      emissiveIntensity: 0.45,
     });
     const body = new THREE.Mesh(bodyGeo, bodyMat);
     body.position.y = 0.32;
@@ -561,14 +563,14 @@ function initEntityPool(config) {
     group.add(body);
 
     const headGeo = new THREE.SphereGeometry(0.15, 12, 12);
-    const headMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
+    const headMat = new THREE.MeshStandardMaterial({ color: 0xa7f3d0 });
     const head = new THREE.Mesh(headGeo, headMat);
     head.position.y = 0.68;
     group.add(head);
 
-    // White dot ring beacon
+    // Medical aura ring
     const ringGeo = new THREE.RingGeometry(0.32, 0.40, 16);
-    const ringMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide, transparent: true, opacity: 0.75 });
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0x34d399, side: THREE.DoubleSide, transparent: true, opacity: 0.75 });
     const ring = new THREE.Mesh(ringGeo, ringMat);
     ring.rotation.x = Math.PI / 2;
     ring.position.y = 0.04;
@@ -578,7 +580,7 @@ function initEntityPool(config) {
     hostageMeshes.push(group);
   }
 
-  // 3. Fire Pool: The ONE RED ACCENT in the environment (#D71921)
+  // 3. Fire Pool
   const fireGeo = new THREE.DodecahedronGeometry(0.38, 0);
   for (let i = 0; i < maxFires; i++) {
     const fireMat = new THREE.MeshStandardMaterial({
@@ -593,15 +595,15 @@ function initEntityPool(config) {
     fireMeshes.push(fire);
   }
 
-  // 4. Ash Pool: Dark charcoal with minimal subtle ember
+  // 4. Ash Pool (Charred dark floor with glowing embers)
   ashMeshes = [];
   const ashGeo = new THREE.BoxGeometry(0.92, 0.05, 0.92);
   const ashMat = new THREE.MeshStandardMaterial({
-    color: 0x141414,
+    color: 0x18181b, // deep charcoal
     roughness: 0.95,
     metalness: 0.05,
-    emissive: 0x242424,
-    emissiveIntensity: 0.15,
+    emissive: 0x991b1b, // subtle ember red
+    emissiveIntensity: 0.25,
   });
   for (let i = 0; i < maxFires; i++) {
     const ash = new THREE.Mesh(ashGeo, ashMat);
@@ -762,40 +764,33 @@ function updateInterpolatedEntities(progress) {
     return;
   }
 
-  // Rescuer tactical cards (Nothing OS Spec Sheet: Courier New, [ ● ● ] Dot HP, Red Carry Accent)
+  // Rescuer tactical cards with HP & invulnerability
   let rescuerHtml = "";
   frame0.rescuers.forEach((r, i) => {
+    const colorHex = `#${CONFIG.agentColors[i % CONFIG.agentColors.length].toString(16).padStart(6, "0")}`;
     let badge = "";
     let hpDisplay = "";
-    let dotColor = "var(--white)";
-
     if (!r.alive) {
-      badge = '<span class="rescuer-status-badge badge-dead">[ KIA ]</span>';
-      hpDisplay = '<span style="color:var(--mute); font-size:10px;">[ ○ ○ ]</span>';
-      dotColor = "var(--mute)";
+      badge = '<span class="rescuer-status-badge badge-dead">KIA</span>';
+      hpDisplay = '<span class="hp-kia">KIA</span>';
     } else {
       const hp = r.hp !== undefined ? r.hp : 2;
       const isInvuln = !!r.invulnerable;
-      const dots = "● ".repeat(Math.max(0, hp)) + "○ ".repeat(Math.max(0, 2 - hp));
-      hpDisplay = `<span style="font-size:10px; color:var(--white);" title="HP: ${hp}/2">[ ${dots.trim()} ]${isInvuln ? ' [SHIELD]' : ''}</span>`;
-      if (r.carrying) {
-        badge = '<span class="rescuer-status-badge badge-carrying"><span style="color:var(--red-accent);">●</span> CARRY</span>';
-        dotColor = "var(--red-accent)";
-      } else {
-        badge = '<span class="rescuer-status-badge badge-free">FREE</span>';
-        dotColor = "var(--white)";
-      }
+      const hpDots = "● ".repeat(Math.max(0, hp)).trim() + (hp < 2 ? " ○ ".repeat(2 - hp).trim() : "");
+      hpDisplay = `<span class="hp-dots ${hp <= 1 ? 'critical' : ''}" title="HP: ${hp}/2">${hpDots}${isInvuln ? " 🛡️" : ""}</span>`;
+      if (r.carrying) badge = '<span class="rescuer-status-badge badge-carrying">CARRY</span>';
+      else badge = '<span class="rescuer-status-badge badge-free">FREE</span>';
     }
 
     rescuerHtml += `
       <div class="rescuer-card">
         <div class="rescuer-id">
-          <span class="agent-dot" style="background:${dotColor};"></span>
+          <span class="agent-dot" style="background:${colorHex};"></span>
           <span>R-0${i}</span>
         </div>
-        <div style="color:var(--faint);">F${r.floor} (${r.row}, ${r.col})</div>
-        <div>${hpDisplay}</div>
-        <div>${badge}</div>
+        <div class="rescuer-pos">F${r.floor} · (${r.row}, ${r.col})</div>
+        <div class="rescuer-hp">${hpDisplay}</div>
+        <div class="rescuer-badge-wrap">${badge}</div>
       </div>
     `;
   });
@@ -811,42 +806,42 @@ function updateInterpolatedEntities(progress) {
   const isFinished = (f0Idx === totalFrames - 1) || allRescued || allDead;
 
   if (allRescued) {
-    const otTag = (frame0.t > config.max_steps) ? ` (+${overtimeSteps} OVERTIME)` : "";
-    dom.completionTag.textContent = `[ 01 // MISSION_SUCCESS ]${otTag}`;
-    dom.completionTag.style.color = "var(--white)";
+    const otTag = (frame0.t > config.max_steps) ? ` (Overtime +${overtimeSteps} Steps)` : "";
+    dom.completionTag.textContent = `WIN — All ${rescuedCount}/${config.n_hostages} Evacuated${otTag}`;
+    dom.completionTag.style.color = "#10B981";
     showVerdict(
       "win",
-      "[ 01 // MISSION_SUCCESS ]",
-      `All ${rescuedCount}/${config.n_hostages} hostages safely evacuated in cycle ${frame0.t}.${otTag}`,
-      `Survivors: ${survivingCount}/${config.n_rescuers} &bull; Hazard Mortalities: ${config.n_rescuers - survivingCount}`
+      "MISSION ACCOMPLISHED — WIN",
+      `All ${rescuedCount}/${config.n_hostages} hostages safely evacuated in ${frame0.t} steps!${otTag}`,
+      `Rescuers Surviving: ${survivingCount}/${config.n_rescuers} &bull; Fire Deaths: ${config.n_rescuers - survivingCount}`
     );
   } else if (allDead) {
-    dom.completionTag.textContent = `[ 03 // SQUAD_KIA ] (${rescuedCount}/${config.n_hostages} SAVED)`;
+    dom.completionTag.textContent = `LOSE — Squad Wiped Out (${rescuedCount}/${config.n_hostages} Saved)`;
     dom.completionTag.style.color = "var(--red-accent)";
     showVerdict(
       "lose",
-      "[ 03 // SQUAD_KIA ]",
-      `Rescuer squad lost to hazard. ${rescuedCount}/${config.n_hostages} hostages evacuated.`,
-      `Survivors: 0/${config.n_rescuers} &bull; Active Hazard Nodes: ${fireCount}`
+      "MISSION FAILED — LOSE (WIPED)",
+      `Rescuer squad wiped out by flames. Only ${rescuedCount}/${config.n_hostages} hostages saved.`,
+      `Rescuers Surviving: 0/${config.n_rescuers} &bull; Active Fire Tiles: ${fireCount}`
     );
   } else if (f0Idx === totalFrames - 1) {
-    const otNote = (frame0.t > config.max_steps) ? ` (overtime concluded at +${overtimeSteps} steps)` : "";
-    dom.completionTag.textContent = `[ 02 // MISSION_TIMEOUT ] (${rescuedCount}/${config.n_hostages} SAVED)`;
+    const otNote = (frame0.t > config.max_steps) ? ` (overtime ended after +${overtimeSteps} steps)` : "";
+    dom.completionTag.textContent = `LOSE — Time Expired (${rescuedCount}/${config.n_hostages} Saved)`;
     dom.completionTag.style.color = "var(--red-accent)";
     showVerdict(
       "lose",
-      "[ 02 // MISSION_TIMEOUT ]",
-      `Step horizon reached at cycle ${frame0.t}.${otNote}`,
-      `Evacuated: ${rescuedCount}/${config.n_hostages} &bull; Survivors: ${survivingCount}/${config.n_rescuers}`
+      "MISSION FAILED — LOSE (TIMEOUT)",
+      `Time expired at step ${frame0.t}${otNote}. Saved ${rescuedCount}/${config.n_hostages} hostages.`,
+      `Rescuers Surviving: ${survivingCount}/${config.n_rescuers} &bull; Active Fire Tiles: ${fireCount}`
     );
   } else if (inOvertime) {
     hideVerdict();
-    dom.completionTag.textContent = `OVERTIME: CYCLE ${frame0.t} (+${overtimeSteps} GRACE)`;
-    dom.completionTag.style.color = "var(--white)";
+    dom.completionTag.textContent = `OVERTIME (Step ${frame0.t}, +${overtimeSteps} Window)`;
+    dom.completionTag.style.color = "#FCD34D";
   } else {
     hideVerdict();
-    dom.completionTag.textContent = `IN PROGRESS (CYCLE ${frame0.t} / ${config.max_steps})`;
-    dom.completionTag.style.color = "var(--faint)";
+    dom.completionTag.textContent = `IN PROGRESS (STEP ${frame0.t} / ${config.max_steps})`;
+    dom.completionTag.style.color = "var(--text-secondary)";
   }
 }
 
@@ -1192,10 +1187,10 @@ function setupEventHandlers() {
 
       if (curationMode === "showcase") {
         dom.curationCaption.textContent = "Filtered for presentation: showing runs where at least 1 rescue occurred. Raw policy win rate: 6.7%.";
-        dom.curationCaption.style.color = "#f59e0b";
+        dom.curationCaption.style.color = "var(--faint)";
       } else {
         dom.curationCaption.textContent = "Raw unbiased policy execution on fresh held-out maps (no filtering). Real win rate: 6.7%.";
-        dom.curationCaption.style.color = "#34d399";
+        dom.curationCaption.style.color = "var(--faint)";
       }
     });
   });
@@ -1291,162 +1286,8 @@ function setupEventHandlers() {
   });
 }
 
-// ==========================================================================
-// NOTHING OS GLYPH DOT-MATRIX VISUALIZER (SPEC-01)
-// Stage: Pure Black #000000.
-// Dot defaults: Ø 6-10px (radius 3.8px = Ø 7.6px), grid pitch 22-30px (pitch 22px).
-// White #FFFFFF at 70-100% alpha; inactive dots 20-30% alpha.
-// Subtle per-dot stagger so the matrix "breathes".
-// Monochrome + ONE red accent (#D71921) carrying the signal.
-// Patterns: Cross/Plus, Equalizer Bars, 3D Wireframe Cube, Waveform, Orbit.
-// Dots assemble -> hold -> disperse.
-// ==========================================================================
-function initGlyphVisualizer() {
-  const canvas = document.getElementById("glyph-canvas");
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
-  const modeNameEl = document.getElementById("glyph-mode-name");
-
-  const cols = 12;
-  const rows = 5;
-  const pitch = 22; // Grid pitch in 22-30px range
-  const dotRadius = 3.6; // Ø 7.2px, in 6-10px range
-
-  const offsetX = (canvas.width - (cols - 1) * pitch) / 2;
-  const offsetY = (canvas.height - (rows - 1) * pitch) / 2;
-
-  const patterns = [
-    {
-      name: "GLYPH // CROSS_PLUS",
-      getAlpha: (c, r, t) => {
-        // Cross/plus in center (c=5..6, r=2)
-        const isCenterCol = (c === 5 || c === 6);
-        const isCenterRow = (r === 2);
-        const inCross = (isCenterCol && r >= 0 && r <= 4) || (isCenterRow && c >= 2 && c <= 9);
-        return inCross ? (0.75 + 0.25 * Math.sin(t * 3.0 + c * 0.4)) : 0.22;
-      },
-      isRed: (c, r) => (c === 5 && r === 2), // ONE red accent dot at center node
-    },
-    {
-      name: "GLYPH // SPECTRUM_BARS",
-      getAlpha: (c, r, t) => {
-        // Dot bars rising from bottom (r=4)
-        const barHeight = Math.sin(t * 2.8 + c * 0.75) * 1.8 + 2.2;
-        const distFromBottom = (rows - 1) - r;
-        return (distFromBottom <= barHeight) ? (0.78 + 0.22 * Math.sin(t * 4.0 + c)) : 0.20;
-      },
-      isRed: (c, r, t) => {
-        const peakCol = Math.floor((Math.sin(t * 1.6) * 0.5 + 0.5) * (cols - 1));
-        return (c === peakCol && r === 0);
-      },
-    },
-    {
-      name: "GLYPH // 3D_CUBE",
-      getAlpha: (c, r, t) => {
-        // Isometric wireframe cube of dots rotating
-        const cx = 5.5, cy = 2.0;
-        const dx = c - cx;
-        const dy = (r - cy) * 1.4;
-        const rot = t * 1.2;
-        const rx = dx * Math.cos(rot) - dy * Math.sin(rot) * 0.5;
-        const ry = dx * Math.sin(rot) * 0.5 + dy * Math.cos(rot);
-        const onCube = (Math.abs(Math.abs(rx) - 2.2) < 0.9 && Math.abs(ry) <= 2.2) ||
-                       (Math.abs(Math.abs(ry) - 1.8) < 0.9 && Math.abs(rx) <= 2.5);
-        return onCube ? 0.92 : 0.22;
-      },
-      isRed: (c, r) => (c === 6 && r === 2),
-    },
-    {
-      name: "GLYPH // WAVEFORM",
-      getAlpha: (c, r, t) => {
-        // Undulating sine wave
-        const waveY = Math.sin(c * 0.65 + t * 3.2) * 1.6 + 2.0;
-        const dist = Math.abs(r - waveY);
-        return (dist < 1.0) ? (0.95 - dist * 0.35) : 0.20;
-      },
-      isRed: (c, r, t) => {
-        const markerCol = Math.floor((t * 2.5) % cols);
-        const waveY = Math.round(Math.sin(markerCol * 0.65 + t * 3.2) * 1.6 + 2.0);
-        return (c === markerCol && r === waveY);
-      },
-    },
-    {
-      name: "GLYPH // ORBIT_NODE",
-      getAlpha: (c, r, t) => {
-        // Elliptical dot orbit
-        const cx = 5.5, cy = 2.0;
-        const d = Math.sqrt((c - cx) * (c - cx) + (r - cy) * (r - cy) * 2.2);
-        if (Math.abs(d - 2.6) < 0.95 || (Math.abs(c - cx) < 0.8 && Math.abs(r - cy) < 0.8)) return 0.88;
-        return 0.22;
-      },
-      isRed: (c, r, t) => {
-        const cx = 5.5, cy = 2.0;
-        const angle = t * 2.8;
-        const ox = Math.round(cx + Math.cos(angle) * 2.6);
-        const oy = Math.round(cy + Math.sin(angle) * 1.6);
-        return (c === ox && r === oy);
-      },
-    },
-  ];
-
-  let currentPatternIdx = 0;
-  let patternStartTime = performance.now();
-  const patternDuration = 4800; // 4.8s per glyph sequence
-
-  function renderGlyph(now) {
-    requestAnimationFrame(renderGlyph);
-    const elapsed = now - patternStartTime;
-    if (elapsed > patternDuration) {
-      currentPatternIdx = (currentPatternIdx + 1) % patterns.length;
-      patternStartTime = now;
-      if (modeNameEl) modeNameEl.textContent = patterns[currentPatternIdx].name;
-    }
-
-    const t = now * 0.001;
-    const pat = patterns[currentPatternIdx];
-    const cycleProgress = (now - patternStartTime) / patternDuration;
-
-    // Dots assemble -> hold -> disperse envelope
-    let envelope = 1.0;
-    if (cycleProgress < 0.18) {
-      envelope = cycleProgress / 0.18; // Assemble
-    } else if (cycleProgress > 0.84) {
-      envelope = (1.0 - cycleProgress) / 0.16; // Disperse
-    }
-
-    ctx.fillStyle = "#000000";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        const x = offsetX + c * pitch;
-        const y = offsetY + r * pitch;
-
-        // Subtle per-dot stagger breathing effect
-        const breath = Math.sin(t * 2.2 + c * 0.4 + r * 0.5) * 0.06;
-        const targetAlpha = pat.getAlpha(c, r, t);
-        const alpha = Math.max(0.18, Math.min(1.0, (targetAlpha * envelope + (1 - envelope) * 0.22) + breath));
-
-        const isRed = pat.isRed(c, r, t);
-
-        ctx.beginPath();
-        ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
-        if (isRed) {
-          ctx.fillStyle = `rgba(215, 25, 33, ${Math.max(0.8, alpha)})`;
-        } else {
-          ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-        }
-        ctx.fill();
-      }
-    }
-  }
-
-  requestAnimationFrame(renderGlyph);
-}
-
 window.addEventListener("DOMContentLoaded", () => {
   initThree();
   setupEventHandlers();
   fetchBackendData();
-  initGlyphVisualizer();
 });

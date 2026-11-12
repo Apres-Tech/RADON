@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RADON // SPEC-01 — Autonomous Multi-Agent Rescue Simulation</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23d71921'/></svg>">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20261113_clean_v4">
 </head>
 <body>
   <!-- 3D Stage -->
@@ -24,8 +24,8 @@
   <!-- Header -->
   <header class="app-header glass-panel">
     <div class="brand">
-      <div class="brand-logo">RADON // SPEC-01</div>
-      <div class="brand-badge">NOTHING-OS // MARL</div>
+      <div class="brand-logo">RADON</div>
+      <div class="brand-badge">MARL EVALUATION PLATFORM</div>
     </div>
     <div class="header-status">
       <div class="status-pill" id="backend-status-pill">
@@ -33,12 +33,12 @@
         <span id="backend-status-text">SYS: CONNECTING</span>
       </div>
       <div class="status-pill" id="device-pill" style="display:none;">
-        <span style="color:var(--mute);">ACCEL:</span>
+        <span class="pill-label">ACCEL</span>
         <span id="device-text">CUDA</span>
       </div>
       <div class="status-pill benchmark-pill" id="benchmark-stat-pill" title="Honest evaluation across held-out unseen maps (seeds 50000+)">
-        <span style="color:var(--mute);">BENCHMARK:</span>
-        <span id="benchmark-stat-text">NO-ADV: 96.0% | FAIR FIGHT: 60.0%</span>
+        <span class="pill-label">BENCHMARK</span>
+        <span id="benchmark-stat-text">96.0% NO-ADV &bull; 60.0% FAIR FIGHT</span>
       </div>
       <div class="status-pill overtime-pill" id="overtime-pill" style="display:none;" title="Carry Overtime active: clock extending while rescuer carries">
         <span class="pulse-amber-dot"></span>
@@ -47,11 +47,11 @@
     </div>
     <div class="header-actions">
       <button class="btn" id="open-analytics-btn">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 9l-5 5-4-4-6 6"/></svg>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 9l-5 5-4-4-6 6"/></svg>
         Data Sheet
       </button>
       <button class="btn" id="reset-cam-btn" title="Reset Camera View (R)">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
         Camera [R]
       </button>
     </div>
@@ -59,8 +59,8 @@
 
   <!-- Left Panel: Live Telemetry & Rescuer Team Spec -->
   <aside id="left-panel" class="glass-panel">
-    <div>
-      <div class="panel-title">[ 01 // TELEMETRY ]</div>
+    <div class="panel-section">
+      <div class="panel-section-title">MISSION TELEMETRY</div>
       <div class="stat-grid">
         <div class="stat-card">
           <div class="stat-label">Evacuated</div>
@@ -80,7 +80,7 @@
         </div>
       </div>
       <div id="overtime-badge" class="overtime-banner" style="display:none;">
-        <span class="overtime-icon">[!]</span>
+        <span class="overtime-icon">!</span>
         <div class="overtime-text">
           <div class="overtime-headline">OVERTIME RULE ENGAGED</div>
           <div class="overtime-desc" id="overtime-desc">Rescuer carrying hostage — rolling +50 grace window.</div>
@@ -88,15 +88,15 @@
       </div>
     </div>
 
-    <div>
-      <div class="panel-title">[ 02 // SQUAD TACTICAL STATUS ]</div>
+    <div class="panel-section">
+      <div class="panel-section-title">SQUAD TACTICAL STATUS</div>
       <div class="rescuer-list" id="rescuer-list">
         <!-- Rendered dynamically -->
       </div>
     </div>
 
-    <div>
-      <div class="panel-title">[ 03 // FLOOR ISOLATOR ]</div>
+    <div class="panel-section">
+      <div class="panel-section-title">FLOOR VIEW</div>
       <div class="view-mode-buttons">
         <button class="view-btn active" data-floor="both">Both Floors</button>
         <button class="view-btn" data-floor="0">Floor 0 (Exits)</button>
@@ -104,74 +104,84 @@
       </div>
     </div>
 
-    <div style="font-family:var(--font-mono); font-size:10px; color:var(--mute); line-height:1.6; margin-top:auto; border-top:1px solid var(--line-dark); padding-top:8px;">
-      NAV: Left-drag rotate &bull; Right-drag pan &bull; Scroll zoom.<br>
-      KEYS: Space (Play/Pause) &bull; R (Reset) &bull; G (Generate).
+    <div class="panel-footer-hint">
+      Left-drag rotate &bull; Right-drag pan &bull; Scroll zoom<br>
+      Space: Play/Pause &bull; R: Reset View &bull; G: Generate
     </div>
   </aside>
 
   <!-- Right Panel: Replay Selection & Live Generator -->
   <aside id="right-panel" class="glass-panel">
-    <div class="control-group">
-      <div class="control-label">[ 01 // REPLAY ARCHIVE ]</div>
+    <div class="panel-section">
+      <div class="panel-section-title">REPLAY ARCHIVE</div>
       <select id="replay-select" class="input-select">
         <option value="">Fetching replays...</option>
       </select>
     </div>
 
-    <hr style="border:0; border-top:1px solid var(--line-dark); margin:2px 0;">
+    <div class="panel-section">
+      <div class="panel-section-title">SIMULATION ENVIRONMENT</div>
+      <div class="control-group">
+        <label class="control-label" for="preset-select">Map Layout</label>
+        <select id="preset-select" class="input-select">
+          <option value="maze" selected>Large Maze 20x20 (5 Rescuers, 4 Hostages)</option>
+          <option value="showcase">Showcase 14x14 (4 Rescuers, 3 Hostages)</option>
+          <option value="showcase_hard">Showcase 20x20 Hard (5 Rescuers, 4 Hostages)</option>
+          <option value="training_day4_base">Base 10x10 (Solvable 2-Floor)</option>
+          <option value="training_day3">Standard 12x12 (4 Rescuers)</option>
+        </select>
+      </div>
 
-    <div class="control-group">
-      <div class="control-label">[ 02 // LIVE INFERENCE ]</div>
-      <div style="font-size:12px; color:var(--faint); line-height:1.4;">
-        Simulate trained policy on a <strong>fresh held-out maze</strong> (seeds 50,000+).
+      <div class="control-group" id="difficulty-group">
+        <label class="control-label" for="difficulty-select">Hazard Difficulty</label>
+        <select id="difficulty-select" class="input-select">
+          <option value="balanced" selected>Balanced Fight (50-60% Target)</option>
+          <option value="easy">Easy Mode (~84% Win Rate)</option>
+          <option value="brutal">Brutal Mode (~32% Win Rate)</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Adversary Behavior</label>
+        <div class="segmented-control" id="fire-mode-control">
+          <div class="segmented-btn active" data-mode="curriculum">CURRICULUM</div>
+          <div class="segmented-btn fire-adv" data-mode="adversarial">PPO ADVERSARY</div>
+          <div class="segmented-btn" data-mode="none">NONE</div>
+        </div>
+        <div id="fire-mode-caption" class="control-caption">
+          Natural stochastic fire spread from ignition points.
+        </div>
       </div>
     </div>
 
-    <div class="control-group">
-      <div class="control-label">[ 03 // LEVEL LAYOUT ]</div>
-      <select id="preset-select" class="input-select">
-        <option value="maze" selected>Day 10 Large Maze 20x20 (5 Rescuers, 4 Hostages)</option>
-        <option value="showcase">Showcase 14x14 (4 Rescuers, 3 Hostages)</option>
-        <option value="showcase_hard">Showcase 20x20 Hard (5 Rescuers, 4 Hostages)</option>
-        <option value="training_day4_base">Day 4 Base 10x10 (Solvable 2-Floor)</option>
-        <option value="training_day3">Day 3 Standard 12x12 (4 Rescuers)</option>
-      </select>
-    </div>
-
-    <div class="control-group" id="difficulty-group">
-      <div class="control-label">[ 04 // HAZARD DIFFICULTY ]</div>
-      <select id="difficulty-select" class="input-select">
-        <option value="balanced" selected>Balanced Fight (50-60% Target)</option>
-        <option value="easy">Easy Mode (~84% Win Rate)</option>
-        <option value="brutal">Brutal Mode (~32% Win Rate)</option>
-      </select>
-    </div>
-
-    <div class="control-group">
-      <div class="control-label">[ 05 // CONTINUOUS MODE ]</div>
-      <div style="display:flex; align-items:center; justify-content:space-between; background:var(--ink); padding:6px 10px; border:1px solid var(--line-dark);">
-        <span style="font-family:var(--font-mono); font-size:11px;">AUTO-ADVANCE</span>
+    <div class="panel-section">
+      <div class="panel-section-title">EXECUTION SETTINGS</div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <span class="toggle-title">Auto-Advance</span>
+          <span class="toggle-subtitle">Continuous loop across seeds</span>
+        </div>
         <label class="toggle-switch">
           <input type="checkbox" id="continuous-toggle">
           <span class="slider round"></span>
         </label>
       </div>
-    </div>
 
-    <div class="control-group">
-      <div class="control-label">[ 06 // OVERTIME ESCAPE HATCH ]</div>
-      <div style="display:flex; align-items:center; justify-content:space-between; background:var(--ink); padding:6px 10px; border:1px solid var(--line-dark);">
-        <span style="font-family:var(--font-mono); font-size:11px;">AUTO-SKIP</span>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <span class="toggle-title">Overtime Auto-Skip</span>
+          <span class="toggle-subtitle">Skip if stalled past threshold</span>
+        </div>
         <label class="toggle-switch">
           <input type="checkbox" id="autoskip-toggle">
           <span class="slider round"></span>
         </label>
       </div>
-      <div id="autoskip-config" style="display:none; margin-top:4px; background:var(--black); padding:6px 8px; border:1px solid var(--line-dark);">
-        <div style="display:flex; align-items:center; justify-content:space-between; font-size:11px; color:var(--mute);">
-          <span>Max Overtime:</span>
-          <select id="autoskip-steps-select" class="input-select" style="width:90px; padding:2px 4px; font-size:10px;">
+
+      <div id="autoskip-config" class="autoskip-drawer" style="display:none;">
+        <div class="autoskip-inner">
+          <span>Max Overtime Steps:</span>
+          <select id="autoskip-steps-select" class="input-select input-select-sm">
             <option value="50">50 steps</option>
             <option value="100" selected>100 steps</option>
             <option value="150">150 steps</option>
@@ -179,63 +189,36 @@
           </select>
         </div>
       </div>
-    </div>
 
-    <div class="control-group">
-      <div class="control-label">[ 07 // CURATION FILTER ]</div>
-      <div class="segmented-control" id="curation-mode-control">
-        <div class="segmented-btn active" data-curation="unfiltered">RAW (ALL)</div>
-        <div class="segmented-btn" data-curation="showcase">SHOWCASE (&ge;1)</div>
-      </div>
-      <div id="curation-caption" style="font-family:var(--font-mono); font-size:9px; color:var(--mute); margin-top:2px;">
-        Unfiltered held-out verification mode.
-      </div>
-    </div>
-
-    <div class="control-group">
-      <div class="control-label">[ 08 // ADVERSARY BEHAVIOR ]</div>
-      <div class="segmented-control" id="fire-mode-control">
-        <div class="segmented-btn active" data-mode="curriculum">CURRICULUM</div>
-        <div class="segmented-btn fire-adv" data-mode="adversarial">PPO ADVERSARY</div>
-        <div class="segmented-btn" data-mode="none">NONE</div>
-      </div>
-      <div id="fire-mode-caption" style="font-family:var(--font-mono); font-size:9px; color:var(--mute); margin-top:2px;">
-        Natural stochastic fire spread from ignition points.
+      <div class="control-group" style="margin-top: 10px;">
+        <label class="control-label">Curation Filter</label>
+        <div class="segmented-control" id="curation-mode-control">
+          <div class="segmented-btn active" data-curation="unfiltered">RAW (ALL)</div>
+          <div class="segmented-btn" data-curation="showcase">SHOWCASE (&ge;1)</div>
+        </div>
+        <div id="curation-caption" class="control-caption">
+          Unfiltered held-out verification mode.
+        </div>
       </div>
     </div>
 
-    <div class="control-group" style="display:flex; gap:6px; margin-top:2px;">
-      <button class="btn btn-primary" id="generate-btn" style="flex:1; justify-content:center; padding:10px;">
+    <div class="action-buttons-row">
+      <button class="btn btn-primary" id="generate-btn">
         <span class="spinner" id="generate-spinner" style="display:none;"></span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="generate-icon"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="generate-icon"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
         <span id="generate-btn-text">Generate Episode</span>
       </button>
-      <button class="btn btn-secondary" id="skip-episode-right-btn" style="padding:10px 14px; justify-content:center;" title="Skip current episode (S)">
+      <button class="btn btn-secondary" id="skip-episode-right-btn" title="Skip current episode (S)">
         <span>Skip</span>
       </button>
     </div>
 
-    <div id="active-episode-meta" style="font-family:var(--font-mono); font-size:10px; color:var(--mute); background:var(--ink); padding:8px 10px; border:1px solid var(--line-dark); display:none;">
-      <div><strong>REPLAY:</strong> <span id="meta-name" style="color:var(--white);">-</span></div>
-      <div><strong>SEED:</strong> <span id="meta-seed" style="color:var(--white);">-</span></div>
-      <div><strong>OUTCOME:</strong> <span id="meta-outcome" style="color:var(--white);">-</span></div>
+    <div id="active-episode-meta" class="meta-card" style="display:none;">
+      <div class="meta-row"><span>REPLAY</span> <strong id="meta-name">-</strong></div>
+      <div class="meta-row"><span>SEED</span> <strong id="meta-seed">-</strong></div>
+      <div class="meta-row"><span>OUTCOME</span> <strong id="meta-outcome">-</strong></div>
     </div>
   </aside>
-
-  <!-- Nothing OS Glyph Lower-Third Hero Display -->
-  <div id="nothing-hero" class="nothing-hero-card">
-    <div class="glyph-container">
-      <canvas id="glyph-canvas" width="240" height="110"></canvas>
-      <div class="glyph-caption">
-        <span class="glyph-signal-dot"></span>
-        <span id="glyph-mode-name">GLYPH // MATRIX DYNAMICS</span>
-      </div>
-    </div>
-    <div class="lower-third-text">
-      <h1 class="spec-title">RADON // SPEC-01</h1>
-      <p class="spec-desc">Autonomous multi-agent neural search and fire evacuation in procedural mazes.</p>
-    </div>
-  </div>
 
   <!-- Notification Toast -->
   <div class="toast-notification" id="toast-notification">
@@ -377,6 +360,6 @@
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-  <script src="app.js"></script>
+  <script src="app.js?v=20261113_clean_v4"></script>
 </body>
 </html>

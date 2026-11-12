@@ -107,14 +107,14 @@ python -m uvicorn server.app:app --host 0.0.0.0 --port 8000
 **Showcase size:** 14x14 default with 4 rescuers, 3 hostages, and 220 steps (`EnvConfig.showcase()`); 20x20 preserved as `EnvConfig.showcase_hard()`. Retrained rescuer achieves a real, verified held-out full WIN rate of 6.7% (2/30 maps completely cleared, all 3 hostages evacuated), with 23.3% mean hostages rescued (0.70/3) and 46.7% of maps having at least 1 rescue.
 **Transparency:** all verdicts shown with full telemetry; curation mode labeled as filtered presentation mode (&ge;1 rescue) with default set to Unfiltered (Raw) so the public baseline is 100% honest; real on-screen benchmark headline prominently displayed in the dashboard header.
 
-## Day 8 — 2026-11-13 — Carry Overtime (live demo)
+## Day 7.2 — 2026-11-12 — Carry Overtime (live demo)
 **Rule:** while any living rescuer carries a hostage, the clock extends indefinitely (rolling +50 grace windows) until delivered / dropped / carrier dies.
 **Why rolling windows:** keeps the agent's normalised "steps left" feature in-distribution so behaviour stays sane during overtime.
 **Scope:** live /generate only. Training + held-out benchmark unchanged (still fixed horizon).
 **UI:** OVERTIME indicator, manual skip, optional auto-skip (default off).
 **Benchmark re-verified unchanged:** 6.7% full win / 46.7% partial on held-out 14x14 (0.70/3 mean rescued, 3.40/4 survivors).
 
-## Day 9 — 2026-11-14 — Break the Blindness Ceiling (BFS Observation + LSTM + Centralized Critic)
+## Day 8 — 2026-11-14 — Break the Blindness Ceiling (BFS Observation + LSTM + Centralized Critic)
 **The Problem & Diagnosis:**
 On held-out 14×14 maps, previous agents plateaued at 6.7% full-win and 46.7% partial rescue rate. The root cause was information blindness: agents had 7×7 local vision without global cues. When no hostage was in the 7×7 window, agents had zero gradient and wandered blindly. Diagnostics (`train/diagnose.py`) revealed a 73.9% idle/oscillation revisiting rate, with 95.0% of unrescued victims fully reachable via BFS at timeout horizon.
 
@@ -147,9 +147,9 @@ Selected Stage 1 (BFS reactive MLP) as the optimal production architecture due t
 - Live inference tested via `/generate` on unseen seeds (e.g. seed 50001: 85 steps, WIN, 3/3 rescued).
 - Updated dashboard header telemetry and benchmark analytics table with true verified statistics.
 
-## Day 10 — 2026-11-15 — A Fair Fight (Fire Balance) + Big Maze Maps
+## Day 8.2 — 2026-11-15 — A Fair Fight (Fire Balance) + Big Maze Maps
 **The Imbalance & Diagnosis:**
-On Day 9, the BFS reactive rescuer policy achieved a 96.0% full-win rate against standard curriculum fire on showcase maps. However, when matched against the learned PPO Fire Adversary, rescuer performance plummeted to 0.0% with 4.4 rescuer fatalities. The issue was not policy competence but fundamentally unfair physical mechanics: fire spreading across 2D areas while rescuers navigated 1D corridors, one-touch instant death, permanent burning zones, and unconstrained point-blank ignitions.
+On Day 8.1, the BFS reactive rescuer policy achieved a 96.0% full-win rate against standard curriculum fire on showcase maps. However, when matched against the learned PPO Fire Adversary, rescuer performance plummeted to 0.0% with 4.4 rescuer fatalities. The issue was not policy competence but fundamentally unfair physical mechanics: fire spreading across 2D areas while rescuers navigated 1D corridors, one-touch instant death, permanent burning zones, and unconstrained point-blank ignitions.
 
 **Part A — Balance Mechanics:**
 - **Rescuer HP & Invulnerability:** Added `rescuer_hp = 2` and a 2-step post-hit invulnerability window (`invulnerability_steps = 2`). Rescuers can survive a fire contact and dash through single-tile flame lines to reach victims or exits.
