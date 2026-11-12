@@ -107,7 +107,8 @@ class GenerateRequest(BaseModel):
     fire_mode: str = Field(default="curriculum", description="Fire mode: 'none', 'curriculum', or 'adversarial'")
     seed: Optional[int] = Field(default=None, description="Held-out map seed (defaults to random 50000..99999)")
     preset: str = Field(default="showcase", description="Environment preset")
-    max_steps: Optional[int] = Field(default=350, description="Max episode steps")
+    max_steps: Optional[int] = Field(default=None, description="Max episode steps")
+    carry_overtime: bool = Field(default=True, description="Enable carry overtime rule (default: True for live)")
 
 
 @app.get("/health")
@@ -267,15 +268,17 @@ def generate_episode(req: GenerateRequest):
 
     # Config preset
     if req.preset == "showcase":
-        config = EnvConfig.showcase(seed=seed)
+        config = EnvConfig.showcase(seed=seed, carry_overtime=req.carry_overtime)
     elif req.preset == "showcase_hard":
-        config = EnvConfig.showcase_hard(seed=seed)
+        config = EnvConfig.showcase_hard(seed=seed, carry_overtime=req.carry_overtime)
     elif req.preset == "training_day3":
-        config = EnvConfig.training_day3(seed=seed)
+        config = EnvConfig.training_day3(seed=seed, carry_overtime=req.carry_overtime)
     elif req.preset == "sanity":
-        config = EnvConfig.sanity(seed=seed)
+        config = EnvConfig.sanity(seed=seed, carry_overtime=req.carry_overtime)
     else:
-        config = EnvConfig.training_day4_base(seed=seed)
+        config = EnvConfig.training_day4_base(seed=seed, carry_overtime=req.carry_overtime)
+
+    config.carry_overtime = req.carry_overtime
 
     if req.max_steps:
         config.max_steps = req.max_steps
@@ -306,7 +309,10 @@ def generate_episode(req: GenerateRequest):
         step_count = 0
         total_rewards = {a: 0.0 for a in env.possible_agents}
 
-        while env.agents and step_count < config.max_steps:
+        # Safety ceiling to prevent runaway loops if an agent wanders indefinitely
+        safety_max = max(config.max_steps * 3, 1000)
+
+        while env.agents and step_count < safety_max:
             step_count += 1
             actions = {}
             for agent_id in env.agents:
@@ -328,21 +334,31 @@ def generate_episode(req: GenerateRequest):
         fire_deaths = config.n_rescuers - survivors_count
         all_evacuated = (rescued_count == config.n_hostages)
 
-        if all_evacuated:
-            verdict = "WIN"
-            verdict_reason = f"All {rescued_count}/{config.n_hostages} hostages safely evacuated in {step_count} steps!"
-        elif survivors_count == 0:
+        verdict = env.verdict
+        if verdict == "WIN":
+            if env.overtime_steps > 0:
+                verdict_reason = f"All {rescued_count}/{config.n_hostages} hostages safely evacuated in {step_count} steps (OVERTIME +{env.overtime_steps} steps)!"
+            else:
+                verdict_reason = f"All {rescued_count}/{config.n_hostages} hostages safely evacuated in {step_count} steps!"
+        elif verdict == "LOSE_WIPED":
             verdict = "LOSE"
             verdict_reason = f"Rescuer squad wiped out by fire ({rescued_count}/{config.n_hostages} saved)."
         else:
             verdict = "LOSE"
-            verdict_reason = f"Time expired at step {step_count} ({rescued_count}/{config.n_hostages} saved, {survivors_count}/{config.n_rescuers} survivors)."
+            if env.overtime_steps > 0:
+                verdict_reason = f"Overtime ended after +{env.overtime_steps} steps ({rescued_count}/{config.n_hostages} saved, {survivors_count}/{config.n_rescuers} survivors)."
+            else:
+                verdict_reason = f"Time expired at step {step_count} ({rescued_count}/{config.n_hostages} saved, {survivors_count}/{config.n_rescuers} survivors)."
 
         replay_payload = recorder.to_dict()
         replay_payload["summary"] = {
             "seed": seed,
             "fire_mode": fire_mode,
             "steps": step_count,
+            "in_overtime": env.in_overtime,
+            "overtime_steps": env.overtime_steps,
+            "effective_max_steps": getattr(env, "effective_max_steps", config.max_steps),
+            "carry_overtime": config.carry_overtime,
             "hostages_rescued": rescued_count,
             "total_hostages": config.n_hostages,
             "rescuers_surviving": survivors_count,
