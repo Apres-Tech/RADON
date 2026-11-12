@@ -422,7 +422,13 @@ FAVICON_SVG = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><
 
 @app.get("/favicon.ico")
 def favicon():
-    """Serves an inline flame SVG favicon to avoid 404 errors."""
+    """Serves the project icon as favicon."""
+    fav_path = DASHBOARD_DIR / "favicon.ico"
+    if fav_path.exists():
+        return FileResponse(fav_path, media_type="image/x-icon", headers=NO_CACHE_HEADERS)
+    fav_png = DASHBOARD_DIR / "assets" / "favicon.png"
+    if fav_png.exists():
+        return FileResponse(fav_png, media_type="image/png", headers=NO_CACHE_HEADERS)
     return Response(content=FAVICON_SVG, media_type="image/svg+xml")
 
 

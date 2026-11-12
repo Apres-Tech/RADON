@@ -122,6 +122,14 @@ header.app-header {
   gap: 12px;
 }
 
+.brand-icon {
+  width: 26px;
+  height: 26px;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.25));
+}
+
 .brand-logo {
   font-family: var(--font-sans);
   font-size: 18px;
@@ -290,6 +298,23 @@ header.app-header {
   display: flex;
   flex-direction: column;
   gap: 22px;
+}
+
+.side-brand-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 2px;
+}
+
+.side-logo-full {
+  height: 42px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 10px rgba(255, 255, 255, 0.15));
 }
 
 .panel-section {
