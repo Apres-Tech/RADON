@@ -39,6 +39,9 @@ let currentFireMode = "curriculum";
 let currentPreset = "showcase";
 let isContinuousLive = false;
 let curationMode = "unfiltered"; // "unfiltered" (default: raw honest view) or "showcase" (curated best runs)
+let isAutoSkipOvertime = false;
+let autoSkipOvertimeThreshold = 100;
+let autoAdvanceTimer = null;
 
 // Three.js groups
 let buildingGroup = null;
@@ -99,7 +102,33 @@ const dom = {
   verdictTitle: document.getElementById("verdict-title"),
   verdictSubtitle: document.getElementById("verdict-subtitle"),
   verdictStats: document.getElementById("verdict-stats"),
+  overtimePill: document.getElementById("overtime-pill"),
+  overtimePillText: document.getElementById("overtime-pill-text"),
+  overtimeBadge: document.getElementById("overtime-badge"),
+  overtimeDesc: document.getElementById("overtime-desc"),
+  skipEpisodeBtn: document.getElementById("skip-episode-btn"),
+  skipEpisodeRightBtn: document.getElementById("skip-episode-right-btn"),
+  autoskipToggle: document.getElementById("autoskip-toggle"),
+  autoskipConfig: document.getElementById("autoskip-config"),
+  autoskipStepsSelect: document.getElementById("autoskip-steps-select"),
 };
+
+function skipCurrentEpisode() {
+  if (autoAdvanceTimer) {
+    clearTimeout(autoAdvanceTimer);
+    autoAdvanceTimer = null;
+  }
+  if (!currentReplay || !currentReplay.frames || currentReplay.frames.length === 0) return;
+  if (isContinuousLive) {
+    showToast("Skipping to next episode...", "info");
+    generateUnseenEpisode(false);
+  } else {
+    currentProgress = currentReplay.frames.length - 1;
+    updateInterpolatedEntities(currentProgress);
+    pausePlayback();
+    showToast("Skipped to final verdict.", "info");
+  }
+}
 
 function showVerdict(type, title, subtitle, stats) {
   if (!dom.verdictBanner) return;
@@ -206,7 +235,8 @@ function animate() {
       if (isContinuousLive) {
         // Auto-advance in live mode after short pause showing verdict banner
         pausePlayback();
-        setTimeout(() => {
+        if (autoAdvanceTimer) clearTimeout(autoAdvanceTimer);
+        autoAdvanceTimer = setTimeout(() => {
           if (isContinuousLive) generateUnseenEpisode(false);
         }, 2500);
       } else {
@@ -666,10 +696,36 @@ function updateInterpolatedEntities(progress) {
   const survivingCount = frame0.rescuers.filter(r => r.alive).length;
   const fireCount = frame0.fire.length;
 
+  const inOvertime = !!(frame0.in_overtime || (frame0.t > config.max_steps && frame0.rescuers.some(r => r.alive && r.carrying)));
+  const overtimeSteps = frame0.overtime_steps || Math.max(0, frame0.t - config.max_steps);
+
   dom.statRescued.innerHTML = `${rescuedCount} <span class="stat-unit">/ ${config.n_hostages}</span>`;
   dom.statSurvivors.innerHTML = `${survivingCount} <span class="stat-unit">/ ${config.n_rescuers}</span>`;
   dom.statFire.textContent = fireCount;
-  dom.statStep.innerHTML = `${frame0.t} <span class="stat-unit">/ ${config.max_steps}</span>`;
+
+  if (inOvertime) {
+    dom.statStep.innerHTML = `${frame0.t} <span class="stat-unit">/ ${config.max_steps} <strong style="color:#fbbf24;">(+${overtimeSteps} OT)</strong></span>`;
+    if (dom.overtimePill) {
+      dom.overtimePill.style.display = "inline-flex";
+      dom.overtimePillText.textContent = `OVERTIME — rescuer carrying (+${overtimeSteps} steps)`;
+    }
+    if (dom.overtimeBadge) {
+      dom.overtimeBadge.style.display = "flex";
+      dom.overtimeDesc.textContent = `Rescuer carrying hostage — rolling +50 grace window (+${overtimeSteps} steps in overtime)`;
+    }
+  } else {
+    dom.statStep.innerHTML = `${frame0.t} <span class="stat-unit">/ ${config.max_steps}</span>`;
+    if (dom.overtimePill) dom.overtimePill.style.display = "none";
+    if (dom.overtimeBadge) dom.overtimeBadge.style.display = "none";
+  }
+
+  // Check optional auto-skip escape hatch
+  if (isAutoSkipOvertime && inOvertime && overtimeSteps >= autoSkipOvertimeThreshold && !window._autoskipFired) {
+    window._autoskipFired = true;
+    showToast(`Overtime exceeded ${autoSkipOvertimeThreshold} steps — auto-skipping.`, "info");
+    skipCurrentEpisode();
+    return;
+  }
 
   // Rescuer tactical cards
   let rescuerHtml = "";
@@ -703,12 +759,13 @@ function updateInterpolatedEntities(progress) {
   const isFinished = (f0Idx === totalFrames - 1) || allRescued || allDead;
 
   if (allRescued) {
-    dom.completionTag.textContent = `✅ WIN — All ${rescuedCount}/${config.n_hostages} Evacuated!`;
+    const otTag = (frame0.t > config.max_steps) ? ` (Overtime +${overtimeSteps} Steps)` : "";
+    dom.completionTag.textContent = `✅ WIN — All ${rescuedCount}/${config.n_hostages} Evacuated!${otTag}`;
     dom.completionTag.style.color = "#10b981";
     showVerdict(
       "win",
       "MISSION ACCOMPLISHED — WIN",
-      `All ${rescuedCount}/${config.n_hostages} hostages safely evacuated in ${frame0.t} steps!`,
+      `All ${rescuedCount}/${config.n_hostages} hostages safely evacuated in ${frame0.t} steps!${otTag}`,
       `Rescuers Surviving: ${survivingCount}/${config.n_rescuers} &bull; Fire Deaths: ${config.n_rescuers - survivingCount}`
     );
   } else if (allDead) {
@@ -721,14 +778,19 @@ function updateInterpolatedEntities(progress) {
       `Rescuers Surviving: 0/${config.n_rescuers} &bull; Active Fire Tiles: ${fireCount}`
     );
   } else if (f0Idx === totalFrames - 1) {
+    const otNote = (frame0.t > config.max_steps) ? ` (overtime ended after +${overtimeSteps} steps)` : "";
     dom.completionTag.textContent = `❌ LOSE — Time Expired (${rescuedCount}/${config.n_hostages} Saved)`;
     dom.completionTag.style.color = "#ef4444";
     showVerdict(
       "lose",
       "MISSION FAILED — LOSE (TIMEOUT)",
-      `Time expired at step ${frame0.t}. Saved ${rescuedCount}/${config.n_hostages} hostages.`,
+      `Time expired at step ${frame0.t}${otNote}. Saved ${rescuedCount}/${config.n_hostages} hostages.`,
       `Rescuers Surviving: ${survivingCount}/${config.n_rescuers} &bull; Active Fire Tiles: ${fireCount}`
     );
+  } else if (inOvertime) {
+    hideVerdict();
+    dom.completionTag.textContent = `⏳ OVERTIME IN EFFECT (Step ${frame0.t}, +${overtimeSteps} Carry Window)`;
+    dom.completionTag.style.color = "#fbbf24";
   } else {
     hideVerdict();
     dom.completionTag.textContent = `In Progress (Step ${frame0.t} / ${config.max_steps})`;
@@ -740,6 +802,13 @@ function updateInterpolatedEntities(progress) {
 function loadReplay(replayData, replayTitle = "Replay") {
   currentReplay = replayData;
   currentProgress = 0.0;
+  window._autoskipFired = false;
+  if (autoAdvanceTimer) {
+    clearTimeout(autoAdvanceTimer);
+    autoAdvanceTimer = null;
+  }
+  if (dom.overtimePill) dom.overtimePill.style.display = "none";
+  if (dom.overtimeBadge) dom.overtimeBadge.style.display = "none";
   pausePlayback();
   hideVerdict();
 
@@ -1094,6 +1163,25 @@ function setupEventHandlers() {
   });
 
   dom.generateBtn.addEventListener("click", () => generateUnseenEpisode(true));
+  if (dom.skipEpisodeBtn) dom.skipEpisodeBtn.addEventListener("click", skipCurrentEpisode);
+  if (dom.skipEpisodeRightBtn) dom.skipEpisodeRightBtn.addEventListener("click", skipCurrentEpisode);
+
+  if (dom.autoskipToggle) {
+    dom.autoskipToggle.addEventListener("change", (e) => {
+      isAutoSkipOvertime = e.target.checked;
+      if (dom.autoskipConfig) {
+        dom.autoskipConfig.style.display = isAutoSkipOvertime ? "block" : "none";
+      }
+      showToast(isAutoSkipOvertime ? `Auto-skip overtime enabled (> ${autoSkipOvertimeThreshold} steps).` : "Auto-skip overtime disabled.", "info");
+    });
+  }
+  if (dom.autoskipStepsSelect) {
+    dom.autoskipStepsSelect.addEventListener("change", (e) => {
+      autoSkipOvertimeThreshold = parseInt(e.target.value, 10) || 100;
+      showToast(`Auto-skip overtime limit set to ${autoSkipOvertimeThreshold} steps.`, "info");
+    });
+  }
+
   dom.resetCamBtn.addEventListener("click", resetCamera);
 
   dom.openAnalyticsBtn.addEventListener("click", () => {
@@ -1141,6 +1229,8 @@ function setupEventHandlers() {
       resetCamera();
     } else if (e.code === "KeyG") {
       generateUnseenEpisode(true);
+    } else if (e.code === "KeyS") {
+      skipCurrentEpisode();
     } else if (e.code === "Escape") {
       dom.analyticsModal.style.display = "none";
     }

@@ -124,6 +124,70 @@ header.app-header {
   box-shadow: 0 0 8px var(--danger);
 }
 
+/* Overtime indicator pill and banner */
+.overtime-pill {
+  background: rgba(245, 158, 11, 0.16) !important;
+  border-color: rgba(245, 158, 11, 0.45) !important;
+  color: #fbbf24 !important;
+  font-weight: 700;
+  animation: pulse-amber-glow 2s infinite ease-in-out;
+}
+
+.pulse-amber-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow: 0 0 8px #f59e0b;
+}
+
+@keyframes pulse-amber-glow {
+  0%, 100% {
+    box-shadow: 0 0 4px rgba(245, 158, 11, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
+  }
+}
+
+.overtime-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(180, 83, 9, 0.28));
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-top: 10px;
+  animation: pulse-amber-border 2.5s infinite ease-in-out;
+}
+
+@keyframes pulse-amber-border {
+  0%, 100% {
+    border-color: rgba(245, 158, 11, 0.35);
+  }
+  50% {
+    border-color: rgba(245, 158, 11, 0.7);
+  }
+}
+
+.overtime-icon {
+  font-size: 20px;
+}
+
+.overtime-headline {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #fbbf24;
+}
+
+.overtime-desc {
+  font-size: 10.5px;
+  color: #fde68a;
+  line-height: 1.3;
+}
+
 .header-actions {
   display: flex;
   align-items: center;
