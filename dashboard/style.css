@@ -310,11 +310,12 @@ header.app-header {
 }
 
 .side-logo-full {
-  height: 42px;
+  height: 36px;
   width: auto;
+  max-width: 100%;
   display: block;
   object-fit: contain;
-  filter: drop-shadow(0 2px 10px rgba(255, 255, 255, 0.15));
+  filter: drop-shadow(0 2px 8px rgba(255, 255, 255, 0.15));
 }
 
 .panel-section {
