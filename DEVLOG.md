@@ -106,3 +106,10 @@ python -m uvicorn server.app:app --host 0.0.0.0 --port 8000
 **Adversary fix:** size-invariant observation pipeline (`resize_to_canonical` with windowed max-pooling preserving sparse hazards/entities); runs on 10x10, 14x14, and 20x20 maps with zero shape errors.
 **Showcase size:** 14x14 default with 4 rescuers, 3 hostages, and 220 steps (`EnvConfig.showcase()`); 20x20 preserved as `EnvConfig.showcase_hard()`. Retrained rescuer achieves a real, verified held-out full WIN rate of 6.7% (2/30 maps completely cleared, all 3 hostages evacuated), with 23.3% mean hostages rescued (0.70/3) and 46.7% of maps having at least 1 rescue.
 **Transparency:** all verdicts shown with full telemetry; curation mode labeled as filtered presentation mode (&ge;1 rescue) with default set to Unfiltered (Raw) so the public baseline is 100% honest; real on-screen benchmark headline prominently displayed in the dashboard header.
+
+## Day 8 — 2026-11-12 — Carry Overtime (live demo)
+**Rule:** while any living rescuer carries a hostage, the clock extends indefinitely (rolling +50 grace windows) until delivered / dropped / carrier dies.
+**Why rolling windows:** keeps the agent's normalised "steps left" feature in-distribution so behaviour stays sane during overtime.
+**Scope:** live /generate only. Training + held-out benchmark unchanged (still fixed horizon).
+**UI:** OVERTIME indicator, manual skip, optional auto-skip (default off).
+**Benchmark re-verified unchanged:** 6.7% full win / 46.7% partial on held-out 14x14 (0.70/3 mean rescued, 3.40/4 survivors).
