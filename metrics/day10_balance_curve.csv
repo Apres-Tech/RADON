@@ -1,0 +1,4 @@
+full_win_rate,partial_win_rate,mean_rescued,rescued_pct,mean_survivors,mean_deaths,mean_hp_lost,mean_dashes_survived,mean_length,preset,name,fire_lifetime,fire_max_tiles,fire_spread_prob,fire_ignitions_per_step,rescuer_hp
+84.0,100.0,3.84,96.0,5.0,0.0,0.08,0.12,260.8,Easy,Easy,14,18,0.005,1,2
+60.0,100.0,3.44,86.0,3.4,1.6,4.04,4.16,320.5,Balanced,Balanced,16,22,0.006,1,2
+32.0,100.0,3.0,75.0,1.76,3.24,7.36,7.64,315.7,Brutal,Brutal,24,35,0.01,1,2

@@ -206,6 +206,78 @@ class EnvConfig:
         )
 
     @classmethod
+    def maze_balanced(
+        cls,
+        grid_size: int = 20,
+        seed: Optional[int] = None,
+        carry_overtime: bool = False,
+        obs_bfs_features: bool = True,
+        obs_centralized_critic: bool = False,
+    ) -> "EnvConfig":
+        """Balanced preset: ~50% fair fight win rate against trained fire adversary."""
+        cfg = cls.maze(
+            grid_size=grid_size,
+            seed=seed,
+            carry_overtime=carry_overtime,
+            obs_bfs_features=obs_bfs_features,
+            obs_centralized_critic=obs_centralized_critic,
+            fire_lifetime=16,
+            fire_max_tiles=22,
+            fire_ignitions_per_step=1,
+            rescuer_hp=2,
+        )
+        cfg.fire_spread_prob = 0.006
+        return cfg
+
+    @classmethod
+    def maze_easy(
+        cls,
+        grid_size: int = 20,
+        seed: Optional[int] = None,
+        carry_overtime: bool = False,
+        obs_bfs_features: bool = True,
+        obs_centralized_critic: bool = False,
+    ) -> "EnvConfig":
+        """Easy preset: shorter fire persistence (lifetime 14, max 18 tiles) yielding ~70% win rate."""
+        cfg = cls.maze(
+            grid_size=grid_size,
+            seed=seed,
+            carry_overtime=carry_overtime,
+            obs_bfs_features=obs_bfs_features,
+            obs_centralized_critic=obs_centralized_critic,
+            fire_lifetime=14,
+            fire_max_tiles=18,
+            fire_ignitions_per_step=1,
+            rescuer_hp=2,
+        )
+        cfg.fire_spread_prob = 0.005
+        return cfg
+
+    @classmethod
+    def maze_brutal(
+        cls,
+        grid_size: int = 20,
+        seed: Optional[int] = None,
+        carry_overtime: bool = False,
+        obs_bfs_features: bool = True,
+        obs_centralized_critic: bool = False,
+    ) -> "EnvConfig":
+        """Brutal preset: aggressive, persistent fire (lifetime 24, max 35 tiles) yielding ~30% win rate."""
+        cfg = cls.maze(
+            grid_size=grid_size,
+            seed=seed,
+            carry_overtime=carry_overtime,
+            obs_bfs_features=obs_bfs_features,
+            obs_centralized_critic=obs_centralized_critic,
+            fire_lifetime=24,
+            fire_max_tiles=35,
+            fire_ignitions_per_step=1,
+            rescuer_hp=2,
+        )
+        cfg.fire_spread_prob = 0.010
+        return cfg
+
+    @classmethod
     def training_day4_base(
         cls,
         seed: Optional[int] = None,
