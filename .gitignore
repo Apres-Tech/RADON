@@ -14,9 +14,15 @@ dist/
 build/
 
 # Intermediate training checkpoints
+agents/ckpt_*.zip
+agents/*_ckpt_*.zip
 agents/rescuer_ckpt_*.zip
 agents/showcase_stage_*.zip
 agents/showcase_14x14_stage_*.zip
+
+# Logs and scratch
+*.log
+scratch/
 
 # IDE & OS
 .vscode/
