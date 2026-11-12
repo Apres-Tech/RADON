@@ -51,6 +51,7 @@ class EnvConfig:
     seed: Optional[int] = None
 
     # Day 10 Combat & Fire Balance tunables
+    layout_type: str = "open"  # "open" or "maze"
     rescuer_hp: int = 2
     invulnerability_steps: int = 2
     fire_lifetime: int = 30
@@ -144,6 +145,64 @@ class EnvConfig:
             carry_overtime=carry_overtime,
             obs_bfs_features=obs_bfs_features,
             obs_centralized_critic=obs_centralized_critic,
+        )
+
+    @classmethod
+    def maze(
+        cls,
+        grid_size: int = 20,
+        n_rescuers: Optional[int] = None,
+        n_hostages: Optional[int] = None,
+        max_steps: Optional[int] = None,
+        seed: Optional[int] = None,
+        carry_overtime: bool = False,
+        obs_bfs_features: bool = True,
+        obs_centralized_critic: bool = False,
+        fire_ignitions_per_step: int = 1,
+        fire_lifetime: int = 30,
+        fire_max_tiles: int = 45,
+        rescuer_hp: int = 2,
+    ) -> "EnvConfig":
+        """Large maze configuration: 20x20 per floor, 2 floors, 5 rescuers, 4 hostages, winding corridors with chokepoints."""
+        if n_rescuers is None:
+            n_rescuers = 5 if grid_size >= 18 else (4 if grid_size >= 14 else 3)
+        if n_hostages is None:
+            n_hostages = 4 if grid_size >= 18 else (3 if grid_size >= 14 else 2)
+        if max_steps is None:
+            max_steps = 350 if grid_size >= 18 else 240
+
+        return cls(
+            floors=2,
+            grid_h=grid_size,
+            grid_w=grid_size,
+            n_rescuers=n_rescuers,
+            n_hostages=n_hostages,
+            max_steps=max_steps,
+            view_radius=3,
+            fire_spread_prob=0.010,
+            fire_spread_start_step=15,
+            fire_max_tiles=fire_max_tiles,
+            fire_enabled=True,
+            carry_capacity=1,
+            carry_overtime=carry_overtime,
+            obs_bfs_features=obs_bfs_features,
+            obs_centralized_critic=obs_centralized_critic,
+            seed=seed,
+            layout_type="maze",
+            rescuer_hp=rescuer_hp,
+            invulnerability_steps=2,
+            fire_lifetime=fire_lifetime,
+            ash_cooldown=40,
+            fire_ignitions_per_step=fire_ignitions_per_step,
+            no_point_blank_ignition=True,
+            step_reward=-0.01,
+            pickup_reward=5.0,
+            delivery_reward=25.0,
+            death_reward=-3.0,
+            hit_penalty=-1.0,
+            team_completion_reward=35.0,
+            enable_shaping=True,
+            shaping_coef=0.08,
         )
 
     @classmethod

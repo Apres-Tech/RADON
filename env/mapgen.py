@@ -101,6 +101,85 @@ def verify_reachability(
     return True
 
 
+def _carve_maze_floor(grids: np.ndarray, f: int, h: int, w: int, rng: np.random.Generator) -> None:
+    """Carves a readable, chokepoint-rich maze floor plan.
+
+    Features:
+    - Partition walls creating chambers with 1-tile or 2-tile chokepoint doorways.
+    - Winding internal corridors and tactical dead-end alcoves.
+    - Readability: open corridor width >= 1-2 tiles so players can see paths clearly.
+    """
+    # 1. Grid of partition walls spaced every 4-6 tiles
+    h_divs = []
+    curr = 4
+    while curr < h - 4:
+        h_divs.append(curr)
+        curr += int(rng.integers(4, 6))
+
+    v_divs = []
+    curr = 4
+    while curr < w - 4:
+        v_divs.append(curr)
+        curr += int(rng.integers(4, 6))
+
+    # Place dividing wall lines
+    for hr in h_divs:
+        grids[f, hr, 1 : w - 1] = Tile.WALL
+    for vc in v_divs:
+        grids[f, 1 : h - 1, vc] = Tile.WALL
+
+    # 2. Punch 1-2 tile chokepoints in horizontal dividers
+    col_bounds = [0] + v_divs + [w - 1]
+    for hr in h_divs:
+        for i in range(len(col_bounds) - 1):
+            c0, c1 = col_bounds[i], col_bounds[i + 1]
+            if c1 - c0 > 2:
+                # 60% chance of narrow 1-tile chokepoint, 40% 2-tile chokepoint
+                door_w = 1 if rng.random() < 0.6 else 2
+                max_start = c1 - door_w
+                min_start = c0 + 1
+                if max_start > min_start:
+                    door_start = int(rng.integers(min_start, max_start))
+                    grids[f, hr, door_start : door_start + door_w] = Tile.EMPTY
+                else:
+                    grids[f, hr, min_start] = Tile.EMPTY
+
+    # 3. Punch 1-2 tile chokepoints in vertical dividers
+    row_bounds = [0] + h_divs + [h - 1]
+    for vc in v_divs:
+        for i in range(len(row_bounds) - 1):
+            r0, r1 = row_bounds[i], row_bounds[i + 1]
+            if r1 - r0 > 2:
+                door_w = 1 if rng.random() < 0.6 else 2
+                max_start = r1 - door_w
+                min_start = r0 + 1
+                if max_start > min_start:
+                    door_start = int(rng.integers(min_start, max_start))
+                    grids[f, door_start : door_start + door_w, vc] = Tile.EMPTY
+                else:
+                    grids[f, min_start, vc] = Tile.EMPTY
+
+    # 4. Add interior wall spurs to create winding paths and dead-ends
+    for i in range(len(row_bounds) - 1):
+        for j in range(len(col_bounds) - 1):
+            r0, r1 = row_bounds[i], row_bounds[i + 1]
+            c0, c1 = col_bounds[j], col_bounds[j + 1]
+            room_h = r1 - r0 - 1
+            room_w = c1 - c0 - 1
+            if room_h >= 4 and room_w >= 4 and rng.random() < 0.7:
+                spur_type = int(rng.integers(0, 4))
+                mid_r = (r0 + r1) // 2
+                mid_c = (c0 + c1) // 2
+                if spur_type == 0:
+                    grids[f, mid_r, c0 + 1 : mid_c + 1] = Tile.WALL
+                elif spur_type == 1:
+                    grids[f, mid_r, mid_c : c1] = Tile.WALL
+                elif spur_type == 2:
+                    grids[f, r0 + 1 : mid_r + 1, mid_c] = Tile.WALL
+                else:
+                    grids[f, mid_r : r1, mid_c] = Tile.WALL
+
+
 def generate_building(config: EnvConfig, seed: Optional[int] = None) -> BuildingMap:
     """Procedurally generates a multi-floor building with reachability guarantee.
 
@@ -131,56 +210,61 @@ def generate_building(config: EnvConfig, seed: Optional[int] = None) -> Building
             grids[f, :, 0] = Tile.WALL
             grids[f, :, w - 1] = Tile.WALL
 
-        # 2. Interior walls with WIDE doorways (open office floor plan)
-        door_width = 3 if (h >= 16 or w >= 16) else 2
-        for f in range(floors):
-            # Choose vertical dividing lines
-            max_v = max(1, min(2, (w - 6) // 4))
-            n_v_walls = rng.integers(1, max_v + 1)
-            # Space dividers nicely
-            min_col = 3
-            max_col = w - 4
-            if max_col > min_col:
-                v_cols = rng.choice(np.arange(min_col, max_col), size=min(n_v_walls, max_col - min_col), replace=False)
-                for vc in v_cols:
-                    grids[f, 1 : h - 1, vc] = Tile.WALL
-                    # Punch 2-3 WIDE doorways (each 2-3 tiles wide)
-                    n_doors = min(3, max(2, (h - 2) // 5))
-                    door_candidates = [r for r in range(2, h - 2 - door_width, door_width + 1)]
-                    if door_candidates:
-                        chosen_starts = rng.choice(door_candidates, size=min(n_doors, len(door_candidates)), replace=False)
-                        for d_start in chosen_starts:
-                            grids[f, d_start : d_start + door_width, vc] = Tile.EMPTY
-                    else:
-                        grids[f, 1 : h - 1, vc] = Tile.EMPTY
+        # 2. Interior walls: maze layout or open office floor plan
+        is_maze = getattr(config, "layout_type", "open") == "maze"
+        if is_maze:
+            for f in range(floors):
+                _carve_maze_floor(grids, f, h, w, rng)
+        else:
+            door_width = 3 if (h >= 16 or w >= 16) else 2
+            for f in range(floors):
+                # Choose vertical dividing lines
+                max_v = max(1, min(2, (w - 6) // 4))
+                n_v_walls = rng.integers(1, max_v + 1)
+                # Space dividers nicely
+                min_col = 3
+                max_col = w - 4
+                if max_col > min_col:
+                    v_cols = rng.choice(np.arange(min_col, max_col), size=min(n_v_walls, max_col - min_col), replace=False)
+                    for vc in v_cols:
+                        grids[f, 1 : h - 1, vc] = Tile.WALL
+                        # Punch 2-3 WIDE doorways (each 2-3 tiles wide)
+                        n_doors = min(3, max(2, (h - 2) // 5))
+                        door_candidates = [r for r in range(2, h - 2 - door_width, door_width + 1)]
+                        if door_candidates:
+                            chosen_starts = rng.choice(door_candidates, size=min(n_doors, len(door_candidates)), replace=False)
+                            for d_start in chosen_starts:
+                                grids[f, d_start : d_start + door_width, vc] = Tile.EMPTY
+                        else:
+                            grids[f, 1 : h - 1, vc] = Tile.EMPTY
 
-            # Choose horizontal dividing lines
-            max_h = max(1, min(2, (h - 6) // 4))
-            n_h_walls = rng.integers(1, max_h + 1)
-            min_row = 3
-            max_row = h - 4
-            if max_row > min_row:
-                h_rows = rng.choice(np.arange(min_row, max_row), size=min(n_h_walls, max_row - min_row), replace=False)
-                for hr in h_rows:
-                    grids[f, hr, 1 : w - 1] = Tile.WALL
-                    # Punch 2-3 WIDE doorways
-                    n_doors = min(3, max(2, (w - 2) // 5))
-                    door_candidates = [c for c in range(2, w - 2 - door_width, door_width + 1)]
-                    if door_candidates:
-                        chosen_starts = rng.choice(door_candidates, size=min(n_doors, len(door_candidates)), replace=False)
-                        for d_start in chosen_starts:
-                            grids[f, hr, d_start : d_start + door_width] = Tile.EMPTY
-                    else:
-                        grids[f, hr, 1 : w - 1] = Tile.EMPTY
+                # Choose horizontal dividing lines
+                max_h = max(1, min(2, (h - 6) // 4))
+                n_h_walls = rng.integers(1, max_h + 1)
+                min_row = 3
+                max_row = h - 4
+                if max_row > min_row:
+                    h_rows = rng.choice(np.arange(min_row, max_row), size=min(n_h_walls, max_row - min_row), replace=False)
+                    for hr in h_rows:
+                        grids[f, hr, 1 : w - 1] = Tile.WALL
+                        # Punch 2-3 WIDE doorways
+                        n_doors = min(3, max(2, (w - 2) // 5))
+                        door_candidates = [c for c in range(2, w - 2 - door_width, door_width + 1)]
+                        if door_candidates:
+                            chosen_starts = rng.choice(door_candidates, size=min(n_doors, len(door_candidates)), replace=False)
+                            for d_start in chosen_starts:
+                                grids[f, hr, d_start : d_start + door_width] = Tile.EMPTY
+                        else:
+                            grids[f, hr, 1 : w - 1] = Tile.EMPTY
 
-            # Add a few open architectural pillars (never blocking doorways)
-            n_pillars = 2 if (h <= 14 or w <= 14) else 4
-            for _ in range(n_pillars):
-                pr = rng.integers(3, h - 3)
-                pc = rng.integers(3, w - 3)
-                # Only place pillar if surrounding area is open
-                if np.sum(grids[f, pr - 1 : pr + 2, pc - 1 : pc + 2] == Tile.WALL) <= 1:
-                    grids[f, pr, pc] = Tile.WALL
+                # Add a few open architectural pillars (never blocking doorways)
+                n_pillars = 2 if (h <= 14 or w <= 14) else 4
+                for _ in range(n_pillars):
+                    pr = rng.integers(3, h - 3)
+                    pc = rng.integers(3, w - 3)
+                    # Only place pillar if surrounding area is open
+                    if np.sum(grids[f, pr - 1 : pr + 2, pc - 1 : pc + 2] == Tile.WALL) <= 1:
+                        grids[f, pr, pc] = Tile.WALL
 
         # 3. Stairs: Same (row, col) across ALL floors (wide/prominent stairwell)
         stairs_list: List[Tuple[int, int]] = []
@@ -305,7 +389,7 @@ def generate_building(config: EnvConfig, seed: Optional[int] = None) -> Building
                             open_candidates.append(loc)
 
             target_count = hostages_per_floor[f]
-            pool = open_candidates if len(open_candidates) >= target_count else floor_empty
+            pool = floor_empty if is_maze else (open_candidates if len(open_candidates) >= target_count else floor_empty)
             if len(pool) < target_count:
                 failed_hostages = True
                 break
