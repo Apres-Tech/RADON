@@ -25,7 +25,7 @@ class FireAdversaryEnv(gym.Env):
     def __init__(
         self,
         config: Optional[EnvConfig] = None,
-        rescuer_policy_path: Optional[str] = "agents/base_frozen.zip",
+        rescuer_policy_path: Optional[str] = None,
         rescuer_model=None,
         deterministic_rescuers: bool = False,
     ):
@@ -36,15 +36,14 @@ class FireAdversaryEnv(gym.Env):
         # Discrete action space: 8 tactical frontier choices
         self.action_space = spaces.Discrete(8)
 
-        # Multi-input observation space: global grid + state scalars
+        # Multi-input observation space: canonical global grid (10x10) + state scalars
         floors = self.config.floors
-        h, w = self.config.grid_h, self.config.grid_w
         self.observation_space = spaces.Dict(
             {
                 "grid": spaces.Box(
                     low=0.0,
                     high=1.0,
-                    shape=(6 * floors, h, w),
+                    shape=(6 * floors, 10, 10),
                     dtype=np.float32,
                 ),
                 "scalars": spaces.Box(
@@ -89,6 +88,9 @@ class FireAdversaryEnv(gym.Env):
             self.rescue_env.fire_positions,
             self.config.grid_h,
             self.config.grid_w,
+            rescuers=self.rescue_env.rescuers,
+            no_point_blank=getattr(self.config, "no_point_blank_ignition", True),
+            ash_cooldowns=self.rescue_env.ash_cooldowns,
         )
 
         fire_obs = build_fire_observation(
@@ -117,19 +119,38 @@ class FireAdversaryEnv(gym.Env):
             and self.current_step >= self.config.fire_spread_start_step
             and len(self.rescue_env.fire_positions) < self.config.fire_max_tiles
         ):
+            budget = getattr(self.config, "fire_ignitions_per_step", 1)
             ignitions = select_frontier_ignition(
                 action=int(action),
                 frontier=self.frontier,
                 rescuers=self.rescue_env.rescuers,
                 hostages=self.rescue_env.hostages,
                 config=self.config,
-                budget=1,
+                budget=budget,
             )
             ignited_any = False
             for f, r, c in ignitions:
-                if self.rescue_env.grids[f, r, c] == Tile.EMPTY and len(self.rescue_env.fire_positions) < self.config.fire_max_tiles:
+                if (
+                    self.rescue_env.grids[f, r, c] in (Tile.EMPTY, Tile.ASH)
+                    and len(self.rescue_env.fire_positions) < self.config.fire_max_tiles
+                ):
+                    # Point blank safety check
+                    if getattr(self.config, "no_point_blank_ignition", True):
+                        is_point_blank = False
+                        for rescuer in self.rescue_env.rescuers.values():
+                            if rescuer.alive and rescuer.floor == f:
+                                if abs(rescuer.row - r) + abs(rescuer.col - c) <= 1:
+                                    is_point_blank = True
+                                    break
+                        if is_point_blank:
+                            continue
+
                     self.rescue_env.grids[f, r, c] = Tile.FIRE
-                    self.rescue_env.fire_positions.append((f, r, c))
+                    pos = (f, r, c)
+                    self.rescue_env.fire_positions.append(pos)
+                    self.rescue_env.fire_ages[pos] = 0
+                    if pos in self.rescue_env.ash_cooldowns:
+                        del self.rescue_env.ash_cooldowns[pos]
                     ignited_any = True
 
             if ignited_any:
@@ -137,16 +158,19 @@ class FireAdversaryEnv(gym.Env):
 
         # --- 2. Step Rescuers Using Frozen Rescuer Policy ---
         rescuer_actions = {}
-        for agent_id in self.rescue_env.agents:
+        living_agents = [aid for aid in self.rescue_env.agents if self.rescue_env.rescuers[aid].alive]
+        if living_agents:
             if self.rescuer_model is not None:
-                agent_obs = {
-                    k: np.expand_dims(v, axis=0)
-                    for k, v in self.last_rescuer_obs[agent_id].items()
+                batch_obs = {
+                    k: np.stack([self.last_rescuer_obs[aid][k] for aid in living_agents], axis=0)
+                    for k in self.last_rescuer_obs[living_agents[0]].keys()
                 }
-                act, _ = self.rescuer_model.predict(agent_obs, deterministic=self.deterministic_rescuers)
-                rescuer_actions[agent_id] = int(act[0])
+                acts, _ = self.rescuer_model.predict(batch_obs, deterministic=self.deterministic_rescuers)
+                for aid, act in zip(living_agents, acts):
+                    rescuer_actions[aid] = int(act)
             else:
-                rescuer_actions[agent_id] = int(self.rescue_env.action_space(agent_id).sample())
+                for aid in living_agents:
+                    rescuer_actions[aid] = int(self.rescue_env.action_space(aid).sample())
 
         self.last_rescuer_obs, rewards, terminations, truncations, infos = self.rescue_env.step(rescuer_actions)
 
@@ -187,6 +211,9 @@ class FireAdversaryEnv(gym.Env):
             self.rescue_env.fire_positions,
             self.config.grid_h,
             self.config.grid_w,
+            rescuers=self.rescue_env.rescuers,
+            no_point_blank=getattr(self.config, "no_point_blank_ignition", True),
+            ash_cooldowns=self.rescue_env.ash_cooldowns,
         )
 
         fire_obs = build_fire_observation(
