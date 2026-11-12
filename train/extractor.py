@@ -19,9 +19,10 @@ class RescueExtractor(BaseFeaturesExtractor):
     def __init__(self, observation_space: spaces.Dict, features_dim: int = 160):
         super().__init__(observation_space, features_dim=features_dim)
 
-        # 6x7x7 grid CNN
+        # Dynamic grid CNN (handles 6-channel legacy or 7-channel ASH-augmented grid)
+        in_channels = observation_space["grid"].shape[0]
         self.cnn = nn.Sequential(
-            nn.Conv2d(6, 32, kernel_size=3, padding=1),
+            nn.Conv2d(in_channels, 32, kernel_size=3, padding=1),
             nn.ReLU(),
             nn.Conv2d(32, 64, kernel_size=3, padding=1),
             nn.ReLU(),
@@ -30,7 +31,7 @@ class RescueExtractor(BaseFeaturesExtractor):
             nn.ReLU(),
         )
 
-        # Self vector MLP (handles 6-dim legacy or 13-dim BFS-augmented self vector)
+        # Self vector MLP (handles 6-dim legacy, 13-dim BFS, or 14-dim BFS+HP self vector)
         self_dim = observation_space["self"].shape[0]
         self.mlp = nn.Sequential(
             nn.Linear(self_dim, 32),

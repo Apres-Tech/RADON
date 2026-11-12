@@ -50,11 +50,20 @@ class EnvConfig:
     obs_centralized_critic: bool = False
     seed: Optional[int] = None
 
+    # Day 10 Combat & Fire Balance tunables
+    rescuer_hp: int = 2
+    invulnerability_steps: int = 2
+    fire_lifetime: int = 30
+    ash_cooldown: int = 40
+    fire_ignitions_per_step: int = 1
+    no_point_blank_ignition: bool = True
+
     # Reward values
     step_reward: float = -0.01
     pickup_reward: float = 2.0
     delivery_reward: float = 10.0
     death_reward: float = -3.0
+    hit_penalty: float = -1.0
     team_completion_reward: float = 20.0
     enable_shaping: bool = True
     shaping_coef: float = 0.08

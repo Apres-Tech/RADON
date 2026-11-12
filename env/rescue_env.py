@@ -24,6 +24,7 @@ from env.tiles import (
     CHANNEL_EXIT,
     CHANNEL_STAIRS,
     CHANNEL_OTHER_RESCUER,
+    CHANNEL_ASH,
 )
 
 
@@ -68,7 +69,7 @@ class RadonRescueEnv(ParallelEnv):
         """Returns the cached observation space for the specified agent."""
         view_dim = self.config.view_size
         use_bfs = getattr(self.config, "obs_bfs_features", True)
-        self_dim = 13 if use_bfs else 6
+        self_dim = 14 if use_bfs else 7
         space_dict = {
             "grid": spaces.Box(
                 low=0.0,
@@ -138,14 +139,19 @@ class RadonRescueEnv(ParallelEnv):
                 Hostage(id=idx, floor=f, row=r, col=c, rescued=False, carried_by=None, evacuated_to_ground=(f == 0))
             )
 
-        # Initialize fire positions list and death tracking
+        # Initialize fire positions list, fire ages, ash cooldowns, and death/damage tracking
         self.fire_positions = list(self.building_map.fires)
+        self.fire_ages: Dict[Tuple[int, int, int], int] = {pos: 0 for pos in self.fire_positions}
+        self.ash_cooldowns: Dict[Tuple[int, int, int], int] = {}
         self.fire_deaths: int = 0
+        self.hp_lost: int = 0
+        self.fire_dashes_survived: int = 0
         if self.fire_controller is not None:
             self.fire_controller.reset(self.config, self.grids, self.fire_positions, self.np_random)
 
         # Initialize rescuer entities at designated spawns
         self.rescuers = {}
+        hp_val = getattr(self.config, "rescuer_hp", 2)
         for idx, agent_id in enumerate(self.possible_agents):
             sf, sr, sc = self.building_map.rescuer_spawns[idx % len(self.building_map.rescuer_spawns)]
             self.rescuers[agent_id] = Rescuer(
@@ -155,6 +161,9 @@ class RadonRescueEnv(ParallelEnv):
                 col=sc,
                 carrying=False,
                 alive=True,
+                hp=hp_val,
+                max_hp=hp_val,
+                invulnerable_steps=0,
             )
 
         # Overtime tracking
@@ -181,7 +190,7 @@ class RadonRescueEnv(ParallelEnv):
         # If rescuer is dead, return all-wall obs and zero self-vector
         if not rescuer.alive:
             grid_obs[CHANNEL_WALL, :, :] = 1.0
-            self_dim = 13 if getattr(self.config, "obs_bfs_features", True) else 6
+            self_dim = 14 if getattr(self.config, "obs_bfs_features", True) else 7
             self_feat = np.zeros(self_dim, dtype=np.float32)
             dead_obs = {"grid": grid_obs, "self": self_feat}
             if getattr(self.config, "obs_centralized_critic", False):
@@ -215,6 +224,8 @@ class RadonRescueEnv(ParallelEnv):
                         grid_obs[CHANNEL_EXIT, dr_idx, dc_idx] = 1.0
                     elif tile_val == Tile.STAIRS:
                         grid_obs[CHANNEL_STAIRS, dr_idx, dc_idx] = 1.0
+                    elif tile_val == Tile.ASH:
+                        grid_obs[CHANNEL_ASH, dr_idx, dc_idx] = 1.0
 
                     # Check for other living rescuers occupying this cell
                     for other_id, other in self.rescuers.items():
@@ -227,7 +238,7 @@ class RadonRescueEnv(ParallelEnv):
                         ):
                             grid_obs[CHANNEL_OTHER_RESCUER, dr_idx, dc_idx] = 1.0
 
-        # Self vector: [carrying, floor_norm, steps_left_norm, row_norm, col_norm, hostages_remaining_norm]
+        # Self vector: [carrying, floor_norm, steps_left_norm, row_norm, col_norm, hostages_remaining_norm, hp_norm]
         carrying_val = 1.0 if rescuer.carrying else 0.0
         floor_norm = float(rescuer.floor) / max(1, (self.config.floors - 1))
         # Rolling effective horizon during carry overtime keeps steps_left positive and in-distribution
@@ -238,6 +249,7 @@ class RadonRescueEnv(ParallelEnv):
         col_norm = float(rescuer.col) / max(1, (self.config.grid_w - 1))
         unrescued_count = sum(1 for h in self.hostages if not h.rescued)
         hostages_rem_norm = float(unrescued_count) / max(1, self.config.n_hostages)
+        hp_norm = float(rescuer.hp) / float(max(1, getattr(self.config, "rescuer_hp", 2)))
 
         self_feat = np.array(
             [
@@ -247,6 +259,7 @@ class RadonRescueEnv(ParallelEnv):
                 row_norm,
                 col_norm,
                 hostages_rem_norm,
+                hp_norm,
             ],
             dtype=np.float32,
         )
@@ -358,6 +371,9 @@ class RadonRescueEnv(ParallelEnv):
         living_count = sum(1 for r in self.rescuers.values() if r.alive)
         return {
             "alive": rescuer.alive,
+            "hp": rescuer.hp,
+            "max_hp": getattr(rescuer, "max_hp", 2),
+            "invulnerable_steps": rescuer.invulnerable_steps,
             "carrying": rescuer.carrying,
             "floor": rescuer.floor,
             "row": rescuer.row,
@@ -370,6 +386,8 @@ class RadonRescueEnv(ParallelEnv):
             "in_overtime": getattr(self, "in_overtime", False),
             "overtime_steps": getattr(self, "overtime_steps", 0),
             "fire_deaths": getattr(self, "fire_deaths", 0),
+            "hp_lost": getattr(self, "hp_lost", 0),
+            "fire_dashes_survived": getattr(self, "fire_dashes_survived", 0),
             "rescuers_alive": living_count,
             "total_rescuers": self.config.n_rescuers,
             "verdict": self.verdict,
@@ -397,7 +415,7 @@ class RadonRescueEnv(ParallelEnv):
         if self.grids[f, r, c] not in (Tile.FIRE, Tile.EXIT, Tile.WALL):
             drop_pos = (f, r, c)
         else:
-            # Search nearest valid EMPTY neighbor
+            # Search nearest valid EMPTY or ASH neighbor
             neighbors = []
             for dr, dc in (
                 (-1, 0), (1, 0), (0, -1), (0, 1),
@@ -405,7 +423,7 @@ class RadonRescueEnv(ParallelEnv):
             ):
                 nr, nc = r + dr, c + dc
                 if 0 <= nr < self.config.grid_h and 0 <= nc < self.config.grid_w:
-                    if self.grids[f, nr, nc] == Tile.EMPTY:
+                    if self.grids[f, nr, nc] in (Tile.EMPTY, Tile.ASH):
                         neighbors.append((abs(dr) + abs(dc), nr, nc))
             if neighbors:
                 neighbors.sort(key=lambda x: x[0])
@@ -444,18 +462,42 @@ class RadonRescueEnv(ParallelEnv):
         if not new_ignitions:
             return False
 
+        budget = getattr(self.config, "fire_ignitions_per_step", 1)
         spread_occurred = False
+        ignited_count = 0
         for f, r, c in new_ignitions:
+            if ignited_count >= budget:
+                break
             if (
                 0 <= f < self.config.floors
                 and 0 <= r < self.config.grid_h
                 and 0 <= c < self.config.grid_w
-                and self.grids[f, r, c] == Tile.EMPTY
+                and self.grids[f, r, c] in (Tile.EMPTY, Tile.ASH)
                 and len(self.fire_positions) < self.config.fire_max_tiles
             ):
+                # No point-blank check
+                if getattr(self.config, "no_point_blank_ignition", True):
+                    is_point_blank = False
+                    for rescuer in self.rescuers.values():
+                        if rescuer.alive and rescuer.floor == f:
+                            if abs(rescuer.row - r) + abs(rescuer.col - c) <= 1:
+                                is_point_blank = True
+                                break
+                    if is_point_blank:
+                        continue
+
+                # Ash cooldown check
+                if self.grids[f, r, c] == Tile.ASH and self.ash_cooldowns.get((f, r, c), 0) > 0:
+                    continue
+
                 self.grids[f, r, c] = Tile.FIRE
-                self.fire_positions.append((f, r, c))
+                pos = (f, r, c)
+                self.fire_positions.append(pos)
+                self.fire_ages[pos] = 0
+                if pos in self.ash_cooldowns:
+                    del self.ash_cooldowns[pos]
                 spread_occurred = True
+                ignited_count += 1
 
         return spread_occurred
 
@@ -545,6 +587,12 @@ class RadonRescueEnv(ParallelEnv):
         new_hostage_delivered = False
         hostage_state_changed = False
 
+        # Decrement invulnerability steps for living rescuers from prior hits
+        for agent in active_stepping_agents:
+            rescuer = self.rescuers[agent]
+            if rescuer.alive and rescuer.invulnerable_steps > 0:
+                rescuer.invulnerable_steps -= 1
+
         # --- 1. Process Rescuer Actions ---
         for agent in active_stepping_agents:
             rescuer = self.rescuers[agent]
@@ -604,14 +652,22 @@ class RadonRescueEnv(ParallelEnv):
                         if curr_dist < 999:
                             rewards[agent] += (prev_dist - curr_dist) * self.config.shaping_coef
 
-                    # Step onto FIRE kills agent
+                    # Step onto FIRE: costs 1 HP unless invulnerable
                     if self.grids[rescuer.floor, nr, nc] == Tile.FIRE:
-                        rescuer.alive = False
-                        self.fire_deaths += 1
-                        rewards[agent] += self.config.death_reward
-                        terminations[agent] = True
-                        self._drop_carried_hostage_on_death(rescuer)
-                        hostage_state_changed = True
+                        if rescuer.invulnerable_steps > 0:
+                            self.fire_dashes_survived += 1
+                        else:
+                            rescuer.hp -= 1
+                            self.hp_lost += 1
+                            rewards[agent] += getattr(self.config, "hit_penalty", -1.0)
+                            rescuer.invulnerable_steps = getattr(self.config, "invulnerability_steps", 2)
+                            if rescuer.hp <= 0:
+                                rescuer.alive = False
+                                self.fire_deaths += 1
+                                rewards[agent] += self.config.death_reward
+                                terminations[agent] = True
+                                self._drop_carried_hostage_on_death(rescuer)
+                                hostage_state_changed = True
                     else:
                         # Auto Pick up: stepping onto HOSTAGE tile while not carrying
                         if not rescuer.carrying and self.grids[rescuer.floor, nr, nc] == Tile.HOSTAGE:
@@ -640,6 +696,7 @@ class RadonRescueEnv(ParallelEnv):
                                     rewards[agent] += self.config.delivery_reward
                                     new_hostage_delivered = True
                                     hostage_state_changed = True
+                                    rescuer.hp = min(getattr(self.config, "rescuer_hp", 2), rescuer.hp + 1)
                                     break
 
             elif action == Action.INTERACT:
@@ -710,6 +767,7 @@ class RadonRescueEnv(ParallelEnv):
                             rewards[agent] += self.config.delivery_reward
                             new_hostage_delivered = True
                             hostage_state_changed = True
+                            rescuer.hp = min(getattr(self.config, "rescuer_hp", 2), rescuer.hp + 1)
                             break
 
         if hostage_state_changed:
@@ -750,20 +808,55 @@ class RadonRescueEnv(ParallelEnv):
             for agent in active_stepping_agents:
                 rewards[agent] += self.config.team_completion_reward
 
-        # --- 3. Dynamic Fire Spread & Path Rerouting ---
+        # --- 3. Dynamic Fire Spread, Burnout to ASH & Path Rerouting ---
+        # A. Fire Burnout to ASH
+        fire_burned_out = False
+        expired_fires = []
+        for pos in list(self.fire_positions):
+            age = self.fire_ages.get(pos, 0) + 1
+            self.fire_ages[pos] = age
+            if age >= getattr(self.config, "fire_lifetime", 30):
+                expired_fires.append(pos)
+
+        for f, r, c in expired_fires:
+            pos = (f, r, c)
+            if pos in self.fire_positions:
+                self.fire_positions.remove(pos)
+            if pos in self.fire_ages:
+                del self.fire_ages[pos]
+            self.grids[f, r, c] = Tile.ASH
+            self.ash_cooldowns[pos] = getattr(self.config, "ash_cooldown", 40)
+            fire_burned_out = True
+
+        # B. Decrement ash cooldowns
+        for pos in list(self.ash_cooldowns.keys()):
+            self.ash_cooldowns[pos] -= 1
+            if self.ash_cooldowns[pos] <= 0:
+                self.ash_cooldowns[pos] = 0
+
+        # C. Fire Spread
         fire_spread_occurred = self._spread_fire()
-        if fire_spread_occurred:
+        if fire_spread_occurred or fire_burned_out:
             self._recompute_shaping_maps(update_exits=True)
 
-        # Check if spreading fire engulfed any living rescuers
+        # D. Check if spreading fire engulfed any living rescuers
         for agent in active_stepping_agents:
             rescuer = self.rescuers[agent]
             if rescuer.alive and self.grids[rescuer.floor, rescuer.row, rescuer.col] == Tile.FIRE:
-                rescuer.alive = False
-                self.fire_deaths += 1
-                rewards[agent] += self.config.death_reward
-                terminations[agent] = True
-                self._drop_carried_hostage_on_death(rescuer)
+                if rescuer.invulnerable_steps > 0:
+                    self.fire_dashes_survived += 1
+                else:
+                    rescuer.hp -= 1
+                    self.hp_lost += 1
+                    rewards[agent] += getattr(self.config, "hit_penalty", -1.0)
+                    rescuer.invulnerable_steps = getattr(self.config, "invulnerability_steps", 2)
+                    if rescuer.hp <= 0:
+                        rescuer.alive = False
+                        self.fire_deaths += 1
+                        rewards[agent] += self.config.death_reward
+                        terminations[agent] = True
+                        self._drop_carried_hostage_on_death(rescuer)
+                        hostage_state_changed = True
 
         # --- 4. Episode Termination & Truncation Checks ---
         all_rescuers_dead = not any(r.alive for r in self.rescuers.values())

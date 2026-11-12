@@ -12,20 +12,45 @@ def get_valid_fire_frontier(
     fire_positions: List[Tuple[int, int, int]],
     grid_h: int,
     grid_w: int,
+    rescuers: Optional[Dict[str, Rescuer]] = None,
+    no_point_blank: bool = True,
+    ash_cooldowns: Optional[Dict[Tuple[int, int, int], int]] = None,
 ) -> List[Tuple[int, int, int]]:
     """Identifies all valid frontier cells eligible for ignition.
 
     Physical safety constraints:
       - Must be orthogonally adjacent to an existing FIRE tile.
-      - Must be an EMPTY tile (strictly never WALL, FIRE, EXIT, STAIRS, or HOSTAGE).
+      - Must be an EMPTY tile or cooled-down ASH tile (strictly never WALL, FIRE, EXIT, STAIRS, or HOSTAGE).
+      - If no_point_blank is True: must NOT be within Manhattan distance <= 1 of any living rescuer.
     """
     frontier_set: Set[Tuple[int, int, int]] = set()
+
+    # Precompute living rescuer danger zone (Manhattan distance <= 1 on same floor)
+    danger_zone: Set[Tuple[int, int, int]] = set()
+    if no_point_blank and rescuers:
+        for r in rescuers.values():
+            if r.alive:
+                danger_zone.add((r.floor, r.row, r.col))
+                for dr, dc in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+                    nr, nc = r.row + dr, r.col + dc
+                    if 0 <= nr < grid_h and 0 <= nc < grid_w:
+                        danger_zone.add((r.floor, nr, nc))
+
     for ff, fr, fc in fire_positions:
         for dr, dc in ((-1, 0), (1, 0), (0, -1), (0, 1)):
             nfr, nfc = fr + dr, fc + dc
             if 0 <= nfr < grid_h and 0 <= nfc < grid_w:
-                if grids[ff, nfr, nfc] == Tile.EMPTY:
-                    frontier_set.add((ff, nfr, nfc))
+                pos = (ff, nfr, nfc)
+                if pos in danger_zone:
+                    continue
+
+                tile_val = grids[ff, nfr, nfc]
+                if tile_val == Tile.EMPTY:
+                    frontier_set.add(pos)
+                elif tile_val == Tile.ASH:
+                    if ash_cooldowns is None or ash_cooldowns.get(pos, 0) <= 0:
+                        frontier_set.add(pos)
+
     return sorted(list(frontier_set))
 
 
@@ -120,16 +145,25 @@ class CurriculumFireController(FireController):
         if np_random.random() >= prob:
             return []
 
-        # Find eligible frontier
-        frontier = get_valid_fire_frontier(grids, fire_positions, self.config.grid_h, self.config.grid_w)
+        # Find eligible frontier with no-point-blank check
+        no_point_blank = getattr(self.config, "no_point_blank_ignition", True)
+        frontier = get_valid_fire_frontier(
+            grids,
+            fire_positions,
+            self.config.grid_h,
+            self.config.grid_w,
+            rescuers=rescuers,
+            no_point_blank=no_point_blank,
+        )
         if not frontier:
             return []
 
-        # Determine step budget: 1 early, up to 2 later in episode
+        # Determine step budget: rate limit from config
+        budget_limit = getattr(self.config, "fire_ignitions_per_step", 1)
         remaining_capacity = self.max_fire_tiles - len(fire_positions)
         step_budget = min(
             remaining_capacity,
-            self.max_budget_per_step if current_step >= (self.start_step + self.escalation_horizon // 2) else 1,
+            budget_limit,
             len(frontier),
         )
 
@@ -366,7 +400,15 @@ class PolicyFireController(FireController):
         if len(fire_positions) >= max_tiles:
             return []
 
-        frontier = get_valid_fire_frontier(grids, fire_positions, self.config.grid_h, self.config.grid_w)
+        no_point_blank = getattr(self.config, "no_point_blank_ignition", True)
+        frontier = get_valid_fire_frontier(
+            grids,
+            fire_positions,
+            self.config.grid_h,
+            self.config.grid_w,
+            rescuers=rescuers,
+            no_point_blank=no_point_blank,
+        )
         if not frontier:
             return []
 
@@ -379,4 +421,5 @@ class PolicyFireController(FireController):
         else:
             action_idx = int(np_random.integers(0, 7))
 
-        return select_frontier_ignition(action_idx, frontier, rescuers, hostages, self.config, budget=1)
+        budget = getattr(self.config, "fire_ignitions_per_step", 1)
+        return select_frontier_ignition(action_idx, frontier, rescuers, hostages, self.config, budget=budget)

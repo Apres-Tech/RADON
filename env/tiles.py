@@ -14,6 +14,7 @@ class Tile(IntEnum):
     EXIT = 3
     HOSTAGE = 4
     FIRE = 5
+    ASH = 6
 
 
 class Action(IntEnum):
@@ -37,14 +38,15 @@ ACTION_DELTAS: dict[Action, Tuple[int, int]] = {
 }
 
 
-# Observation grid channels (6 one-hot layers)
+# Observation grid channels (7 one-hot layers)
 CHANNEL_WALL = 0
 CHANNEL_FIRE = 1
 CHANNEL_HOSTAGE = 2
 CHANNEL_EXIT = 3
 CHANNEL_STAIRS = 4
 CHANNEL_OTHER_RESCUER = 5
-NUM_OBS_CHANNELS = 6
+CHANNEL_ASH = 6
+NUM_OBS_CHANNELS = 7
 
 
 @dataclass
@@ -57,6 +59,9 @@ class Rescuer:
     col: int
     carrying: bool = False
     alive: bool = True
+    hp: int = 2
+    max_hp: int = 2
+    invulnerable_steps: int = 0
 
 
 @dataclass
