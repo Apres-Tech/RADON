@@ -109,6 +109,7 @@ class EpisodeRecorder:
             "max_steps": env.config.max_steps,
             "fire_spread_prob": env.config.fire_spread_prob,
             "carry_capacity": env.config.carry_capacity,
+            "carry_overtime": getattr(env.config, "carry_overtime", False),
             "seed": env.config.seed,
         }
 
@@ -161,6 +162,8 @@ class EpisodeRecorder:
             "hostages": hostages,
             "rescuers": rescuers,
             "rewards": formatted_rewards,
+            "in_overtime": getattr(self.env, "in_overtime", False),
+            "overtime_steps": getattr(self.env, "overtime_steps", 0),
         }
 
     def record_initial_frame(self) -> None:

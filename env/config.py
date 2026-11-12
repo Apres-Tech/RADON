@@ -45,6 +45,7 @@ class EnvConfig:
     fire_max_tiles: int = 40
     fire_enabled: bool = True
     carry_capacity: int = 1
+    carry_overtime: bool = False
     seed: Optional[int] = None
 
     # Reward values
@@ -69,6 +70,7 @@ class EnvConfig:
         n_hostages: Optional[int] = None,
         max_steps: Optional[int] = None,
         seed: Optional[int] = None,
+        carry_overtime: bool = False,
     ) -> "EnvConfig":
         """Showcase preset: 2 floors, 14x14 default (office layout, wide doors, 2x2 exits).
         
@@ -98,6 +100,7 @@ class EnvConfig:
             fire_max_tiles=fire_max,
             fire_enabled=True,
             carry_capacity=1,
+            carry_overtime=carry_overtime,
             seed=seed,
             step_reward=-0.01,
             pickup_reward=5.0,
@@ -112,6 +115,7 @@ class EnvConfig:
     def showcase_hard(
         cls,
         seed: Optional[int] = None,
+        carry_overtime: bool = False,
     ) -> "EnvConfig":
         """Showcase hard mode: 20x20 grid, 5 rescuers, 4 hostages, max_steps=400."""
         return cls.showcase(
@@ -120,10 +124,11 @@ class EnvConfig:
             n_hostages=4,
             max_steps=400,
             seed=seed,
+            carry_overtime=carry_overtime,
         )
 
     @classmethod
-    def training_day4_base(cls, seed: Optional[int] = None) -> "EnvConfig":
+    def training_day4_base(cls, seed: Optional[int] = None, carry_overtime: bool = False) -> "EnvConfig":
         """Base solvable preset for Day 4: 2 floors, 10x10 grid, 3 rescuers, 2 hostages (1/floor), max_steps=160."""
         return cls(
             floors=2,
@@ -138,6 +143,7 @@ class EnvConfig:
             fire_max_tiles=25,
             fire_enabled=True,
             carry_capacity=1,
+            carry_overtime=carry_overtime,
             seed=seed,
             step_reward=-0.01,
             pickup_reward=5.0,
@@ -149,7 +155,7 @@ class EnvConfig:
         )
 
     @classmethod
-    def training_day3(cls, seed: Optional[int] = None) -> "EnvConfig":
+    def training_day3(cls, seed: Optional[int] = None, carry_overtime: bool = False) -> "EnvConfig":
         """Training preset for Day 3: 2 floors, 12x12 grid, 4 rescuers, 4 hostages, max_steps=200."""
         return cls(
             floors=2,
@@ -164,6 +170,7 @@ class EnvConfig:
             fire_max_tiles=50,
             fire_enabled=True,
             carry_capacity=1,
+            carry_overtime=carry_overtime,
             seed=seed,
             step_reward=-0.01,
             pickup_reward=5.0,
@@ -175,7 +182,7 @@ class EnvConfig:
         )
 
     @classmethod
-    def training_day2(cls, seed: Optional[int] = None) -> "EnvConfig":
+    def training_day2(cls, seed: Optional[int] = None, carry_overtime: bool = False) -> "EnvConfig":
         """Tuned training preset for Day 2 / Day 2.5: 1 floor, 12x12 grid, 4 rescuers, 3 hostages, max_steps=120."""
         return cls(
             floors=1,
@@ -190,6 +197,7 @@ class EnvConfig:
             fire_max_tiles=30,
             fire_enabled=True,
             carry_capacity=1,
+            carry_overtime=carry_overtime,
             seed=seed,
             step_reward=-0.01,
             pickup_reward=5.0,
@@ -201,7 +209,7 @@ class EnvConfig:
         )
 
     @classmethod
-    def sanity(cls, seed: Optional[int] = None) -> "EnvConfig":
+    def sanity(cls, seed: Optional[int] = None, carry_overtime: bool = False) -> "EnvConfig":
         """Sanity curriculum preset for Day 2.5: 1 floor, 8x8 grid, 2 rescuers, 1 hostage, max_steps=60, no fire."""
         return cls(
             floors=1,
@@ -216,6 +224,7 @@ class EnvConfig:
             fire_max_tiles=0,
             fire_enabled=False,
             carry_capacity=1,
+            carry_overtime=carry_overtime,
             seed=seed,
             step_reward=-0.01,
             pickup_reward=5.0,

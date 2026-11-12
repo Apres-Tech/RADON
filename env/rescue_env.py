@@ -143,6 +143,11 @@ class RadonRescueEnv(ParallelEnv):
                 alive=True,
             )
 
+        # Overtime tracking
+        self.in_overtime: bool = False
+        self.overtime_steps: int = 0
+        self.effective_max_steps: int = self.config.max_steps
+
         # Precompute BFS distance maps for potential shaping
         self._recompute_shaping_maps(update_exits=True)
 
@@ -206,8 +211,10 @@ class RadonRescueEnv(ParallelEnv):
         # Self vector: [carrying, floor_norm, steps_left_norm, row_norm, col_norm, hostages_remaining_norm]
         carrying_val = 1.0 if rescuer.carrying else 0.0
         floor_norm = float(rescuer.floor) / max(1, (self.config.floors - 1))
-        steps_left = max(0, self.config.max_steps - self.current_step)
-        steps_left_norm = float(steps_left) / float(self.config.max_steps)
+        # Rolling effective horizon during carry overtime keeps steps_left positive and in-distribution
+        curr_horizon = max(self.config.max_steps, getattr(self, "effective_max_steps", self.config.max_steps))
+        steps_left = max(0, curr_horizon - self.current_step)
+        steps_left_norm = min(1.0, float(steps_left) / float(self.config.max_steps))
         row_norm = float(rescuer.row) / max(1, (self.config.grid_h - 1))
         col_norm = float(rescuer.col) / max(1, (self.config.grid_w - 1))
         unrescued_count = sum(1 for h in self.hostages if not h.rescued)
@@ -236,6 +243,8 @@ class RadonRescueEnv(ParallelEnv):
         all_rescuers_dead = not any(r.alive for r in self.rescuers.values())
         if all_rescuers_dead:
             return "LOSE_WIPED"
+        if getattr(self, "in_overtime", False):
+            return "IN_PROGRESS"
         if self.current_step >= self.config.max_steps:
             return "LOSE_TIMEOUT"
         return "IN_PROGRESS"
@@ -255,6 +264,9 @@ class RadonRescueEnv(ParallelEnv):
             "total_hostages": self.config.n_hostages,
             "step": self.current_step,
             "max_steps": self.config.max_steps,
+            "effective_max_steps": getattr(self, "effective_max_steps", self.config.max_steps),
+            "in_overtime": getattr(self, "in_overtime", False),
+            "overtime_steps": getattr(self, "overtime_steps", 0),
             "fire_deaths": getattr(self, "fire_deaths", 0),
             "rescuers_alive": living_count,
             "total_rescuers": self.config.n_rescuers,
@@ -642,7 +654,24 @@ class RadonRescueEnv(ParallelEnv):
 
         # --- 4. Episode Termination & Truncation Checks ---
         all_rescuers_dead = not any(r.alive for r in self.rescuers.values())
-        is_truncated = self.current_step >= self.config.max_steps
+
+        # Overtime rule: if enabled and step horizon reached, do not truncate while any living rescuer carries
+        any_carrying = any(r.alive and r.carrying for r in self.rescuers.values())
+        if (
+            self.config.carry_overtime
+            and (self.current_step >= self.config.max_steps)
+            and any_carrying
+            and not all_hostages_rescued
+            and not all_rescuers_dead
+        ):
+            self.in_overtime = True
+            self.overtime_steps = self.current_step - self.config.max_steps
+            while self.current_step >= self.effective_max_steps:
+                self.effective_max_steps += 50
+            is_truncated = False
+        else:
+            self.in_overtime = False
+            is_truncated = self.current_step >= self.config.max_steps
 
         for agent in active_stepping_agents:
             rescuer = self.rescuers[agent]
