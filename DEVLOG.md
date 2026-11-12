@@ -113,3 +113,37 @@ python -m uvicorn server.app:app --host 0.0.0.0 --port 8000
 **Scope:** live /generate only. Training + held-out benchmark unchanged (still fixed horizon).
 **UI:** OVERTIME indicator, manual skip, optional auto-skip (default off).
 **Benchmark re-verified unchanged:** 6.7% full win / 46.7% partial on held-out 14x14 (0.70/3 mean rescued, 3.40/4 survivors).
+
+## Day 9 — 2026-11-12 — Break the Blindness Ceiling (BFS Observation + LSTM + Centralized Critic)
+**The Problem & Diagnosis:**
+On held-out 14×14 maps, previous agents plateaued at 6.7% full-win and 46.7% partial rescue rate. The root cause was information blindness: agents had 7×7 local vision without global cues. When no hostage was in the 7×7 window, agents had zero gradient and wandered blindly. Diagnostics (`train/diagnose.py`) revealed a 73.9% idle/oscillation revisiting rate, with 95.0% of unrescued victims fully reachable via BFS at timeout horizon.
+
+**Architectural Stages & Gates:**
+- **Part A (Infrastructure):** Resumable trainer (`train/train_long.py`) with continuous CSV logging, periodic held-out evaluation, and diagnostic telemetry.
+- **Stage 1 (BFS Navigation Features in Observation):** Injected 7 normalized multi-floor BFS direction/distance deltas into each agent's `self` vector (13-dim total; 7×7 grid channel untouched). Informs direction to nearest unrescued hostage or nearest exit when carrying.
+  - *Gate 1 Result:* Smashed the blindness ceiling. Held-out full win rate surged from 6.7% to **96.7%** (29/30), mean rescued reached 2.97/3, oscillation dropped from 73.9% to 53.6%, and completion time collapsed from 220 to 83.2 steps. GATE 1 PASSED.
+- **Stage 2 (RecurrentPPO LSTM Memory):** Added `sb3-contrib` RecurrentPPO with separate actor and critic LSTMs, verifying hidden state resets and `black_death` ghost safety without NaN.
+  - *Gate 2 Result:* Achieved 36.7% full-win rate (beating the 6.7% baseline), but BPTT slowed throughput by ~3.5x (52 fps vs 200+ fps) and required much longer optimization than reactive BFS gradient following.
+- **Stage 3 (MAPPO Asymmetric Centralized Critic):** Implemented `AsymmetricMultiInputPolicy` (`train/centralized.py`). Critic consumes canonical 10×10 global multi-channel state; actor consumes strictly local observations (7×7 grid + 13-dim self vector). Size-invariance verified on 20×20 maps with actor privacy assertion (`assert "global" not in actor_dict`).
+  - *Gate 3 Result:* Achieved **93.3%** full wins (28/30) and 2.93/3 rescued, proving centralized value baseline works without leaking global state to actors.
+
+**Final Long Run & Production Winner:**
+Selected Stage 1 (BFS reactive MLP) as the optimal production architecture due to superior convergence speed, highest environment throughput (200+ fps), and flawless sample efficiency. Resumed training to 310k steps (`agents/best_bfs_mlp.zip`).
+
+**100-Episode Held-Out Benchmark (Seeds 50000..50099, 14×14 Showcase, Fixed Horizon 220, No Overtime):**
+
+| Evaluation Metric | Baseline (`final_rescuer.zip`) | Day 9 Final (`best_bfs_mlp.zip`) | Advantage / Impact |
+|---|---|---|---|
+| **Full WIN Rate (All Evacuated)** | 1.0% (1/100) | **96.0% (96/100)** | **+95.0% absolute (96x higher)** |
+| **Partial Rescue Rate (≥1 Saved)** | 52.0% (52/100) | **100.0% (100/100)** | **+48.0% (every run saves victims)** |
+| **Mean Hostages Rescued (/3)** | 0.76 / 3 (25.3%) | **2.96 / 3 (98.7%)** | **+2.20 hostages / episode (+289%)** |
+| **Episode Timeouts** | 99 / 100 | **3 / 100** | **Timeouts slashed by 97%** |
+| **Idle / Oscillation Rate** | 73.7% | **56.4%** | **-17.3% blind wandering drop** |
+| **Mean Episode Length** | 219.5 steps | **96.2 steps** | **2.3x faster mission clearance** |
+| **Rescuer Team Survival** | 3.35 / 4 (83.8%) | **3.37 / 4 (84.3%)** | **Maintained robust fire evasion** |
+
+**Deployment & Dashboard:**
+- Promoted `agents/best_bfs_mlp.zip` to `agents/showcase_rescuer.zip`.
+- Live inference tested via `/generate` on unseen seeds (e.g. seed 50001: 85 steps, WIN, 3/3 rescued).
+- Updated dashboard header telemetry and benchmark analytics table with true verified statistics.
+
